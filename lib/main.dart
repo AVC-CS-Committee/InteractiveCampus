@@ -26,8 +26,12 @@ class _MyAppState extends State<MyApp> {
   Future<void> _onMapCreated(GoogleMapController controller) async {
     mapController = controller;
 
-    // TODO: Fix markers not loading until a hot restart is performed
     _markers = await locations.getMarkers();
+
+    // After loading the markers, update the state of the map with setState
+    setState(() {
+      _markers.addAll(_markers);
+    });
   }
 
   @override
