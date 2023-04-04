@@ -1,0 +1,418 @@
+[
+  {
+    "title": "Facilities Services",
+    "latitude": 34.68055821978821,
+    "longitude": -118.18743605625858,
+    "description": "Facilities Services (FS) supports Antelope Valley College’s mission by maintaining and enhancing buildings, grounds and the physical infrastructure in a cost-effective, safe and environmentally responsible manner. The S3 logo represents the ongoing goals of the department and defines the meaning of safety, service, and sustainability. Facilities Services prioritizes safety through preventative maintenance and hazard mitigation, offers excellent customer service in maintenance and operations, and strives for long-term sustainability in controlling usage and reducing waste.",
+    "images": ["facilitiesservices", "facilitiesservices2"],
+    "type": "resource"
+  },
+  {
+    "title": "CSU Bakersfield",
+    "latitude": 34.680353586506165,
+    "longitude": -118.18506976951421,
+    "description": "California State University, Bakersfield operates a branch campus in the Antelope Valley on the northeast corner of Antelope Valley College. The campus provides the residents of the Greater Antelope Valley academic degree programs leading to a Bachelor degree in a small number of disciplines, and the ability to obtain a Master’s degree in a few areas, without leaving the community. This cooperative arrangement between two segments of California’s public higher education system enables students who complete an Associate of Arts or Associate of Science program at a community college to continue their academic studies at state resident rates. All programs offered at CSUB AV are fully accredited by the Western Association of Schools and Colleges and are an integral part of the curricula of California State University, Bakersfield.",
+    "images": ["bakersfield"],
+    "type": "classroom"
+  },
+  {
+    "title": "Child Development Center",
+    "latitude": 34.67969441342744,
+    "longitude": -118.18539476561865,
+    "description": "The Child Development Center offers both state preschool and tuition-based programs. Our state preschool program runs for half a day and provides a nurturing environment to prepare children for academic success. Our tuition-based programs offer flexible half and full-day options with various payment options including tuition, CCRC, Student Equity, and other programs. Our center provides a safe and stimulating environment that fosters children's social, emotional, and cognitive development. We are committed to providing high-quality care and education to all children in our community.",
+    "images": ["cdc"],
+    "type": "resource"
+  },
+  {
+    "title": "Discovery Lab",
+    "latitude": 34.680452828358916,
+    "longitude": -118.18656003661856,
+    "description": "We are proud to offer a state-of-the-art facility to support our students in their pursuit of education and career goals. Our 35,466 square-foot building provides dedicated spaces for programs in electronics, avionics, welding, and fire technology, as well as our Aircraft Fabrication and Assembly program (AFAB). Whether students are inexperienced or experienced, AFAB offers entry-level and upgraded skills to prepare them for success in the aerospace industry. Additionally, we are one of the few community colleges in the United States offering composites fabrication and repair, providing our students with unique and valuable skills for their futures.",
+    "images": ["discoverylab", "discoverylab2"],
+    "type": "classroom"
+  },
+  {
+    "title": "Auto Lab",
+    "latitude": 34.67882218077683,
+    "longitude": -118.18719722438767,
+    "description": "The Antelope Valley College Auto Lab is a modern facility situated on the campus of Antelope Valley College in Lancaster, California. It is designed to provide students with hands-on training in the field of automotive technology. The lab boasts an impressive collection of diagnostic equipment, including computerized diagnostic scanners, digital oscilloscopes, and emission testing equipment. Students can practice their skills in a fully functional shop area that includes vehicle lifts, tire mounting and balancing equipment, and a variety of hand and power tools. The lab is staffed by experienced instructors who provide students with practical instruction and guidance. Overall, the Antelope Valley College Auto Lab is a top-notch facility that offers students the opportunity to receive a comprehensive automotive education.",
+    "images": ["autolab"],
+    "type": "classroom"
+  },
+  {
+    "title": "Tennis Courts",
+    "latitude": 34.67814023222777,
+    "longitude": -118.18848748454626,
+    "description": "The tennis courts serve as a competitive training ground for the school's athletics program. These top-notch facilities provide students with the opportunity to hone their skills and compete at a high level in the sport of tennis. The tennis courts are a key resource for AVC's athletics program, offering students the chance to showcase their talents and represent the school on the court.",
+    "images": [],
+    "type": "athletic"
+  },
+  {
+    "title": "Baseball Stadium",
+    "latitude": 34.67837691817422,
+    "longitude": -118.19151700283047,
+    "description": "The Baseball Stadium is an exceptional facility optimized for the sport of baseball. This stadium offers students a first-class playing surface, replete with all the equipment and resources necessary to compete with distinction. The Baseball Stadium plays a key role in AVC's athletics program, providing a platform for students to showcase their talents and represent the school on the diamond.",
+    "images": [],
+    "type": "athletic"
+  },
+  {
+    "title": "LASD-AVC Unit (Security, Lost and Found)",
+    "latitude": 34.67546300912904,
+    "longitude": -118.18781384031028,
+    "description": "The Los Angeles Sheriff's Department (LASD) office at Antelope Valley College is a crucial location for campus security. The LASD is responsible for maintaining a safe and secure environment for students, faculty, and staff. They also manage the Lost & Found, where students can retrieve lost items or report lost items. The LASD office is staffed by highly skilled professionals who are dedicated to providing exceptional security services to the campus community. They strive to ensure that all students, faculty, and staff feel protected and secure while on campus, and are available to assist with any security concerns or incidents. Whether you need to report a lost item, or have a query about campus security, the LASD office is the go-to place for students, faculty, and staff.",
+    "images": [],
+    "type": "resource"
+  },
+  {
+    "title": "Uhazy Hall",
+    "latitude": 34.6788359665366,
+    "longitude": -118.18640225876932,
+    "description": "Uhazy Hall (UH) hosts lectures related to health and sciences. It’s two stories of classrooms, laboratory spaces, and professor offices.\n\nOn the first floor, there is a Subway and food court to cater to students' dining needs. The second floor houses the S.T.E.M. center, which is available to all students and faculty with an AVC ID card. It's equipped with all the essentials, including computers, a WEPA printer, whiteboards, and plenty of study spaces to support student learning and academic pursuits.",
+    "images": ["uhazyhall"],
+    "type": "classroom"
+  },
+  {
+    "title": "Student Services",
+    "latitude": 34.6780305978796,
+    "longitude": -118.18516830596049,
+    "description": "Student Services (SSV) provides a one-stop-shop for students to access information and resources related to their education. Located in a convenient location on campus, the SSV houses a variety of services that aim to support students in achieving their academic and personal goals. From general information to financial aid and career counseling, the SSV has a wealth of resources to help students succeed. With information related to student programs, student work, and appointments with advisors and counselors, the SSV is the perfect place for students to get the information and support they need to excel in their studies. Whether you're a first-time college student or a returning student looking for assistance, the SSV is an essential resource for students at AVC.",
+    "images": ["ssv","ssv1","ssv2"],
+    "type": "resource"
+  },
+  {
+    "title": "Yoshida Hall",
+    "latitude": 34.67899187744454,
+    "longitude": -118.18548358738202,
+    "description": "Yoshida Hall (YH) is the main location for applied arts and also includes lectures related to math and science. The first and second floors house classrooms, offices, and coffee, food, and drink vending machines.\n\nYoshida Hall is also where the STEM office (YH 121A) and STEM lab (YH 115) are located. The classrooms are designed with the latest technology and tools to provide students with a comfortable and productive learning environment, while the STEM office and lab offer centralized support and hands-on learning opportunities for students in STEM fields. Whether students are pursuing a degree in the arts or in STEM fields, Yoshida Hall is a vital resource for their academic success at Antelope Valley College.",
+    "images": ["yoshidahall","yoshidahall1"],
+    "type": "classroom"
+  },
+  {
+    "title": "Subway",
+    "latitude": 34.67918530937743,
+    "longitude": -118.18672504028271,
+    "description": "The Subway restaurant located in Uhazy Hall offers a variety of fresh and healthy meal options for students and staff. In addition to classic Subway subs, the menu also includes salads, sides, and breakfast options to accommodate all dietary needs. The restaurant features a warm and welcoming atmosphere, making it the perfect spot to grab a quick and nutritious bite between classes or meetings. Whether you're in the mood for a classic turkey and cheese sub or a veggie delight salad, you're sure to find something to satisfy your hunger at Subway. With a range of options and a commitment to using only the freshest ingredients, Subway is a popular choice for students and staff looking for a delicious and convenient meal option.",
+    "images": ["subway"],
+    "type": "food"
+  },
+  {
+    "title": "SOAR High School",
+    "latitude": 34.67877310935158,
+    "longitude": -118.18800679457378,
+    "description": "SOAR (Students on the Academic Rise) High School is a specialized high school located on the Antelope Valley College campus but it is part of the Antelope Valley Union High School District. It is an Early College High School which integrates college courses into the high school curriculum. SOAR students will be treated as college students. Successful students may receive both a high school diploma and an Associate's college degree within five years. SOAR High has an emphasis in mathematics, science, and engineering. Parents and students are encouraged to be actively involved in the program. Average students who are high potential but low performing in the traditional educational system and who have not yet begun high school are encouraged to apply.",
+    "images": ["soar"],
+    "type": "classroom"
+  },
+  {
+    "title": "Gymnasium",
+    "latitude": 34.67804292141216,
+    "longitude": -118.18734085519353,
+    "description": "The Gymnasium is a dynamic sports facility, hosting games for basketball, volleyball, and more. The gym provides students with an optimal playing surface, as well as all the necessary equipment and facilities to play at their best. The Gymnasium serves as an important part of AVC's athletics program, allowing students to hone their skills and perform on the court in front of their peers and community.",
+    "images": ["gym", "gym2"],
+    "type": "athletic"
+  },
+  {
+    "title": "Marauder Stadium",
+    "latitude": 34.67617774332698,
+    "longitude": -118.19030328867781,
+    "description": "The Marauder Stadium is a versatile athletic venue, hosting events for soccer, football, and more. This stadium provides students with a premier playing surface, complete with all the necessary equipment and facilities to perform at their peak. The Marauder Stadium is a critical component of AVC's athletics program, affording students the chance to exhibit their abilities and represent the college on the field.",
+    "images": ["stadium"],
+    "type": "athletic"
+  },
+  {
+    "title": "Performing Arts Theatre",
+    "latitude": 34.6754613377245,
+    "longitude": -118.18723230937766,
+    "description": "The Performing Arts Theatre is a premier destination for entertainment, where the campus and local community come together to enjoy world-class performances. The venue's mission is to support the community with top-notch shows, showcasing local talent and providing an immersive cultural experience. The theater is also a hub of student activity, regularly hosting performances by the AVC Symphonic Band, Theatre Arts Department, and many other talented students, who get to showcase their abilities on a professional stage. Whether you're looking to be entertained, or to see the next generation of stars in action, the Performing Arts Theatre is the place to be!",
+    "images": ["pat"],
+    "type": "classroom"
+  },
+  {
+    "title": "Art Gallery",
+    "latitude": 34.676203764577544,
+    "longitude": -118.18697930907051,
+    "description": "AVC Art Gallery programs leverage the unique ability of the visual arts to create deep personal connections, to express diverse perspectives, and to challenge previously held ideas.\n\nWe provide opportunities for learning in the arts, and afford a public connection to the college environment and faculty research to enhance critical thinking and expand creative expression in our community.",
+    "images": ["artgallery", "artgallery2"],
+    "type": "classroom"
+  },
+  {
+    "title": "Black Box",
+    "latitude": 34.675832701065104,
+    "longitude": -118.18737862660834,
+    "description": "The Performing Arts Theatre at Antelope Valley College, where we strive to provide world-class entertainment to our campus and community. Our mission is to showcase the amazing local talent in our area, while also providing an unparalleled entertainment experience. From music and dance to theater and more, the Performing Arts Theatre has something for everyone. Come join us for an unforgettable evening of entertainment!",
+    "images": ["blackbox", "blackbox2"],
+    "type": "classroom"
+  },
+  {
+    "title": "Administration Building",
+    "latitude": 34.67538350196646,
+    "longitude": -118.18461596643002,
+    "description": "The Administration Building facilitates the efficient application of Antelope Valley College resources to support student success and the District's mission. Administrative Services works proactively with all college components to integrate our professional knowledge and skills amongst Business Services, Facilities, and Information Technology to conquer operational and academic challenges. Strives to meet students, faculty, staff, and community members' needs while empowering their goal achievements in an evolving environment.",
+    "images": ["admin", "admin2"],
+    "type": "resource"
+  },
+  {
+    "title": "Future Cedar Hall",
+    "latitude": 34.67627027614855,
+    "longitude": -118.18529089026863,
+    "description": "Currently under construction.",
+    "images": [],
+    "type": "resource"
+  },
+  {
+    "title": "Mesquite Hall",
+    "latitude": 34.67687342944362,
+    "longitude": -118.18512883579885,
+    "description": "Mesquite Hall (MH) is a vital building on the Antelope Valley College campus, serving as the hub for technology-focused majors such as computer science. This three-story building provides students with access to a variety of resources, including computer lab classrooms and open computer labs, designed to support their studies and facilitate their learning experience. Whether students are working on projects for class, or simply looking for a place to study and collaborate with their peers, Mesquite Hall offers a comprehensive and modern environment to help them succeed in their chosen field. Additionally, the building is staffed by knowledgeable and dedicated instructors who are always available to help students with their coursework and guide them towards success. With its emphasis on technology, cutting-edge resources, and a supportive community, Mesquite Hall is an ideal destination for students who are serious about pursuing a career in the field of technology.",
+    "images": ["mh"],
+    "type": "classroom"
+  },
+  {
+    "title": "Old Learning Center (Closed)",
+    "latitude": 34.67725682725537,
+    "longitude": -118.18531269317117,
+    "description": "Not currently in use by AVC.",
+    "images": ["learningcenter", "learningcenter2"],
+    "type": "resource"
+  },
+  {
+    "title": "Marauder Bookstore",
+    "latitude": 34.676153144936336,
+    "longitude": -118.1860004428573,
+    "description": "The Marauder Bookstore is a one-stop shop for all students' needs. It is the campus store for students and provides everything you need to make the most of your college experience. From course materials and textbooks to school apparel, computers and electronics, the Marauder Bookstore has it all. You can also find a variety of school supplies and essentials to help you study and live your best college life. Whether you need a diploma frame to display your achievements or bags to carry your books and supplies, the Marauder Bookstore has got you covered.",
+    "images": [],
+    "type": "resource"
+  },
+  {
+    "title": "Cafeteria",
+    "latitude": 34.67629459108602,
+    "longitude": -118.18624842173183,
+    "description": "The campus cafeteria is the perfect place for students to take a break from their busy schedules and enjoy a delicious meal. With a wide variety of food options and plenty of indoor seating, students can sit down and enjoy a hot meal or grab something quick from the vending machines. Whether you're grabbing a quick bite between classes or sitting down for a leisurely lunch, the cafeteria offers everything you need to fuel up and keep going throughout the day.",
+    "images": [],
+    "type": "food"
+  },
+  {
+    "title": "Library",
+    "latitude": 34.67705751700522,
+    "longitude": -118.18623111282814,
+    "description": "The AVC Library is a two-story facility that provides a comprehensive range of resources and services to students and faculty. In addition to a wide selection of books and articles, the library offers a variety of databases, rentable library materials, reference services, interlibrary loans, free and open-access resources, library tutorials, and study rooms. With its commitment to helping students find information and access a range of resources, the AVC Library is an essential part of the academic experience at Antelope Valley College.",
+    "images": [],
+    "type": "resource"
+  },
+  {
+    "title": "Lecture Hall",
+    "latitude": 34.677011511466674,
+    "longitude": -118.18741261041862,
+    "description": "The Lecture Hall provides students with a space to attend lectures and learn in a traditional college room setting. The building houses classrooms that cater to a wide range of subjects and are designed to facilitate learning through presentations, discussions, and other interactive methods. With its spacious auditorium-style layout, students can enjoy an immersive educational experience as they delve into new topics and ideas.",
+    "images": ["lh", "lh2", "lh3"],
+    "type": "classroom"
+  },
+  {
+    "title": "Sage Hall",
+    "latitude": 34.67714651488922,
+    "longitude": -118.18709120662562,
+    "description": "Sage Hall is a hub for student success and academic support. It's the new home for the learning center and includes classroom space. Whether you're looking for extra help in a particular class, want to reinforce what you learned, or simply need a quiet study space, the Sage Hall has everything you need to make the most of your college experience. It offers a variety of services, including live online front-counter access on Zoom, small group and individual drop-in tutoring, supplemental instruction, tutoring appointments, and faculty-led math, reading, writing, and study skills workshops. In addition to these academic support services, Sage Hall also features an open computer lab, study space, and various resources available for check-out, such as laptops, media, textbooks, and study supplies. With the help of the friendly and knowledgeable staff, students can feel confident and prepared as they work towards their academic goals.",
+    "images": ["sh", "sh2", "sh3"],
+    "type": "classroom"
+  },
+  {
+    "title": "Math and Engineering",
+    "latitude": 34.67775573632852,
+    "longitude": -118.18589961736947,
+    "description": "The Math and Engineering building (ME) is designed for students pursuing degrees in engineering, mathematics, and computer science. It features a spacious computer lab equipped with the latest technology, as well as traditional classrooms that are optimized for learning. The building is the center of excellence for students who are interested in these fields, offering lectures, hands-on experience, and ample opportunities for growth and exploration. Whether you're an aspiring engineer, mathematician, or computer scientist, the Math and Engineering building provides the ideal environment for you to succeed.",
+    "images": ["me","me2","me1"],
+    "type": "classroom"
+  },
+  {
+    "title": "Office for Students with Disabilities",
+    "latitude": 34.67672471757968,
+    "longitude": -118.18439631632184,
+    "description": "The OSD program provides support services, specialized instruction, and educational accommodations to students with disabilities so that they can participate as fully and benefit as equitably from the college experience as their non-disabled peers. An Academic Accommodation Plan (AAP) is developed for each student which links student’s goals, curriculum program, and academic adjustments, auxiliary aids, services and/or instruction to his/her disability related educational limitation.\n\nThe mission of the Office for Students With Disabilities (OSD) Program is to provide students with disabilities equal access to education by offering quality support services that directly relate to a student’s limitations as a result of their disability. The OSD Program assists students with their understanding and acceptance of their limitations as a result of their disability and also promotes and fosters independence by teaching students to articulate their needs to AVC instructors and staff. Moreover the OSD Program is committed to the academic success and personal growth of all students with disabilities at AVC.",
+    "images": ["osd2", "osd"],
+    "type": "resource"
+  },
+  {
+    "title": "Fine Arts",
+    "latitude": 34.67648676160919,
+    "longitude": -118.18738628333938,
+    "description": "The Fine Arts building is a hub for creativity and artistic expression on campus. This stunning building houses a range of classrooms designed for students pursuing a major in the arts. Whether you are interested in painting, drawing, sculpture, or any other medium, this building provides you with the resources you need to hone your craft and unleash your artistic potential. From large, open studios to smaller, more intimate workspaces, the Fine Arts Building offers a supportive and inspiring environment for students to explore their passions and develop their skills. Whether you're an aspiring artist, a seasoned veteran, or simply curious about the arts, the Fine Arts Building is the place to be.",
+    "images": ["finearts"],
+    "type": "classroom"
+  },
+  {
+    "title": "Fine Arts Music and Offices",
+    "latitude": 34.67626532974614,
+    "longitude": -118.18770778514867,
+    "description": "The Fine Arts Music and Offices building is a vital space for aspiring musicians and artists at Antelope Valley College. With dedicated classrooms specifically designed for music and arts education, students can hone their skills and perfect their craft in a supportive environment. In addition to these classrooms, the building also features offices for arts professors, providing a centralized location for all things arts-related. Whether you're looking to take a music class, meet with your professor, or simply immerse yourself in the creative atmosphere, this building is the perfect destination.",
+    "images": [],
+    "type": "classroom"
+  },
+  {
+    "title": "Enterprise Lab",
+    "latitude": 34.67973186506707,
+    "longitude": -118.18654794631942,
+    "description": "Welcome to the Enterprise Lab, the hub of the Career Technical Education Division, formerly known as the Technical Education Technology building. Our cutting-edge facility provides students with hands-on experience to prepare them for entry-level positions and professionals with the tools to enhance their skills in a competitive workplace. With modern classrooms, computer labs, and other essential resources, the Enterprise Lab is the perfect place for both beginners and experienced professionals to achieve their career goals.",
+    "images": ["enterpriselab"],
+    "type": "classroom"
+  },
+  {
+    "title": "Horticulture Lab",
+    "latitude": 34.679898891625314,
+    "longitude": -118.1870825677824,
+    "description": "The Horticulture Lab provides students with hands-on learning opportunities in the field of agriculture. This state-of-the-art facility offers students access to labs where they can gain practical experience and develop their skills in agriculture-related subjects. The labs provide a unique and immersive learning environment that allows students to apply what they have learned in their courses to real-world scenarios. The Horticulture Lab is an essential resource for students looking to pursue a career in agriculture or related fields.",
+    "images": ["horticulture"],
+    "type": "classroom"
+  },
+  {
+    "title": "Greenhouses",
+    "latitude": 34.679813863502766,
+    "longitude": -118.18775289064219,
+    "description": "The greenhouses serve as a hands-on learning resource for biology students. These state-of-the-art facilities function as normal greenhouses, providing students with the opportunity to gain practical experience in plant growth and maintenance. The greenhouses offer a unique and immersive learning environment for students to further their understanding of the biological processes involved in plant growth and development.",
+    "images": ["greenhouse", "greenhouse2"],
+    "type": "classroom"
+  },
+  {
+    "title": "Lot A1",
+    "latitude": 34.681530052571766,
+    "longitude": -118.1873813729704,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lota1"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot A2",
+    "latitude": 34.6815160851563,
+    "longitude": -118.18654051741896,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lota2"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot A3",
+    "latitude": 34.68145251714801,
+    "longitude": -118.18554110652022,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lota3"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot A4",
+    "latitude": 34.68137532735808,
+    "longitude": -118.18434291777308,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lota4"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot B1",
+    "latitude": 34.680290592554464,
+    "longitude": -118.18435262827403,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotb1"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot B2",
+    "latitude": 34.67893436565732,
+    "longitude": -118.1843313226645,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotb2"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot C1",
+    "latitude": 34.67795565478103,
+    "longitude": -118.18434219529921,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotc1"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot C2",
+    "latitude": 34.67715814518791,
+    "longitude": -118.18433596797071,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotc2"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot C3",
+    "latitude": 34.67636064783748,
+    "longitude": -118.18422669590109,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotc3"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot D1",
+    "latitude": 34.6753859837446,
+    "longitude": -118.18541367472605,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotd1"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot D2",
+    "latitude": 34.67549627456488,
+    "longitude": -118.18617005769254,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotd2"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot E1",
+    "latitude": 34.67581345503335,
+    "longitude": -118.18892817158141,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lote1"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot E2",
+    "latitude": 34.6769166812582,
+    "longitude": -118.18915190113239,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lote2"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot E3",
+    "latitude": 34.67675828726229,
+    "longitude": -118.18841680858253,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lote3"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot E4",
+    "latitude": 34.67751746225447,
+    "longitude": -118.18911823651975,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lote4"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot E5",
+    "latitude": 34.67919774054158,
+    "longitude": -118.18916950001093,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lote5"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot F1",
+    "latitude": 34.67613026710341,
+    "longitude": -118.19203306356845,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotf1"],
+    "type": "parking"
+  },
+  {
+    "title": "Lot F2",
+    "latitude": 34.67793654636213,
+    "longitude": -118.19232252356142,
+    "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
+    "images": ["lotf2"],
+    "type": "parking"
+  }
+]

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'src/locations.dart' as locations;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +21,13 @@ class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
+  Set<Marker> _markers = {};
 
-  void _onMapCreated(GoogleMapController controller) {
+  Future<void> _onMapCreated(GoogleMapController controller) async {
     mapController = controller;
+
+    // TODO: Fix markers not loading until a hot restart is performed
+    _markers = await locations.getMarkers();
   }
 
   @override
@@ -43,6 +48,7 @@ class _MyAppState extends State<MyApp> {
             target: _center,
             zoom: 17.0,
           ),
+          markers: _markers,
         ),
       ),
     );
