@@ -1,8 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'location_descriptions.dart';
 
 part 'locations.g.dart';
 
@@ -33,7 +38,7 @@ Future<String> getLocations() async {
   return await rootBundle.loadString('assets/json/locations.json');
 }
 
-Future<Set<Marker>> getMarkers() async {
+Future<Set<Marker>> getMarkers(BuildContext context) async {
   String jsonString = await rootBundle.loadString('assets/json/locations.json');
   List<dynamic> jsonList = json.decode(jsonString);
 
@@ -47,6 +52,13 @@ Future<Set<Marker>> getMarkers() async {
       infoWindow: InfoWindow(
         title: location.title,
         snippet: location.description,
+        onTap: () {
+          //log('data: ${location.title}');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SecondRoute()),
+          );
+        }
       ),
     );
 

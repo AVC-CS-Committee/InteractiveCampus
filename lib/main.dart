@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> _onMapCreated(GoogleMapController controller) async {
     mapController = controller;
 
-    _markers = await locations.getMarkers();
+    _markers = await locations.getMarkers(context);
 
     // After loading the markers, update the state of the map with setState
     setState(() {
