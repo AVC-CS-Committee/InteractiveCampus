@@ -65,12 +65,12 @@ class _MyAppState extends State<MyApp> {
               children: [
                 const DrawerHeader(
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color(0xFF8B1C3F),
                     image: DecorationImage(
                         image: AssetImage('assets/images/image_avc_logo.png'),
                     )
                   ),
-                  child: Text('Drawer Header'),
+                  child: Text(''),
                 ),
 
                 // General Buttons
