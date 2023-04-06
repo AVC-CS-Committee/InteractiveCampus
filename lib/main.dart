@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
   Set<Marker> _markers = {};
 
-  Future<void> _onMapCreated(GoogleMapController controller) async {
+  Future<void> _onMapCreated(GoogleMapController controller, BuildContext context) async {
     mapController = controller;
 
     _markers = await locations.getMarkers(context);
@@ -46,13 +46,15 @@ class _MyAppState extends State<MyApp> {
           title: const Text('AVC Interactive Map'),
           elevation: 2,
         ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
+        body: Builder(
+          builder: (context) => GoogleMap(
+          onMapCreated: (controller) => _onMapCreated(controller, context),
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 17.0,
           ),
           markers: _markers,
+          )
         ),
       ),
     );
