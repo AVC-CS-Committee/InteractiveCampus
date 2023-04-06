@@ -1,24 +1,55 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({super.key});
+class LocationDescriptions extends StatelessWidget {
+  final String title;
+  final String description;
+  final List<String> images;
+
+  const LocationDescriptions({
+    super.key, 
+    required this.title, 
+    required this.description, 
+    required this.images, 
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Second Route'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-            // Navigate back to first route when tapped.
-          },
-          child: const Text('Go back!'),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
         ),
+        title: Text(title, style: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'Sans Serif',
+          ),
+        ),
+        centerTitle:  true,
       ),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              itemCount: images.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Image.network(
+                  images[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return Image.asset('assets/images/default-image.png');
+                  },
+                );
+              }
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(description),
+            )
+          )
+        ],
+      )
     );
   }
 }

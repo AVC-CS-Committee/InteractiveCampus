@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -46,6 +44,14 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
 
   for (var jsonData in jsonList) {
     Locations location = Locations.fromJson(jsonData);
+    List<String> images = [];
+
+    if (location.images.isEmpty) images.add('');
+
+    for (String image in location.images) {
+      images.add('https://raw.githubusercontent.com/AVC-CS-Committee/InteractiveCampusMap/master/app/src/main/res/drawable/image_$image.jpg');
+    }
+
     Marker marker = Marker(
       markerId: MarkerId(location.title),
       position: LatLng(location.latitude, location.longitude),
@@ -53,10 +59,13 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
         title: location.title,
         snippet: location.description,
         onTap: () {
-          //log('data: ${location.title}');
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const SecondRoute()),
+            MaterialPageRoute(builder: (context) => LocationDescriptions(
+              title: location.title,
+              description: location.description, 
+              images: images, 
+              )),
           );
         }
       ),
