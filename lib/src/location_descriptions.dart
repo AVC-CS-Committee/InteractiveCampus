@@ -16,7 +16,15 @@ class LocationDescriptions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(title, style: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'Sans Serif',
+          ),
+        ),
+        centerTitle:  true,
       ),
       body: Column(
         children: [

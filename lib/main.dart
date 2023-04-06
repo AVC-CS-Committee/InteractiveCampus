@@ -39,11 +39,23 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.green[700],
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xff8d1c40),
+          primary: const Color(0xff8d1c40),
+          secondary: const Color(0xff8a1c40),
+        ),
+        appBarTheme: const AppBarTheme(
+          color: Color(0xff8a1c40),
+        )
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('AVC Interactive Map'),
+          title: const Text('AVC Interactive Map', style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Sans Serif',
+            )
+          ),
+          centerTitle: true,
           elevation: 2,
         ),
         body: Builder(
