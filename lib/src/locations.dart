@@ -46,6 +46,8 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
     Locations location = Locations.fromJson(jsonData);
     List<String> images = [];
 
+    if (location.images.isEmpty) images.add('');
+
     for (String image in location.images) {
       images.add('https://raw.githubusercontent.com/AVC-CS-Committee/InteractiveCampusMap/master/app/src/main/res/drawable/image_$image.jpg');
     }
