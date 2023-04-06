@@ -59,7 +59,7 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SecondRoute(
+            MaterialPageRoute(builder: (context) => LocationDescriptions(
               title: location.title,
               description: location.description, 
               images: images, 

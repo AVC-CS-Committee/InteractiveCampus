@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SecondRoute extends StatelessWidget {
+class LocationDescriptions extends StatelessWidget {
   final String title;
   final String description;
   final List<String> images;
 
-  const SecondRoute({
+  const LocationDescriptions({
     super.key, 
     required this.title, 
     required this.description, 
