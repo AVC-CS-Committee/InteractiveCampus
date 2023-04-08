@@ -3,6 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'src/locations.dart' as locations;
 
+import 'src/help_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
@@ -101,6 +103,10 @@ class _MyAppState extends State<MyApp> {
                   onTap: () {
                     // Update the state of the app.
                     // ...
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HelpPage()),
+                    );
                   },
                 ),
                 Divider(),
