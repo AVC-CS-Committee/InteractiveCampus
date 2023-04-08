@@ -8,7 +8,7 @@ class HelpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
         title: const Text('AVC Interactive Map', style: TextStyle(
