@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
 
                 // General Buttons
                 ListTile(
-                  leading: Icon(Icons.map_outlined),
+                  leading: const Icon(Icons.map_outlined),
                   title: const Text('Map'),
                   onTap: () {
                     // Update the state of the app.
@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.help_outline),
+                  leading: const Icon(Icons.help_outline),
                   title: const Text('Help'),
                   onTap: () {
                     // Update the state of the app.
@@ -109,12 +109,12 @@ class _MyAppState extends State<MyApp> {
                     );
                   },
                 ),
-                Divider(),
+                const Divider(),
 
                 // Tools
                 SwitchListTile(
                   title: const Text('Locations Near Me'),
-                  secondary: Icon(Icons.near_me),
+                  secondary: const Icon(Icons.near_me),
                   value: _isSwitched,
                   onChanged: (value) {
                     setState(() {
@@ -123,19 +123,19 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.local_parking),
+                  leading: const Icon(Icons.local_parking),
                   title: const Text('Nearest Parking'),
                   onTap: () {
                     // Update the state of the app.
                     // ...
                   },
                 ),
-                Divider(),
+                const Divider(),
 
                 // Filters
                 CheckboxListTile(
-                  title: Text('Parking Lots'),
-                  secondary: Icon(Icons.car_repair_rounded),
+                  title: const Text('Parking Lots'),
+                  secondary: const Icon(Icons.car_repair_rounded),
                   controlAffinity: ListTileControlAffinity.platform,
                   value: _parking_checked,
                   onChanged: (bool? value) {
@@ -146,8 +146,8 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text('Classrooms'),
-                  secondary: Icon(Icons.book),
+                  title: const Text('Classrooms'),
+                  secondary: const Icon(Icons.book),
                   controlAffinity: ListTileControlAffinity.platform,
                   value: _classrooms_checked,
                   onChanged: (bool? value) {
@@ -158,8 +158,8 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text('Student Resources'),
-                  secondary: Icon(Icons.account_balance),
+                  title: const Text('Student Resources'),
+                  secondary: const Icon(Icons.account_balance),
                   controlAffinity: ListTileControlAffinity.platform,
                   value: _student_resources_checked,
                   onChanged: (bool? value) {
@@ -170,8 +170,8 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text('Food'),
-                  secondary: Icon(Icons.food_bank),
+                  title: const Text('Food'),
+                  secondary: const Icon(Icons.food_bank),
                   controlAffinity: ListTileControlAffinity.platform,
                   value: _food_checked,
                   onChanged: (bool? value) {
@@ -182,8 +182,8 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text('Athletics'),
-                  secondary: Icon(Icons.sports_tennis_rounded),
+                  title: const Text('Athletics'),
+                  secondary: const Icon(Icons.sports_tennis_rounded),
                   controlAffinity: ListTileControlAffinity.platform,
                   value: _athletics_checked,
                   onChanged: (bool? value) {

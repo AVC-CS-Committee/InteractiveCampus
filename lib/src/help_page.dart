@@ -31,7 +31,7 @@ class HelpPage extends StatelessWidget {
                 // ...
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
               title: const Text('Emergency Contact'),
               onTap: () {
@@ -39,7 +39,7 @@ class HelpPage extends StatelessWidget {
                 // ...
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
               title: const Text('About Us'),
               onTap: () {
@@ -47,7 +47,7 @@ class HelpPage extends StatelessWidget {
                 // ...
               },
             ),
-            Divider(),
+            const Divider(),
           ],
         ),
       ),
