@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'src/locations.dart' as locations;
-
 import 'src/help_page.dart';
 
 void main() async {
@@ -23,28 +24,26 @@ class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
-  Set<Marker> _markers = {};
+
+  Set<Marker> markers = {};
 
   // Tool States
   bool _isSwitched = false;
 
   // Filter States
-  bool _parking_checked = false;
-  bool _classrooms_checked = false;
-  bool _student_resources_checked = false;
-  bool _food_checked = false;
-  bool _athletics_checked = false;
-
-
+  bool parkingChecked = false;
+  bool classroomsChecked = false;
+  bool studentResourcesChecked = false;
+  bool foodChecked = false;
+  bool athleticsChecked = false;
 
   Future<void> _onMapCreated(GoogleMapController controller, BuildContext context) async {
     mapController = controller;
-
-    _markers = await locations.getMarkers(context);
+    markers = await locations.getMarkers(context);
 
     // After loading the markers, update the state of the map with setState
     setState(() {
-      _markers.addAll(_markers);
+      markers.addAll(markers);
     });
   }
 
@@ -137,60 +136,65 @@ class _MyAppState extends State<MyApp> {
                   title: Text('Parking Lots'),
                   secondary: Icon(Icons.car_repair_rounded),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _parking_checked,
+                  value: parkingChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _parking_checked = value ?? false;
+                      parkingChecked = value ?? false;
                     });
+                    // TODO: Hide all other markers
                   },
                 ),
                 CheckboxListTile(
                   title: Text('Classrooms'),
                   secondary: Icon(Icons.book),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _classrooms_checked,
+                  value: classroomsChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _classrooms_checked = value ?? false;
+                      classroomsChecked = value ?? false;
                     });
+                    // TODO: Hide all other markers
                   },
                 ),
                 CheckboxListTile(
                   title: Text('Student Resources'),
                   secondary: Icon(Icons.account_balance),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _student_resources_checked,
+                  value: studentResourcesChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _student_resources_checked = value ?? false;
+                      studentResourcesChecked = value ?? false;
                     });
+                    // TODO: Hide all other markers
                   },
                 ),
                 CheckboxListTile(
                   title: Text('Food'),
                   secondary: Icon(Icons.food_bank),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _food_checked,
+                  value: foodChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _food_checked = value ?? false;
+                      foodChecked = value ?? false;
                     });
+                    // TODO: Hide all other markers
                   },
                 ),
                 CheckboxListTile(
                   title: Text('Athletics'),
                   secondary: Icon(Icons.sports_tennis_rounded),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _athletics_checked,
+                  value: athleticsChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _athletics_checked = value ?? false;
+                      athleticsChecked = value ?? false;
                     });
+                    // TODO: Hide all other markers
                   },
                 ),
               ]
@@ -204,7 +208,7 @@ class _MyAppState extends State<MyApp> {
             target: _center,
             zoom: 17.0,
           ),
-          markers: _markers,
+          markers: markers,
           )
         ),
       ),
