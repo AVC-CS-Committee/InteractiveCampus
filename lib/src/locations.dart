@@ -10,11 +10,11 @@ import 'location_descriptions.dart';
 
 part 'locations.g.dart';
 
-List<Marker> parkingLotMarkers = [];
-List<Marker> classroomMarkers = [];
-List<Marker> foodMarkers = [];
-List<Marker> athleticMarkers = [];
-List<Marker> resourceMarkers = [];
+Set<Marker> parkingLotMarkers = {};
+Set<Marker> classroomMarkers = {};
+Set<Marker> foodMarkers = {};
+Set<Marker> athleticMarkers = {};
+Set<Marker> resourceMarkers = {};
 
 
 @JsonSerializable()

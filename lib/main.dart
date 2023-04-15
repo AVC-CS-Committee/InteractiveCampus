@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
   Set<Marker> markers = {};
+  Set<Marker> markersCopy = {};
 
   // Tool States
   bool _isSwitched = false;
@@ -44,7 +45,52 @@ class _MyAppState extends State<MyApp> {
     // After loading the markers, update the state of the map with setState
     setState(() {
       markers.addAll(markers);
+      markersCopy.addAll(markers);
     });
+  }
+
+  // void _toggleMarkerVisibility() {
+  //   setState(() {
+  //     // update the visibility of the marker
+  //
+  //       Marker marker = markers.firstWhere((marker) => marker. == "Administration Building");
+  //       setState(() {
+  //         markers.remove(marker);
+  //       });
+  //
+  //   });
+  // }
+
+  void _filterMarkers() {
+    int filterCount = 0;
+    Set<Marker> tmp = {};
+    if(parkingChecked) {
+      tmp.addAll(locations.parkingLotMarkers);
+      ++filterCount;
+    }
+    if(athleticsChecked) {
+      tmp.addAll(locations.athleticMarkers);
+      ++filterCount;
+    }
+    if(foodChecked) {
+      tmp.addAll(locations.foodMarkers);
+      ++filterCount;
+    }
+    if(studentResourcesChecked) {
+      tmp.addAll(locations.resourceMarkers);
+      ++filterCount;
+    }
+    if(classroomsChecked) {
+      tmp.addAll(locations.classroomMarkers);
+      ++filterCount;
+    }
+
+    if(filterCount > 0){
+      markers = tmp;
+    }
+    else{
+      markers = markersCopy;
+    }
   }
 
   @override
@@ -142,7 +188,7 @@ class _MyAppState extends State<MyApp> {
                       // Using a null-aware operator in case value is null
                       parkingChecked = value ?? false;
                     });
-                    // TODO: Hide all other markers
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
@@ -155,7 +201,7 @@ class _MyAppState extends State<MyApp> {
                       // Using a null-aware operator in case value is null
                       classroomsChecked = value ?? false;
                     });
-                    // TODO: Hide all other markers
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
@@ -168,7 +214,7 @@ class _MyAppState extends State<MyApp> {
                       // Using a null-aware operator in case value is null
                       studentResourcesChecked = value ?? false;
                     });
-                    // TODO: Hide all other markers
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
@@ -181,7 +227,7 @@ class _MyAppState extends State<MyApp> {
                       // Using a null-aware operator in case value is null
                       foodChecked = value ?? false;
                     });
-                    // TODO: Hide all other markers
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
@@ -194,7 +240,7 @@ class _MyAppState extends State<MyApp> {
                       // Using a null-aware operator in case value is null
                       athleticsChecked = value ?? false;
                     });
-                    // TODO: Hide all other markers
+                    _filterMarkers();
                   },
                 ),
               ]
