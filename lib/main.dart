@@ -39,6 +39,7 @@ class _MyAppState extends State<MyApp> {
   bool athleticsChecked = false;
 
   Future<void> _onMapCreated(GoogleMapController controller, BuildContext context) async {
+
     mapController = controller;
     markers = await locations.getMarkers(context);
 
@@ -97,64 +98,61 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xff8d1c40),
-          primary: const Color(0xff8d1c40),
-          secondary: const Color(0xff8a1c40),
-        ),
-        appBarTheme: const AppBarTheme(
-          color: Color(0xff8a1c40),
-        )
-      ),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff8d1c40),
+            primary: const Color(0xff8d1c40),
+            secondary: const Color(0xff8a1c40),
+          ),
+          appBarTheme: const AppBarTheme(
+            color: Color(0xff8a1c40),
+          )),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('AVC Interactive Map', style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Sans Serif',
-            )
-          ),
+          title: const Text('AVC Interactive Map',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Sans Serif',
+              )),
           centerTitle: true,
           elevation: 2,
         ),
         drawer: Builder(
             builder: (context) => Drawer(
-            child: ListView (
-              padding: EdgeInsets.zero,
-              children: [
-                const DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF8B1C3F),
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/image_avc_logo.png'),
-                    )
+                    child: ListView(padding: EdgeInsets.zero, children: [
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF8B1C3F),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/image_avc_logo.png'),
+                        )),
+                    child: Text(''),
                   ),
-                  child: Text(''),
-                ),
 
-                // General Buttons
-                ListTile(
-                  leading: Icon(Icons.map_outlined),
-                  title: const Text('Map'),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.help_outline),
-                  title: const Text('Help'),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                    Navigator.push(
+                  // General Buttons
+                  ListTile(
+                    leading: Icon(Icons.map_outlined),
+                    title: const Text('Map'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.help_outline),
+                    title: const Text('Help'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HelpPage()),
-                    );
-                  },
-                ),
-                Divider(),
+                        MaterialPageRoute(
+                            builder: (context) => const HelpPage()),
+                      );
+                    },
+                  ),
+                  Divider(),
 
                 // Tools
                 SwitchListTile(

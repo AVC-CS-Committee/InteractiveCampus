@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:interactivemap/src/aboutus_page.dart';
+import 'package:interactivemap/src/emergency_page.dart';
+import 'package:interactivemap/src/faq_page.dart';
 
 class HelpPage extends StatelessWidget {
-  const HelpPage({super.key});
-
+  const HelpPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,40 +13,45 @@ class HelpPage extends StatelessWidget {
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        title: const Text('AVC Interactive Map', style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'Sans Serif',
-        )
-        ),
+        title: const Text('AVC Interactive Map',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Sans Serif',
+            )),
         centerTitle: true,
         elevation: 2,
       ),
       body: Center(
-        child: ListView (
+        child: ListView(
           padding: EdgeInsets.zero,
-
           children: [
             ListTile(
               title: const Text('FAQ'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FAQPage()),
+                );
               },
             ),
             Divider(),
             ListTile(
               title: const Text('Emergency Contact'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EmergencyPage()),
+                );
               },
             ),
             Divider(),
             ListTile(
               title: const Text('About Us'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutUsPage()),
+                );
               },
             ),
             Divider(),
