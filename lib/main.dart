@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'src/locations.dart' as locations;
-
 import 'src/help_page.dart';
 
 void main() async {
@@ -23,28 +24,74 @@ class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
-  Set<Marker> _markers = {};
+
+  Set<Marker> markers = {};
+  Set<Marker> markersCopy = {};
 
   // Tool States
   bool _isSwitched = false;
 
   // Filter States
-  bool _parking_checked = false;
-  bool _classrooms_checked = false;
-  bool _student_resources_checked = false;
-  bool _food_checked = false;
-  bool _athletics_checked = false;
+  bool parkingChecked = false;
+  bool classroomsChecked = false;
+  bool studentResourcesChecked = false;
+  bool foodChecked = false;
+  bool athleticsChecked = false;
 
-  Future<void> _onMapCreated(
-      GoogleMapController controller, BuildContext context) async {
+  Future<void> _onMapCreated(GoogleMapController controller, BuildContext context) async {
+
     mapController = controller;
-
-    _markers = await locations.getMarkers(context);
+    markers = await locations.getMarkers(context);
 
     // After loading the markers, update the state of the map with setState
     setState(() {
-      _markers.addAll(_markers);
+      markers.addAll(markers);
+      markersCopy.addAll(markers);
     });
+  }
+
+  // void _toggleMarkerVisibility() {
+  //   setState(() {
+  //     // update the visibility of the marker
+  //
+  //       Marker marker = markers.firstWhere((marker) => marker. == "Administration Building");
+  //       setState(() {
+  //         markers.remove(marker);
+  //       });
+  //
+  //   });
+  // }
+
+  void _filterMarkers() {
+    int filterCount = 0;
+    Set<Marker> tmp = {};
+    if(parkingChecked) {
+      tmp.addAll(locations.parkingLotMarkers);
+      ++filterCount;
+    }
+    if(athleticsChecked) {
+      tmp.addAll(locations.athleticMarkers);
+      ++filterCount;
+    }
+    if(foodChecked) {
+      tmp.addAll(locations.foodMarkers);
+      ++filterCount;
+    }
+    if(studentResourcesChecked) {
+      tmp.addAll(locations.resourceMarkers);
+      ++filterCount;
+    }
+    if(classroomsChecked) {
+      tmp.addAll(locations.classroomMarkers);
+      ++filterCount;
+    }
+
+    if(filterCount > 0){
+      markers = tmp;
+    }
+    else{
+      markers = markersCopy;
+    }
   }
 
   @override
@@ -107,99 +154,107 @@ class _MyAppState extends State<MyApp> {
                   ),
                   Divider(),
 
-                  // Tools
-                  SwitchListTile(
-                    title: const Text('Locations Near Me'),
-                    secondary: Icon(Icons.near_me),
-                    value: _isSwitched,
-                    onChanged: (value) {
-                      setState(() {
-                        _isSwitched = value;
-                      });
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.local_parking),
-                    title: const Text('Nearest Parking'),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                    },
-                  ),
-                  Divider(),
+                // Tools
+                SwitchListTile(
+                  title: const Text('Locations Near Me'),
+                  secondary: Icon(Icons.near_me),
+                  value: _isSwitched,
+                  onChanged: (value) {
+                    setState(() {
+                      _isSwitched = value;
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.local_parking),
+                  title: const Text('Nearest Parking'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                Divider(),
 
-                  // Filters
-                  CheckboxListTile(
-                    title: Text('Parking Lots'),
-                    secondary: Icon(Icons.car_repair_rounded),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: _parking_checked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        _parking_checked = value ?? false;
-                      });
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: Text('Classrooms'),
-                    secondary: Icon(Icons.book),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: _classrooms_checked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        _classrooms_checked = value ?? false;
-                      });
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: Text('Student Resources'),
-                    secondary: Icon(Icons.account_balance),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: _student_resources_checked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        _student_resources_checked = value ?? false;
-                      });
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: Text('Food'),
-                    secondary: Icon(Icons.food_bank),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: _food_checked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        _food_checked = value ?? false;
-                      });
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: Text('Athletics'),
-                    secondary: Icon(Icons.sports_tennis_rounded),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: _athletics_checked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        _athletics_checked = value ?? false;
-                      });
-                    },
-                  ),
-                ]))),
+                // Filters
+                CheckboxListTile(
+                  title: Text('Parking Lots'),
+                  secondary: Icon(Icons.car_repair_rounded),
+                  controlAffinity: ListTileControlAffinity.platform,
+                  value: parkingChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      // Using a null-aware operator in case value is null
+                      parkingChecked = value ?? false;
+                    });
+                    _filterMarkers();
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('Classrooms'),
+                  secondary: Icon(Icons.book),
+                  controlAffinity: ListTileControlAffinity.platform,
+                  value: classroomsChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      // Using a null-aware operator in case value is null
+                      classroomsChecked = value ?? false;
+                    });
+                    _filterMarkers();
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('Student Resources'),
+                  secondary: Icon(Icons.account_balance),
+                  controlAffinity: ListTileControlAffinity.platform,
+                  value: studentResourcesChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      // Using a null-aware operator in case value is null
+                      studentResourcesChecked = value ?? false;
+                    });
+                    _filterMarkers();
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('Food'),
+                  secondary: Icon(Icons.food_bank),
+                  controlAffinity: ListTileControlAffinity.platform,
+                  value: foodChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      // Using a null-aware operator in case value is null
+                      foodChecked = value ?? false;
+                    });
+                    _filterMarkers();
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('Athletics'),
+                  secondary: Icon(Icons.sports_tennis_rounded),
+                  controlAffinity: ListTileControlAffinity.platform,
+                  value: athleticsChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      // Using a null-aware operator in case value is null
+                      athleticsChecked = value ?? false;
+                    });
+                    _filterMarkers();
+                  },
+                ),
+              ]
+            )
+            )
+        ),
         body: Builder(
-            builder: (context) => GoogleMap(
-                  onMapCreated: (controller) =>
-                      _onMapCreated(controller, context),
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 17.0,
-                  ),
-                  markers: _markers,
-                )),
+          builder: (context) => GoogleMap(
+          onMapCreated: (controller) => _onMapCreated(controller, context),
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 17.0,
+          ),
+          markers: markers,
+          )
+        ),
       ),
     );
   }
