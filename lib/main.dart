@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'src/locations.dart' as locations;
-
 import 'src/help_page.dart';
 
 void main() async {
@@ -23,69 +24,110 @@ class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
-  Set<Marker> _markers = {};
+
+  Set<Marker> markers = {};
+  Set<Marker> markersCopy = {};
 
   // Tool States
   bool _isSwitched = false;
 
   // Filter States
-  bool _parking_checked = false;
-  bool _classrooms_checked = false;
-  bool _student_resources_checked = false;
-  bool _food_checked = false;
-  bool _athletics_checked = false;
-
-
+  bool parkingChecked = false;
+  bool classroomsChecked = false;
+  bool studentResourcesChecked = false;
+  bool foodChecked = false;
+  bool athleticsChecked = false;
 
   Future<void> _onMapCreated(GoogleMapController controller, BuildContext context) async {
-    mapController = controller;
 
-    _markers = await locations.getMarkers(context);
+    mapController = controller;
+    markers = await locations.getMarkers(context);
 
     // After loading the markers, update the state of the map with setState
     setState(() {
-      _markers.addAll(_markers);
+      markers.addAll(markers);
+      markersCopy.addAll(markers);
     });
+  }
+
+  // void _toggleMarkerVisibility() {
+  //   setState(() {
+  //     // update the visibility of the marker
+  //
+  //       Marker marker = markers.firstWhere((marker) => marker. == "Administration Building");
+  //       setState(() {
+  //         markers.remove(marker);
+  //       });
+  //
+  //   });
+  // }
+
+  void _filterMarkers() {
+    int filterCount = 0;
+    Set<Marker> tmp = {};
+    if(parkingChecked) {
+      tmp.addAll(locations.parkingLotMarkers);
+      ++filterCount;
+    }
+    if(athleticsChecked) {
+      tmp.addAll(locations.athleticMarkers);
+      ++filterCount;
+    }
+    if(foodChecked) {
+      tmp.addAll(locations.foodMarkers);
+      ++filterCount;
+    }
+    if(studentResourcesChecked) {
+      tmp.addAll(locations.resourceMarkers);
+      ++filterCount;
+    }
+    if(classroomsChecked) {
+      tmp.addAll(locations.classroomMarkers);
+      ++filterCount;
+    }
+
+    if(filterCount > 0){
+      markers = tmp;
+    }
+    else{
+      markers = markersCopy;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xff8d1c40),
-          primary: const Color(0xff8d1c40),
-          secondary: const Color(0xff8a1c40),
-        ),
-        appBarTheme: const AppBarTheme(
-          color: Color(0xff8a1c40),
-        )
-      ),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff8d1c40),
+            primary: const Color(0xff8d1c40),
+            secondary: const Color(0xff8a1c40),
+          ),
+          appBarTheme: const AppBarTheme(
+            color: Color(0xff8a1c40),
+          )),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('AVC Interactive Map', style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Sans Serif',
-            )
-          ),
+          title: const Text('AVC Interactive Map',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Sans Serif',
+              )),
           centerTitle: true,
           elevation: 2,
         ),
         drawer: Builder(
             builder: (context) => Drawer(
-            child: ListView (
-              padding: EdgeInsets.zero,
-              children: [
-                const DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF8B1C3F),
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/image_avc_logo.png'),
-                    )
+                    child: ListView(padding: EdgeInsets.zero, children: [
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF8B1C3F),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/image_avc_logo.png'),
+                        )),
+                    child: Text(''),
                   ),
-                  child: Text(''),
-                ),
 
                 // General Buttons
                 ListTile(
@@ -137,60 +179,65 @@ class _MyAppState extends State<MyApp> {
                   title: const Text('Parking Lots'),
                   secondary: const Icon(Icons.car_repair_rounded),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _parking_checked,
+                  value: parkingChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _parking_checked = value ?? false;
+                      parkingChecked = value ?? false;
                     });
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
                   title: const Text('Classrooms'),
                   secondary: const Icon(Icons.book),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _classrooms_checked,
+                  value: classroomsChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _classrooms_checked = value ?? false;
+                      classroomsChecked = value ?? false;
                     });
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
                   title: const Text('Student Resources'),
                   secondary: const Icon(Icons.account_balance),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _student_resources_checked,
+                  value: studentResourcesChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _student_resources_checked = value ?? false;
+                      studentResourcesChecked = value ?? false;
                     });
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
                   title: const Text('Food'),
                   secondary: const Icon(Icons.food_bank),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _food_checked,
+                  value: foodChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _food_checked = value ?? false;
+                      foodChecked = value ?? false;
                     });
+                    _filterMarkers();
                   },
                 ),
                 CheckboxListTile(
                   title: const Text('Athletics'),
                   secondary: const Icon(Icons.sports_tennis_rounded),
                   controlAffinity: ListTileControlAffinity.platform,
-                  value: _athletics_checked,
+                  value: athleticsChecked,
                   onChanged: (bool? value) {
                     setState(() {
                       // Using a null-aware operator in case value is null
-                      _athletics_checked = value ?? false;
+                      athleticsChecked = value ?? false;
                     });
+                    _filterMarkers();
                   },
                 ),
               ]
@@ -204,7 +251,7 @@ class _MyAppState extends State<MyApp> {
             target: _center,
             zoom: 17.0,
           ),
-          markers: _markers,
+          markers: markers,
           )
         ),
       ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,13 @@ import 'package:json_annotation/json_annotation.dart';
 import 'location_descriptions.dart';
 
 part 'locations.g.dart';
+
+Set<Marker> parkingLotMarkers = {};
+Set<Marker> classroomMarkers = {};
+Set<Marker> foodMarkers = {};
+Set<Marker> athleticMarkers = {};
+Set<Marker> resourceMarkers = {};
+
 
 @JsonSerializable()
 class Locations {
@@ -70,6 +78,23 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
         }
       ),
     );
+
+    // Store the current marker into its corresponding List
+    if (location.type == "parking") {
+      parkingLotMarkers.add(marker);
+    }
+    if (location.type == "classroom") {
+      classroomMarkers.add(marker);
+    }
+    if (location.type == "food") {
+      foodMarkers.add(marker);
+    }
+    if (location.type == "athletic") {
+      athleticMarkers.add(marker);
+    }
+    if (location.type == "resource") {
+      resourceMarkers.add(marker);
+    }
 
     markers.add(marker);
   }
