@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:location/location.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 
@@ -28,6 +29,8 @@ class _MyAppState extends State<MyApp> {
   Set<Marker> markers = {};
   Set<Marker> markersCopy = {};
 
+  LocationData? currentLocation;
+
   // Tool States
   bool _isSwitched = false;
 
@@ -50,17 +53,48 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  // void _toggleMarkerVisibility() {
-  //   setState(() {
-  //     // update the visibility of the marker
-  //
-  //       Marker marker = markers.firstWhere((marker) => marker. == "Administration Building");
-  //       setState(() {
-  //         markers.remove(marker);
-  //       });
-  //
-  //   });
-  // }
+
+  // TODO: figure out user location updates. might want to use geolocator instead of locations dependency
+  // User Location Related
+  void getCurrentLocation() async {
+    Location location = Location();
+
+    // Checks if location services and permissions are enabled
+    checkServicesAndPermissions(location);
+
+    currentLocation = await location.getLocation();
+
+    // Gets location updates
+    location.onLocationChanged.listen(
+      (LocationData updatedLocation){
+        currentLocation = updatedLocation;
+      }
+    );
+  }
+
+  void checkServicesAndPermissions(Location location) async {
+    var serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    var permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+  }
+
+
+  @override
+  void initState(){
+    getCurrentLocation();
+  }
 
   void _filterMarkers() {
     int filterCount = 0;
@@ -245,13 +279,18 @@ class _MyAppState extends State<MyApp> {
             )
         ),
         body: Builder(
-          builder: (context) => GoogleMap(
+          builder: (context) => currentLocation == null ? const Center(child: Text("loading")) : GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 17.0,
           ),
-          markers: markers,
+          markers: /*markers,*/{
+            Marker(
+              markerId: const MarkerId("currentLocation"),
+              position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+            )
+          }
           )
         ),
       ),
