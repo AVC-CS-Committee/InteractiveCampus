@@ -28,33 +28,53 @@ class _FAQPageState extends State<FAQPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FAQs'),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        title: const Text('FAQs',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Sans Serif',
+            )),
+        centerTitle: true,
+        elevation: 2,
       ),
       body: faqs.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? Container() // removed CircularProgressIndicator and added an empty container
           : ListView.builder(
               itemCount: faqs.length,
               itemBuilder: (BuildContext context, int index) {
-                return ExpansionTile(
-                  title: Text(
-                    faqs[index]['question'],
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 24.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xff8d1c40),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ExpansionTile(
+                      title: Text(
+                        faqs[index]['question'],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Sans Serif',
+                        ),
+                      ),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 24.0),
+                          child: Text(
+                            faqs[index]['answer'],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Sans Serif',
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 24.0),
-                      child: Text(
-                        faqs[index]['answer'],
-                        style: const TextStyle(fontSize: 16.0),
-                      ),
-                    ),
-                  ],
                 );
               },
             ),
