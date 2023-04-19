@@ -53,8 +53,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-
-  // TODO: figure out user location updates. might want to use geolocator instead of locations dependency
   // User Location Related
   void getCurrentLocation() async {
     Location location = Location();
@@ -93,6 +91,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState(){
+    super.initState();
     getCurrentLocation();
   }
 
@@ -279,18 +278,14 @@ class _MyAppState extends State<MyApp> {
             )
         ),
         body: Builder(
-          builder: (context) => currentLocation == null ? const Center(child: Text("loading")) : GoogleMap(
+          builder: (context) => GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 17.0,
           ),
-          markers: /*markers,*/{
-            Marker(
-              markerId: const MarkerId("currentLocation"),
-              position: LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-            )
-          }
+          markers: markers,
+          myLocationEnabled: true,
           )
         ),
       ),
