@@ -30,7 +30,7 @@ class AboutUsPage extends StatelessWidget {
                 // );
               },
             ),
-            Divider(),
+            const Divider(),
           ],
         ),
       ),
