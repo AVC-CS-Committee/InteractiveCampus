@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:location/location.dart';
+import 'package:google_directions_api/google_directions_api.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 
@@ -27,9 +29,14 @@ class _MyAppState extends State<MyApp> {
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
   Set<Marker> markers = {};
+  // Always contains all markers. Used for resetting markers
   Set<Marker> markersCopy = {};
 
+  // Poly-lines
+  Set<Polyline> _polylines = {};
+
   LocationData? currentLocation;
+  LatLng? currentLocationLatLng;
 
   // Tool States
   bool _isSwitched = false;
@@ -66,6 +73,7 @@ class _MyAppState extends State<MyApp> {
     location.onLocationChanged.listen(
       (LocationData updatedLocation){
         currentLocation = updatedLocation;
+        currentLocationLatLng = LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
       }
     );
   }
@@ -126,6 +134,47 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
+  Marker? userMarker;
+  void manageTap(LatLng latLng){
+    if(_isSwitched){
+      // Create user marker
+      userMarker = Marker(
+        markerId: MarkerId('user_marker'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'User Marker'),
+      );
+      // Add userMarker to the map
+      setState(() {
+        markers.add(userMarker!);
+      });
+
+      // Draw polyline from current location to userMarker
+      drawRoute(latLng);
+    }
+  }
+
+  // TODO: Create working routes based on google map data via directions API
+  void drawRoute(LatLng latLng) async {
+    LatLng start = currentLocationLatLng!;
+    LatLng? end = latLng;
+    final directions = DirectionsService();
+
+    // PolylinePoints polylinePoints = PolylinePoints();
+    List<LatLng> polylinePoints = [start, end];
+
+    // PolylineResult result = await PolylineResult(
+    //     polylinePoints.getRouteBetweenCoordinates("AIzaSyBcejXkg5ARzeVaXQbxq7-yy04g1ZsIOQE", PointLatLng(start.latitude, start.longitude), PointLatLng(end.latitude, end.longitude), travelMode: TravelMode.walking);
+    // );
+    Polyline polyline = Polyline(
+      polylineId: PolylineId('polyline'),
+      points: polylinePoints,
+      color: Colors.blue,
+      width: 5,
+    );
+
+   _polylines.add(polyline);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +201,7 @@ class _MyAppState extends State<MyApp> {
         ),
         drawer: Builder(
             builder: (context) => Drawer(
-                    child: ListView(padding: EdgeInsets.zero, children: [
+                child: ListView(padding: EdgeInsets.zero, children: [
                   const DrawerHeader(
                     decoration: BoxDecoration(
                         color: Color(0xFF8B1C3F),
@@ -188,12 +237,24 @@ class _MyAppState extends State<MyApp> {
 
                 // Tools
                 SwitchListTile(
-                  title: const Text('Locations Near Me'),
+                  title: const Text('Building Route'),
                   secondary: const Icon(Icons.near_me),
                   value: _isSwitched,
                   onChanged: (value) {
                     setState(() {
                       _isSwitched = value;
+
+                      if(_isSwitched){
+                        // Ensure current location exists before using the feature
+                        //checkServicesAndPermissions(currentLocation as Location);
+                      }
+                      // Remove marker if feature is turned off
+                      if(!_isSwitched) {
+                        // Removes all instances of user created markers
+                        markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('user_marker'));
+                        // Clears poly-lines
+                        _polylines.clear();
+                      }
                     });
                   },
                 ),
@@ -286,6 +347,8 @@ class _MyAppState extends State<MyApp> {
           ),
           markers: markers,
           myLocationEnabled: true,
+          onTap: manageTap,
+          polylines: _polylines,
           )
         ),
       ),
