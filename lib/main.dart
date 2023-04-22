@@ -1,9 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:location/location.dart';
+import 'package:google_directions_api/google_directions_api.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+// import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 
@@ -27,9 +31,15 @@ class _MyAppState extends State<MyApp> {
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
   Set<Marker> markers = {};
+  // Always contains all markers. Used for resetting markers
   Set<Marker> markersCopy = {};
 
+  // Poly-lines
+  Set<Polyline> _polylines = {};
+  // MapsRoutes route = MapsRoutes();
+
   LocationData? currentLocation;
+  LatLng? currentLocationLatLng;
 
   // Tool States
   bool _isSwitched = false;
@@ -63,9 +73,12 @@ class _MyAppState extends State<MyApp> {
     currentLocation = await location.getLocation();
 
     // Gets location updates
-    location.onLocationChanged.listen((LocationData updatedLocation) {
-      currentLocation = updatedLocation;
-    });
+    location.onLocationChanged.listen(
+      (LocationData updatedLocation){
+        currentLocation = updatedLocation;
+        currentLocationLatLng = LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
+      }
+    );
   }
 
   void checkServicesAndPermissions(Location location) async {
@@ -122,6 +135,50 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
+  Marker? userMarker;
+  void manageTap(LatLng latLng){
+    if(_isSwitched){
+      // Create user marker
+      userMarker = Marker(
+        markerId: MarkerId('user_marker'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'User Marker'),
+      );
+      // Add userMarker to the map
+      setState(() {
+        markers.add(userMarker!);
+      });
+
+      // Draw polyline from current location to userMarker
+      drawRoute(latLng);
+    }
+  }
+
+  // TODO: Create working routes based on google map data via directions API
+  void drawRoute(LatLng latLng) async {
+    LatLng start = currentLocationLatLng!;
+    LatLng? end = latLng;
+
+
+    // IMPORTANT NOTE: This piece of code works by showing routes based on google map data. However, the routes only seem to
+    //                 be displayed if the current account holder's API key has both the Directions API and billing enabled on
+    //                 their google cloud console account.
+     List<LatLng> polylinePoints = [start, end];
+    // await route.drawRoute(polylinePoints, "classroom_path", Colors.lightBlueAccent, "AIzaSyBIKlTv4QecJ3oboGtCmPTFGQ-tgL1VUZU");
+    // _polylines = route.routes;
+    // DistanceCalculator distanceCalculator = DistanceCalculator();
+
+    // Temporarily being used until routes are figured out
+    Polyline polyline = Polyline(
+      polylineId: PolylineId('polyline'),
+      points: polylinePoints,
+      color: Colors.blue,
+      width: 5,
+    );
+
+   _polylines.add(polyline);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +206,7 @@ class _MyAppState extends State<MyApp> {
         ),
         drawer: Builder(
             builder: (context) => Drawer(
-                    child: ListView(padding: EdgeInsets.zero, children: [
+                child: ListView(padding: EdgeInsets.zero, children: [
                   const DrawerHeader(
                     decoration: BoxDecoration(
                         color: Color(0xFF8B1C3F),
@@ -184,26 +241,38 @@ class _MyAppState extends State<MyApp> {
                   ),
                   const Divider(),
 
-                  // Tools
-                  SwitchListTile(
-                    title: const Text('Locations Near Me'),
-                    secondary: const Icon(Icons.near_me),
-                    value: _isSwitched,
-                    onChanged: (value) {
-                      setState(() {
-                        _isSwitched = value;
-                      });
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.local_parking),
-                    title: const Text('Nearest Parking'),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                    },
-                  ),
-                  const Divider(),
+                // Tools
+                SwitchListTile(
+                  title: const Text('Building Route'),
+                  secondary: const Icon(Icons.near_me),
+                  value: _isSwitched,
+                  onChanged: (value) {
+                    setState(() {
+                      _isSwitched = value;
+
+                      if(_isSwitched){
+                        // Ensure current location exists before using the feature
+                        //checkServicesAndPermissions(currentLocation as Location);
+                      }
+                      // Remove marker if feature is turned off
+                      if(!_isSwitched) {
+                        // Removes all instances of user created markers
+                        markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('user_marker'));
+                        // Clears poly-lines
+                        _polylines.clear();
+                      }
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.local_parking),
+                  title: const Text('Nearest Parking'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                const Divider(),
 
                   // Filters
                   CheckboxListTile(
@@ -273,16 +342,19 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ]))),
         body: Builder(
-            builder: (context) => GoogleMap(
-                  onMapCreated: (controller) =>
-                      _onMapCreated(controller, context),
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 17.0,
-                  ),
-                  markers: markers,
-                  myLocationEnabled: true,
-                )),
+          builder: (context) => GoogleMap(
+          onMapCreated: (controller) => _onMapCreated(controller, context),
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 17.0,
+          ),
+          markers: markers,
+          myLocationEnabled: true,
+          mapType: MapType.normal,
+          onTap: manageTap,
+          polylines: _polylines,
+          )
+        ),
       ),
     );
   }
