@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:location/location.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+// import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 
@@ -34,6 +36,7 @@ class _MyAppState extends State<MyApp> {
 
   // Poly-lines
   Set<Polyline> _polylines = {};
+  // MapsRoutes route = MapsRoutes();
 
   LocationData? currentLocation;
   LatLng? currentLocationLatLng;
@@ -157,14 +160,17 @@ class _MyAppState extends State<MyApp> {
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
     LatLng? end = latLng;
-    final directions = DirectionsService();
 
-    // PolylinePoints polylinePoints = PolylinePoints();
-    List<LatLng> polylinePoints = [start, end];
 
-    // PolylineResult result = await PolylineResult(
-    //     polylinePoints.getRouteBetweenCoordinates("AIzaSyBcejXkg5ARzeVaXQbxq7-yy04g1ZsIOQE", PointLatLng(start.latitude, start.longitude), PointLatLng(end.latitude, end.longitude), travelMode: TravelMode.walking);
-    // );
+    // IMPORTANT NOTE: This piece of code works by showing routes based on google map data. However, the routes only seem to
+    //                 be displayed if the current account holder's API key has both the Directions API and billing enabled on
+    //                 their google cloud console account.
+     List<LatLng> polylinePoints = [start, end];
+    // await route.drawRoute(polylinePoints, "classroom_path", Colors.lightBlueAccent, "AIzaSyBIKlTv4QecJ3oboGtCmPTFGQ-tgL1VUZU");
+    // _polylines = route.routes;
+    // DistanceCalculator distanceCalculator = DistanceCalculator();
+
+    // Temporarily being used until routes are figured out
     Polyline polyline = Polyline(
       polylineId: PolylineId('polyline'),
       points: polylinePoints,
@@ -347,6 +353,7 @@ class _MyAppState extends State<MyApp> {
           ),
           markers: markers,
           myLocationEnabled: true,
+          mapType: MapType.normal,
           onTap: manageTap,
           polylines: _polylines,
           )
