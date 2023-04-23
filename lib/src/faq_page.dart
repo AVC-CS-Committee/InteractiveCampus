@@ -45,8 +45,7 @@ class _FAQPageState extends State<FAQPage> {
               itemCount: faqs.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 24.0),
+                  padding: const EdgeInsets.fromLTRB(9.0, 5.0, 9.0, 5.0),
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color(0xff8d1c40),
@@ -62,8 +61,8 @@ class _FAQPageState extends State<FAQPage> {
                       ),
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 24.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                           child: Text(
                             faqs[index]['answer'],
                             style: const TextStyle(
