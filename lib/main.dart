@@ -7,6 +7,7 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:location/location.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
       GoogleMapController controller, BuildContext context) async {
     mapController = controller;
     markers = await locations.getMarkers(context);
+    _getParkedLocation();
 
     // After loading the markers, update the state of the map with setState
     setState(() {
@@ -180,6 +182,62 @@ class _MyAppState extends State<MyApp> {
 
   }
 
+  Marker? savedParkingMarker;
+  void saveParking() {
+    if(savedParkingMarker == null){
+      markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('parking_marker'));
+    }
+    savedParkingMarker = Marker(
+      markerId: MarkerId('parking_marker'),
+      position: currentLocationLatLng!,
+      infoWindow: InfoWindow(title: 'You parked here'),
+    );
+    // Add savedParkingMarker to the map
+
+    setState(() {
+      markers.add(savedParkingMarker!);
+    });
+
+    _saveParkedLocation();
+  }
+
+  Future<void> _getParkedLocation() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    double? latitude = prefs.getDouble('parked_latitude');
+    double? longitude = prefs.getDouble('parked_longitude');
+    log('Retrieved parked location: ($latitude, $longitude)');
+    if (latitude != null && longitude != null) {
+      setState(() {
+        savedParkingMarker = Marker(
+          markerId: MarkerId('parking_marker'),
+          position: LatLng(latitude, longitude),
+        );
+        markers.add(savedParkingMarker!);
+        log("Length: ${markers.length}");
+      });
+    }
+  }
+
+  Future<void> _saveParkedLocation() async {
+    if (savedParkingMarker != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setDouble('parked_latitude', savedParkingMarker!.position.latitude);
+      prefs.setDouble('parked_longitude', savedParkingMarker!.position.longitude);
+    }
+  }
+
+  Future<void> _removeParkedLocation() async {
+    if (savedParkingMarker != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('parked_latitude');
+      await prefs.remove('parked_longitude');
+      setState(() {
+        savedParkingMarker = null;
+      });
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -266,12 +324,24 @@ class _MyAppState extends State<MyApp> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.local_parking),
-                  title: const Text('Nearest Parking'),
+                  title: const Text('Save Parking'),
                   onTap: () {
                     // Update the state of the app.
                     // ...
+                    saveParking();
                   },
                 ),
+                  ListTile(
+                    leading: const Icon(Icons.local_parking),
+                    title: const Text('Delete Parking'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      _removeParkedLocation();
+                      markers.removeWhere((savedParkingMarker) => savedParkingMarker.markerId == const MarkerId('parking_marker'));
+
+                    },
+                  ),
                 const Divider(),
 
                   // Filters
