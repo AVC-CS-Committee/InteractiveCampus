@@ -1,8 +1,33 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class AboutUsPage extends StatelessWidget {
+class AboutUsPage extends StatefulWidget {
   const AboutUsPage({Key? key}) : super(key: key);
+
+  @override
+  _AboutUsPageState createState() => _AboutUsPageState();
+}
+
+class _AboutUsPageState extends State<AboutUsPage> {
+  List<dynamic> _contributors = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadContributors();
+  }
+
+  Future<void> _loadContributors() async {
+    String jsonString = await rootBundle.loadString('assets/json/contributors.json');
+
+    setState(() {
+      _contributors = json.decode(jsonString);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,41 +76,32 @@ class AboutUsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://example.com/images/user2.jpg',
-                ),
+            Expanded(
+            child : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (var contributor in _contributors)
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            contributor['picture'],
+                          ),
+                        ),
+                        title: GestureDetector(
+                          child: Text(
+                            contributor['name'],
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          onTap: () => launchUrlString(contributor['url'])
+                        ),
+                        subtitle: Text(contributor['title']),
+                      )
+                  ],
+                )
               ),
-              title: GestureDetector(
-                child: const Text(
-                  'Peter Kallos',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-                onTap: () => launchUrlString('https://www.avc.edu'),
-              ),
-              subtitle: const Text('pkallos19@avc.edu'),
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://example.com/images/user2.jpg',
-                ),
-              ),
-              title: GestureDetector(
-                child: const Text(
-                  'Jane Smith',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-                onTap: () => launchUrlString('https://www.example.com/jane'),
-              ),
-              subtitle: const Text('Graphic Designer'),
             ),
           ],
         ),
