@@ -39,6 +39,7 @@ dependencies:
   google_directions_api: 0.9.1
   flutter_polyline_points: ^1.0.0
   # google_maps_routes: ^1.1.2
+  shared_preferences: ^2.1.0
   location: ^4.4.0
   google_maps_flutter_web: ^0.4.0+7
   flutter_config: ^2.0.0
