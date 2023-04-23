@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutUsPage extends StatelessWidget {
@@ -32,6 +31,7 @@ class AboutUsPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Color(0xff8a1c40),
               ),
             ),
             const SizedBox(height: 16),
@@ -47,6 +47,7 @@ class AboutUsPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Color(0xff8a1c40),
               ),
             ),
             const SizedBox(height: 16),

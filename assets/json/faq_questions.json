@@ -1,87 +1,70 @@
 [
   {
     "question": "Where are the open labs and what are their hours?",
-    "answer": "More information here: <a href=\"https://www.avc.edu/administration/its/labs\">Open Labs and Collaboration Spaces</a>",
-    "hasLink": true
+    "answer": "More information here: <a href=\"https://www.avc.edu/administration/its/labs\">Open Labs and Collaboration Spaces</a>"
   },
   {
     "question": "Where are good places to study?",
-    "answer": "Check out Sage Hall or the Library!",
-    "hasLink": false
+    "answer": "Check out Sage Hall or the Library!"
   },
   {
     "question": "I am a prospective student. Where should I go?",
-    "answer": "Check out the Welcome Center and Student Services (SSV).",
-    "hasLink": false
+    "answer": "Check out the Welcome Center and Student Services (SSV)."
   },
   {
     "question": "I need help with my classes. Where should I go?",
-    "answer": "The Learning Center inside of Sage Hall offers tutoring for many classes.",
-    "hasLink": false
+    "answer": "The Learning Center inside of Sage Hall offers tutoring for many classes."
   },
   {
     "question": "I am an international student. Where should I go for more information?",
-    "answer": "Welcome Center, SSV, Kenya Johnson",
-    "hasLink": false
+    "answer": "Welcome Center, SSV, Kenya Johnson"
   },
   {
     "question": "I need to see a counselor to discuss my Ed Plan. Where should I go?",
-    "answer": "Welcome Center, SSV, Counseling Center",
-    "hasLink": false
+    "answer": "Welcome Center, SSV, Counseling Center"
   },
   {
     "question": "I want to apply for a job on campus. Where should I go?",
-    "answer": "Job Placement Center, SSV",
-    "hasLink": false
+    "answer": "Job Placement Center, SSV"
   },
   {
     "question": "I want to buy an AVTA bus pass. Where should I go?",
-    "answer": "Cashier Office, SSV",
-    "hasLink": false
+    "answer": "Cashier Office, SSV"
   },
   {
     "question": "I need to update my demographic information. Where should I go?",
-    "answer": "Admissions and Records, SSV",
-    "hasLink": false
+    "answer": "Admissions and Records, SSV"
   },
   {
     "question": "I need help with my FAFSA or financial aid. Where should I go?",
-    "answer": "Financial aid office",
-    "hasLink": false
+    "answer": "Financial aid office"
   },
   {
     "question": "I want more information about the First Year Experience/Second Year Experience. Where should I go?",
-    "answer": "T-700 Suite F",
-    "hasLink": false
+    "answer": "T-700 Suite F"
   },
   {
     "question": "I need to rent a hotspot or a computer. Where should I go",
-    "answer": "Instructional Multimedia Center (IMC), Mesquite Hall",
-    "hasLink": false
+    "answer": "Instructional Multimedia Center (IMC), Mesquite Hall"
   },
   {
     "question": "I need to rent textbooks. Where should I go?",
-    "answer": "Books HELP, Student Equity, SSV-180",
-    "hasLink": false
+    "answer": "Books HELP, Student Equity, SSV-180"
   },
   {
     "question": "I need to apply for a Bus Connect bus pass. Where should I go?",
-    "answer": "Student Equity, SSV-180",
-    "hasLink": false
+    "answer": "Student Equity, SSV-180"
   },
   {
     "question": "Is parking free?",
-    "answer": "More information here: <a href=\"https://www.avc.edu/studentservices/cashier/onlineparkingpermit#:~:text=A%20parking%20permit%20is%20required,a%20week%20for%2012%20weeks\">Online Parking Permit Questions</a>",
-    "hasLink": true
+    "answer": "More information here: <a href=\"https://www.avc.edu/studentservices/cashier/onlineparkingpermit#:~:text=A%20parking%20permit%20is%20required,a%20week%20for%2012%20weeks\">Online Parking Permit Questions</a>"
   },
   {
     "question": "Where are the restrooms?",
-    "answer": "Zooming into any building on the campus map will reveal icons for bathroom locations.",
-    "hasLink": false
+    "answer": "Zooming into any building on the campus map will reveal icons for bathroom locations."
   },
   {
     "question": "What are the campus hours?",
-    "answer": "More information here: <a href=\"https://www.avc.edu/hoursofoperation\">Hours of Operation</a>",
-    "hasLink": true
+    "answer": "More information here: <a href=\"https://www.avc.edu/hoursofoperation\">Hours of Operation</a>"
   }
 ]
