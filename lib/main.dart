@@ -184,7 +184,7 @@ class _MyAppState extends State<MyApp> {
 
   Marker? savedParkingMarker;
   void saveParking() {
-    if(savedParkingMarker == null){
+    if(savedParkingMarker == null) {
       markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('parking_marker'));
     }
     savedParkingMarker = Marker(
@@ -323,25 +323,24 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.local_parking),
-                  title: const Text('Save Parking'),
+                  leading: Icon(Icons.local_parking),
+                  title: markers.contains(savedParkingMarker) ? Text('Delete Parking') : Text('Save Parking'),
+                  textColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
+                  iconColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
                   onTap: () {
                     // Update the state of the app.
                     // ...
-                    saveParking();
-                  },
-                ),
-                  ListTile(
-                    leading: const Icon(Icons.local_parking),
-                    title: const Text('Delete Parking'),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
+                    // True if user intends to delete marker
+                    if(markers.contains(savedParkingMarker)) {
                       _removeParkedLocation();
                       markers.removeWhere((savedParkingMarker) => savedParkingMarker.markerId == const MarkerId('parking_marker'));
-
-                    },
-                  ),
+                    }
+                    // Entered if user intends to save marker
+                    else {
+                      saveParking();
+                    }
+                  },
+                ),
                 const Divider(),
 
                   // Filters
