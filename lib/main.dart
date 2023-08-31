@@ -417,6 +417,13 @@ class _MyAppState extends State<MyApp> {
             target: _center,
             zoom: 17.0,
           ),
+          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
+              northeast:LatLng(34.680987, -118.185444) ,
+              southwest:LatLng(34.675965, -118.191282)
+            )
+          ),
+
+
           markers: markers,
           myLocationEnabled: true,
           mapType: MapType.normal,
