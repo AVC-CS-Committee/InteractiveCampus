@@ -413,10 +413,13 @@ class _MyAppState extends State<MyApp> {
         body: Builder(
           builder: (context) => GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
+
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 17.0,
           ),
+            zoomGesturesEnabled: true, //enable Zoom in, out on map
+            minMaxZoomPreference: MinMaxZoomPreference(0, 5),
           cameraTargetBounds:CameraTargetBounds(LatLngBounds(
               northeast:LatLng(34.680987, -118.185444) ,
               southwest:LatLng(34.675965, -118.191282)
