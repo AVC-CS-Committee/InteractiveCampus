@@ -12,7 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 
+
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
@@ -27,6 +29,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+/*
+  //this is a test can be ignored
+  //
+  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
+
+
+
+  void addCustomIcon(){
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
+        .then(
+          (icon) {
+        setState((){
+          markericon = icon;
+        });
+      },
+    );
+  }
+
+*/
+
+
+
+
+
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
@@ -105,6 +134,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getCurrentLocation();
+    //addCustomIcon();
   }
 
   void _filterMarkers() {
@@ -419,15 +449,23 @@ class _MyAppState extends State<MyApp> {
             zoom: 17.0,
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map
-            minMaxZoomPreference: MinMaxZoomPreference(0, 5),
+            minMaxZoomPreference: MinMaxZoomPreference(10, 20),
           cameraTargetBounds:CameraTargetBounds(LatLngBounds(
               northeast:LatLng(34.680987, -118.185444) ,
               southwest:LatLng(34.675965, -118.191282)
             )
           ),
 
-
+          //icon: markericon,
           markers: markers,
+         /* markers: {
+            Marker(
+              markerId: MarkerId('demo'),
+              position: LatLng(34.67796141360417, -118.1847488798502),
+
+            ),
+          },
+          */
           myLocationEnabled: true,
           mapType: MapType.normal,
           onTap: manageTap,
