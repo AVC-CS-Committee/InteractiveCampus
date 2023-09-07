@@ -46,3 +46,5 @@ app.*.map.json
 # Environment Variables
 .env
 *.xcconfig
+android/build.gradle
+pubspec.lock

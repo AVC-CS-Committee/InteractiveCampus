@@ -449,10 +449,10 @@ class _MyAppState extends State<MyApp> {
             zoom: 17.0,
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map
-            minMaxZoomPreference: MinMaxZoomPreference(10, 20),
+            minMaxZoomPreference: MinMaxZoomPreference(16, 20),
           cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:LatLng(34.680987, -118.185444) ,
-              southwest:LatLng(34.675965, -118.191282)
+              northeast:LatLng(34.68208082459477, -118.1838193583875) ,
+              southwest:LatLng(34.67485483411587, -118.19230586766488)
             )
           ),
 
