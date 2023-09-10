@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:interactivemap/src/Themes/themes.dart';
 import 'package:location/location.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -29,30 +30,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
-/*
-  //this is a test can be ignored
-  //
-  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
-
-
-
-  void addCustomIcon(){
-    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
-        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
-        .then(
-          (icon) {
-        setState((){
-          markericon = icon;
-        });
-      },
-    );
-  }
-
-*/
-
-
 
 
 
@@ -268,21 +245,26 @@ class _MyAppState extends State<MyApp> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xff8d1c40),
-            primary: const Color(0xff8d1c40),
-            secondary: const Color(0xff8a1c40),
-          ),
-          appBarTheme: const AppBarTheme(
-            color: Color(0xff8a1c40),
-          )),
+      theme: ThemeClass.lightTheme,
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      //theme: ThemeData(
+         // useMaterial3: true,
+        //  colorScheme: ColorScheme.fromSeed(
+       //     seedColor: const Color(0xff8d1c40),
+       //     primary: const Color(0xff8d1c40),
+       //     secondary: const Color(0xff8a1c40),
+       //   ),
+       //   appBarTheme: const AppBarTheme(
+       //     color: Color(0xff8a1c40),
+       //   )),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xff8d1c40),
           title: const Text('AVC Interactive Map',
               style: TextStyle(
                 color: Colors.white,

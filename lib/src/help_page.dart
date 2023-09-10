@@ -9,15 +9,13 @@ class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      //backgroundColor: Colors.black,
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          //color: Colors.white,
+          color: Colors.white,
         ),
         title: const Text('AVC Interactive Map',
             style: TextStyle(
-              color: Colors.white,
+              //color: Colors.white,
               fontFamily: 'Sans Serif',
             )),
         centerTitle: true,
@@ -30,7 +28,6 @@ class HelpPage extends StatelessWidget {
             ListTile(
               title: const Text('FAQ',
                 style: TextStyle(
-                  //color: ,
                 )),
               onTap: () {
                 Navigator.push(
