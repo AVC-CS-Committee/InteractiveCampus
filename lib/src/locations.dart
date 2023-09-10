@@ -78,6 +78,27 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
         }
       ),
     );
+//test
+    Marker marker_custom = Marker(
+      markerId: MarkerId(location.title),
+      position: LatLng(location.latitude, location.longitude),
+      infoWindow: InfoWindow(
+          title: location.title,
+          snippet: location.description,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LocationDescriptions(
+                title: location.title,
+                description: location.description,
+                images: images,
+              )),
+            );
+          }
+      ),
+    );
+
+
 
     // Store the current marker into its corresponding List
     if (location.type == "parking") {
