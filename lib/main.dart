@@ -437,17 +437,9 @@ class _MyAppState extends State<MyApp> {
               southwest:LatLng(34.67485483411587, -118.19230586766488)
             )
           ),
-
+          
           //icon: markericon,
           markers: markers,
-         /* markers: {
-            Marker(
-              markerId: MarkerId('demo'),
-              position: LatLng(34.67796141360417, -118.1847488798502),
-
-            ),
-          },
-          */
           myLocationEnabled: true,
           mapType: MapType.normal,
           onTap: manageTap,
