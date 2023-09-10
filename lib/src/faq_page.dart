@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class FAQPage extends StatefulWidget {
+  const FAQPage({super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _FAQPageState createState() => _FAQPageState();
 }
 
@@ -45,8 +48,7 @@ class _FAQPageState extends State<FAQPage> {
               itemCount: faqs.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 24.0),
+                  padding: const EdgeInsets.fromLTRB(9.0, 5.0, 9.0, 5.0),
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color(0xff8d1c40),
@@ -62,15 +64,32 @@ class _FAQPageState extends State<FAQPage> {
                       ),
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 24.0),
-                          child: Text(
-                            faqs[index]['answer'],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Sans Serif',
-                            ),
-                          ),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                          child: faqs[index]['answer'].contains('<a href=')
+                              ? InkWell(
+                                  onTap: () async {
+                                    final url =
+                                        faqs[index]['answer'].split('"')[1];
+                                    launchUrlString(url);
+                                  },
+                                  child: Text(
+                                    faqs[index]['answer']
+                                        .split('>')[1]
+                                        .split('<')[0],
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(255, 219, 200, 28),
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  faqs[index]['answer'],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Sans Serif',
+                                  ),
+                                ),
                         )
                       ],
                     ),

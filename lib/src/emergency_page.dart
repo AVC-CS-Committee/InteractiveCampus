@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class EmergencyPage extends StatelessWidget {
   const EmergencyPage({Key? key}) : super(key: key);
@@ -86,7 +88,7 @@ class EmergencyPage extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => _callEmergencyNumber(context, emergencyNumber),
+              onPressed: () => launchUrlString("tel://661-722-6399"),
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(
                 Color(0xff8d1c40),
@@ -104,10 +106,5 @@ class EmergencyPage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _callEmergencyNumber(BuildContext context, String number) {
-    // Call the emergency number here
-    // You can use the url_launcher package to launch the phone app with the number
   }
 }
