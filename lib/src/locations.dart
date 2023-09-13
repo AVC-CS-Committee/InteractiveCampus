@@ -16,7 +16,6 @@ Set<Marker> foodMarkers = {};
 Set<Marker> athleticMarkers = {};
 Set<Marker> resourceMarkers = {};
 
-
 @JsonSerializable()
 class Locations {
   final String title;
@@ -36,7 +35,7 @@ class Locations {
   });
 
   factory Locations.fromJson(Map<String, dynamic> json) =>
-    _$LocationsFromJson(json);
+      _$LocationsFromJson(json);
   Map<String, dynamic> toJson() => _$LocationsToJson(this);
 }
 
@@ -57,29 +56,11 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
     if (location.images.isEmpty) images.add('');
 
     for (String image in location.images) {
-      images.add('https://raw.githubusercontent.com/AVC-CS-Committee/InteractiveCampusMap/master/app/src/main/res/drawable/image_$image.jpg');
+      images.add(
+          'https://raw.githubusercontent.com/AVC-CS-Committee/InteractiveCampusMap/master/app/src/main/res/drawable/image_$image.jpg');
     }
 
     Marker marker = Marker(
-      markerId: MarkerId(location.title),
-      position: LatLng(location.latitude, location.longitude),
-      infoWindow: InfoWindow(
-        title: location.title,
-        snippet: location.description,
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LocationDescriptions(
-              title: location.title,
-              description: location.description, 
-              images: images, 
-              )),
-          );
-        }
-      ),
-    );
-//test
-    Marker marker_custom = Marker(
       markerId: MarkerId(location.title),
       position: LatLng(location.latitude, location.longitude),
       infoWindow: InfoWindow(
@@ -88,17 +69,15 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LocationDescriptions(
-                title: location.title,
-                description: location.description,
-                images: images,
-              )),
+              MaterialPageRoute(
+                  builder: (context) => LocationDescriptions(
+                        title: location.title,
+                        description: location.description,
+                        images: images,
+                      )),
             );
-          }
-      ),
+          }),
     );
-
-
 
     // Store the current marker into its corresponding List
     if (location.type == "parking") {

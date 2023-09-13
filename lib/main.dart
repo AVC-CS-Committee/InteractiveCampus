@@ -288,13 +288,9 @@ void _clearSearch() {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xff8d1c40),
-            primary: const Color(0xff8d1c40),
-            secondary: const Color(0xff8a1c40),
-          ),),
+      theme: ThemeClass.lightTheme,
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       home: Scaffold(
         key: _scaffoldKey,
         drawer: Builder(
