@@ -250,7 +250,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeClass.lightTheme,
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeClass.darkTheme,
+      //darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
       //theme: ThemeData(
          // useMaterial3: true,
