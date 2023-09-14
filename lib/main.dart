@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
+import 'src/classes_page.dart';
 
 
 void main() async {
@@ -307,6 +308,19 @@ class _MyAppState extends State<MyApp> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const HelpPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.class_outlined),
+                    title: const Text('Classes'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ClassPage()),
                       );
                     },
                   ),
