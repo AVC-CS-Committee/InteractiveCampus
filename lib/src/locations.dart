@@ -60,9 +60,33 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
           'https://raw.githubusercontent.com/AVC-CS-Committee/InteractiveCampusMap/master/app/src/main/res/drawable/image_$image.jpg');
     }
 
+    BitmapDescriptor markerIcon;
+
+    // Set custom marker icon based on location type
+    if (location.type == "parking") {
+      markerIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(devicePixelRatio: 2.5),
+          'assets/images/Image.png');
+    } else if (location.type == "classroom") {
+      markerIcon =
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+    } else if (location.type == "food") {
+      markerIcon =
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+    } else if (location.type == "athletic") {
+      markerIcon =
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+    } else if (location.type == "resource") {
+      markerIcon =
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
+    } else {
+      markerIcon = BitmapDescriptor.defaultMarker;
+    }
+
     Marker marker = Marker(
       markerId: MarkerId(location.title),
       position: LatLng(location.latitude, location.longitude),
+      icon: markerIcon, // Set the custom marker icon
       infoWindow: InfoWindow(
           title: location.title,
           snippet: location.description,
@@ -71,30 +95,13 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
               context,
               MaterialPageRoute(
                   builder: (context) => LocationDescriptions(
-                        title: location.title,
-                        description: location.description,
-                        images: images,
-                      )),
+                    title: location.title,
+                    description: location.description,
+                    images: images,
+                  )),
             );
           }),
     );
-
-    // Store the current marker into its corresponding List
-    if (location.type == "parking") {
-      parkingLotMarkers.add(marker);
-    }
-    if (location.type == "classroom") {
-      classroomMarkers.add(marker);
-    }
-    if (location.type == "food") {
-      foodMarkers.add(marker);
-    }
-    if (location.type == "athletic") {
-      athleticMarkers.add(marker);
-    }
-    if (location.type == "resource") {
-      resourceMarkers.add(marker);
-    }
 
     markers.add(marker);
   }
