@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/src/aboutus_page.dart';
 import 'package:interactivemap/src/emergency_page.dart';
@@ -30,7 +29,7 @@ class HelpPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FAQPage()),
+                  MaterialPageRoute(builder: (context) => const FAQPage()),
                 );
               },
             ),
@@ -40,7 +39,7 @@ class HelpPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EmergencyPage()),
+                  MaterialPageRoute(builder: (context) => const EmergencyPage()),
                 );
               },
             ),
@@ -50,7 +49,7 @@ class HelpPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AboutUsPage()),
+                  MaterialPageRoute(builder: (context) => const AboutUsPage()),
                 );
               },
             ),

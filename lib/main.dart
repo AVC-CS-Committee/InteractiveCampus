@@ -1,12 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:location/location.dart';
-import 'package:google_directions_api/google_directions_api.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
@@ -65,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   Set<Marker> markersCopy = {};
 
   // Poly-lines
-  Set<Polyline> _polylines = {};
+  final Set<Polyline> _polylines = {};
   // MapsRoutes route = MapsRoutes();
 
   LocationData? currentLocation;
@@ -172,9 +169,9 @@ class _MyAppState extends State<MyApp> {
     if(_isSwitched){
       // Create user marker
       userMarker = Marker(
-        markerId: MarkerId('user_marker'),
+        markerId: const MarkerId('user_marker'),
         position: latLng,
-        infoWindow: InfoWindow(title: 'User Marker'),
+        infoWindow: const InfoWindow(title: 'User Marker'),
       );
       // Add userMarker to the map
       setState(() {
@@ -202,7 +199,7 @@ class _MyAppState extends State<MyApp> {
 
     // Temporarily being used until routes are figured out
     Polyline polyline = Polyline(
-      polylineId: PolylineId('polyline'),
+      polylineId: const PolylineId('polyline'),
       points: polylinePoints,
       color: Colors.blue,
       width: 5,
@@ -218,9 +215,9 @@ class _MyAppState extends State<MyApp> {
       markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('parking_marker'));
     }
     savedParkingMarker = Marker(
-      markerId: MarkerId('parking_marker'),
+      markerId: const MarkerId('parking_marker'),
       position: currentLocationLatLng!,
-      infoWindow: InfoWindow(title: 'You parked here'),
+      infoWindow: const InfoWindow(title: 'You parked here'),
     );
     // Add savedParkingMarker to the map
 
@@ -239,7 +236,7 @@ class _MyAppState extends State<MyApp> {
     if (latitude != null && longitude != null) {
       setState(() {
         savedParkingMarker = Marker(
-          markerId: MarkerId('parking_marker'),
+          markerId: const MarkerId('parking_marker'),
           position: LatLng(latitude, longitude),
         );
         markers.add(savedParkingMarker!);
@@ -283,6 +280,7 @@ class _MyAppState extends State<MyApp> {
           )),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xff8d1c40),
           title: const Text('AVC Interactive Map',
               style: TextStyle(
                 color: Colors.white,
@@ -353,8 +351,8 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.local_parking),
-                  title: markers.contains(savedParkingMarker) ? Text('Delete Parking') : Text('Save Parking'),
+                  leading: const Icon(Icons.local_parking),
+                  title: markers.contains(savedParkingMarker) ? const Text('Delete Parking') : const Text('Save Parking'),
                   textColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
                   iconColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
                   onTap: () {
@@ -449,10 +447,10 @@ class _MyAppState extends State<MyApp> {
             zoom: 17.0,
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map
-            minMaxZoomPreference: MinMaxZoomPreference(16, 20),
+            minMaxZoomPreference: const MinMaxZoomPreference(16, 20),
           cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:LatLng(34.68208082459477, -118.1838193583875) ,
-              southwest:LatLng(34.67485483411587, -118.19230586766488)
+              northeast:const LatLng(34.68208082459477, -118.1838193583875) ,
+              southwest:const LatLng(34.67485483411587, -118.19230586766488)
             )
           ),
 

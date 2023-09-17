@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -79,7 +78,7 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
       ),
     );
 //test
-    Marker marker_custom = Marker(
+    Marker markerCustom = Marker(
       markerId: MarkerId(location.title),
       position: LatLng(location.latitude, location.longitude),
       infoWindow: InfoWindow(
