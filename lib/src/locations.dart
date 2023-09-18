@@ -10,6 +10,7 @@ import 'location_descriptions.dart';
 
 part 'locations.g.dart';
 
+
 Set<Marker> parkingLotMarkers = {};
 Set<Marker> classroomMarkers = {};
 Set<Marker> foodMarkers = {};
@@ -64,9 +65,11 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
 
     // Set custom marker icon based on location type
     if (location.type == "parking") {
-      markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/Image.png');
+      markerIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+
+      //await BitmapDescriptor.fromAssetImage(
+        //  const ImageConfiguration(devicePixelRatio: 2.5),
+          //'');
     } else if (location.type == "classroom") {
       markerIcon =
           BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
