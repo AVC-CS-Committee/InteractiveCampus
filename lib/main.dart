@@ -112,7 +112,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getCurrentLocation();
-    //addCustomIcon();
   }
 
   void _filterMarkers() {
@@ -252,18 +251,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeClass.lightTheme,
       darkTheme: ThemeClass.darkTheme,
-      //darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
-      //theme: ThemeData(
-         // useMaterial3: true,
-        //  colorScheme: ColorScheme.fromSeed(
-       //     seedColor: const Color(0xff8d1c40),
-       //     primary: const Color(0xff8d1c40),
-       //     secondary: const Color(0xff8a1c40),
-       //   ),
-       //   appBarTheme: const AppBarTheme(
-       //     color: Color(0xff8a1c40),
-       //   )),
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xff8d1c40),
