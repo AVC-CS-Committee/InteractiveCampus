@@ -62,26 +62,30 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
 
     BitmapDescriptor markerIcon;
 
-    // Set custom marker icon based on location type
+     // Set custom marker icon based on location type
     if (location.type == "parking") {
-      markerIcon =
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+      markerIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(devicePixelRatio: 2.5),
+          'assets/images/image.png');
     } else if (location.type == "classroom") {
-      markerIcon =
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+      markerIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(devicePixelRatio: 2.5),
+          'assets/images/image1.png');
     } else if (location.type == "food") {
-      markerIcon =
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+      markerIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(devicePixelRatio: 2.5),
+          'assets/images/image1.png');
     } else if (location.type == "athletic") {
-      markerIcon =
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+      markerIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(devicePixelRatio: 2.5),
+          'assets/images/image1.png');
     } else if (location.type == "resource") {
-      markerIcon =
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
+      markerIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(devicePixelRatio: 2.5),
+          'assets/images/image1.png');
     } else {
       markerIcon = BitmapDescriptor.defaultMarker;
     }
-
     Marker marker = Marker(
       markerId: MarkerId(location.title),
       position: LatLng(location.latitude, location.longitude),
