@@ -17,7 +17,9 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 
 
+
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
@@ -36,6 +38,7 @@ class _MyAppState extends State<MyApp> {
   String selectedSuggestion = '';
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _searchController = TextEditingController();
+
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
   Marker? searchMarkerByName(String name, Set<Marker> marker) {
       final lowercaseName = name.toLowerCase();
@@ -155,6 +158,7 @@ void onSearch(String query) {
   void initState() {
     super.initState();
     getCurrentLocation();
+    //addCustomIcon();
   }
   @override
   void dispose() {
@@ -446,11 +450,29 @@ void _clearSearch() {
         body: Stack(
           children: [ GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
+
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 17.0,
           ),
+            zoomGesturesEnabled: true, //enable Zoom in, out on map
+            minMaxZoomPreference: MinMaxZoomPreference(16, 20),
+          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
+              northeast:LatLng(34.68208082459477, -118.1838193583875) ,
+              southwest:LatLng(34.67485483411587, -118.19230586766488)
+            )
+          ),
+
+          //icon: markericon,
           markers: markers,
+         /* markers: {
+            Marker(
+              markerId: MarkerId('demo'),
+              position: LatLng(34.67796141360417, -118.1847488798502),
+
+            ),
+          },
+          */
           myLocationEnabled: true,
           mapType: MapType.normal,
           onTap: manageTap,
