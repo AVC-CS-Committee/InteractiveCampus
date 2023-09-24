@@ -1,16 +1,21 @@
-import 'dart:developer';
 
+import 'dart:ui';
+import 'dart:developer';
+import 'src/help_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:location/location.dart';
+import 'src/locations.dart' as locations;
+import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
-import 'src/locations.dart' as locations;
-import 'src/help_page.dart';
+
+
+
 
 
 void main() async {
@@ -29,37 +34,66 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
-/*
-  //this is a test can be ignored
-  //
-  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
-
-
-
-  void addCustomIcon(){
-    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
-        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
-        .then(
-          (icon) {
-        setState((){
-          markericon = icon;
-        });
-      },
-    );
-  }
-
-*/
-
-
-
-
-
-  late GoogleMapController mapController;
+  late GoogleMapController? mapController;
+  String selectedSuggestion = '';
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController _searchController = TextEditingController();
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
+  Marker? searchMarkerByName(String name, Set<Marker> marker) {
+      final lowercaseName = name.toLowerCase();
+    return markers.firstWhere(
+    (marker) => marker.infoWindow.title?.toLowerCase() == lowercaseName,
+            orElse: () => Marker(markerId: MarkerId('dummy_marker'),
+            position: LatLng(0, 0)
+            ),
+    );
+  }
+void onSearch(String query) {
+  Marker? searchedMarker = searchMarkerByName(query, markers);
 
+    if(searchedMarker != null){
+        LatLng markerLatLng = searchedMarker.position;
+       
+      if (mapController != null) {
+      mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(markerLatLng, 20.0),
+      );
+    }else{
+      showDialog(context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text('error'),
+          content: Text('not founds'),
+          actions: [
+            TextButton(onPressed: (){
+            Navigator.of(context).pop();
+            },
+             child: Text('Close'),
+             ),
+          ],
+        );
+      },
+      );
+    }
+  }
+    else{
+      showDialog(context: context, builder: (context){
+        return AlertDialog(
+          title: Text('not foundds'),
+          content: Text('not founds "$query".'),
+          actions: [
+            TextButton(onPressed: (){
+             
+              Navigator.of(context).pop();
+            }, child: Text('close'),
+            ),
+          ],
+        );
+      },
+      );
+    }
+}
   Set<Marker> markers = {};
   // Always contains all markers. Used for resetting markers
   Set<Marker> markersCopy = {};
@@ -73,36 +107,29 @@ class _MyAppState extends State<MyApp> {
 
   // Tool States
   bool _isSwitched = false;
-
   // Filter States
   bool parkingChecked = false;
   bool classroomsChecked = false;
   bool studentResourcesChecked = false;
   bool foodChecked = false;
   bool athleticsChecked = false;
-
   Future<void> _onMapCreated(
       GoogleMapController controller, BuildContext context) async {
     mapController = controller;
     markers = await locations.getMarkers(context);
     _getParkedLocation();
-
     // After loading the markers, update the state of the map with setState
     setState(() {
       markers.addAll(markers);
       markersCopy.addAll(markers);
     });
   }
-
   // User Location Related
   void getCurrentLocation() async {
     Location location = Location();
-
     // Checks if location services and permissions are enabled
     checkServicesAndPermissions(location);
-
     currentLocation = await location.getLocation();
-
     // Gets location updates
     location.onLocationChanged.listen(
       (LocationData updatedLocation){
@@ -111,7 +138,6 @@ class _MyAppState extends State<MyApp> {
       }
     );
   }
-
   void checkServicesAndPermissions(Location location) async {
     var serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -120,7 +146,6 @@ class _MyAppState extends State<MyApp> {
         return;
       }
     }
-
     var permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
@@ -129,14 +154,22 @@ class _MyAppState extends State<MyApp> {
       }
     }
   }
-
   @override
   void initState() {
     super.initState();
     getCurrentLocation();
     //addCustomIcon();
   }
-
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+void _clearSearch() {
+    setState(() {
+      _searchController.clear();
+    });
+  }
   void _filterMarkers() {
     int filterCount = 0;
     Set<Marker> tmp = {};
@@ -160,7 +193,6 @@ class _MyAppState extends State<MyApp> {
       tmp.addAll(locations.classroomMarkers);
       ++filterCount;
     }
-
     if (filterCount > 0) {
       markers = tmp;
     } else {
@@ -180,18 +212,14 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         markers.add(userMarker!);
       });
-
       // Draw polyline from current location to userMarker
       drawRoute(latLng);
     }
   }
-
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
     LatLng? end = latLng;
-
-
     // IMPORTANT NOTE: This piece of code works by showing routes based on google map data. However, the routes only seem to
     //                 be displayed if the current account holder's API key has both the Directions API and billing enabled on
     //                 their google cloud console account.
@@ -199,7 +227,6 @@ class _MyAppState extends State<MyApp> {
     // await route.drawRoute(polylinePoints, "classroom_path", Colors.lightBlueAccent, "AIzaSyBIKlTv4QecJ3oboGtCmPTFGQ-tgL1VUZU");
     // _polylines = route.routes;
     // DistanceCalculator distanceCalculator = DistanceCalculator();
-
     // Temporarily being used until routes are figured out
     Polyline polyline = Polyline(
       polylineId: PolylineId('polyline'),
@@ -207,14 +234,11 @@ class _MyAppState extends State<MyApp> {
       color: Colors.blue,
       width: 5,
     );
-
    _polylines.add(polyline);
-
   }
-
   Marker? savedParkingMarker;
   void saveParking() {
-    if(savedParkingMarker == null) {
+    if(savedParkingMarker == null){
       markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('parking_marker'));
     }
     savedParkingMarker = Marker(
@@ -223,14 +247,11 @@ class _MyAppState extends State<MyApp> {
       infoWindow: InfoWindow(title: 'You parked here'),
     );
     // Add savedParkingMarker to the map
-
     setState(() {
       markers.add(savedParkingMarker!);
     });
-
     _saveParkedLocation();
   }
-
   Future<void> _getParkedLocation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     double? latitude = prefs.getDouble('parked_latitude');
@@ -247,7 +268,6 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
-
   Future<void> _saveParkedLocation() async {
     if (savedParkingMarker != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -255,7 +275,6 @@ class _MyAppState extends State<MyApp> {
       prefs.setDouble('parked_longitude', savedParkingMarker!.position.longitude);
     }
   }
-
   Future<void> _removeParkedLocation() async {
     if (savedParkingMarker != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -266,8 +285,6 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -277,21 +294,9 @@ class _MyAppState extends State<MyApp> {
             seedColor: const Color(0xff8d1c40),
             primary: const Color(0xff8d1c40),
             secondary: const Color(0xff8a1c40),
-          ),
-          appBarTheme: const AppBarTheme(
-            color: Color(0xff8a1c40),
-          )),
+          ),),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('AVC Interactive Map',
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Sans Serif',
-              )),
-          centerTitle: true,
-          elevation: 2,
-          iconTheme: const IconThemeData(color: Colors.white),
-        ),
+        key: _scaffoldKey,
         drawer: Builder(
             builder: (context) => Drawer(
                 child: ListView(padding: EdgeInsets.zero, children: [
@@ -303,7 +308,6 @@ class _MyAppState extends State<MyApp> {
                         )),
                     child: Text(''),
                   ),
-
                   // General Buttons
                   ListTile(
                     leading: const Icon(Icons.map_outlined),
@@ -353,26 +357,25 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.local_parking),
-                  title: markers.contains(savedParkingMarker) ? Text('Delete Parking') : Text('Save Parking'),
-                  textColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
-                  iconColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
+                  leading: const Icon(Icons.local_parking),
+                  title: const Text('Save Parking'),
                   onTap: () {
                     // Update the state of the app.
                     // ...
-                    // True if user intends to delete marker
-                    if(markers.contains(savedParkingMarker)) {
-                      _removeParkedLocation();
-                      markers.removeWhere((savedParkingMarker) => savedParkingMarker.markerId == const MarkerId('parking_marker'));
-                    }
-                    // Entered if user intends to save marker
-                    else {
-                      saveParking();
-                    }
+                    saveParking();
                   },
                 ),
+                  ListTile(
+                    leading: const Icon(Icons.local_parking),
+                    title: const Text('Delete Parking'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      _removeParkedLocation();
+                      markers.removeWhere((savedParkingMarker) => savedParkingMarker.markerId == const MarkerId('parking_marker'));
+                    },
+                  ),
                 const Divider(),
-
                   // Filters
                   CheckboxListTile(
                     title: const Text('Parking Lots'),
@@ -439,9 +442,13 @@ class _MyAppState extends State<MyApp> {
                       _filterMarkers();
                     },
                   ),
-                ]))),
-        body: Builder(
-          builder: (context) => GoogleMap(
+                ],
+              ),
+            ),
+          ),
+          //Search Bar
+        body: Stack(
+          children: [ GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
 
           initialCameraPosition: CameraPosition(
@@ -470,7 +477,95 @@ class _MyAppState extends State<MyApp> {
           mapType: MapType.normal,
           onTap: manageTap,
           polylines: _polylines,
-          )
+          ),
+          Positioned(
+            top: 20.0,
+            left: 20.0,
+            right: 20.0,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              height: 50.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(55.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, 2),
+                    blurRadius: 4.0,
+                  ),
+                ],
+              ), 
+              // Menu botton
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.menu),
+                    onPressed: () {
+                     _scaffoldKey.currentState!.openDrawer();
+                    },
+                  ),
+                 
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    // suggestionsBox
+                    child: TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search Campus Locations',
+                        border: InputBorder.none,
+                      ),
+                      onSubmitted: (value) {
+                            onSearch(value);
+                      },
+                      
+                    ),
+                    suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25.0),
+                        bottomRight: Radius.circular(25.0),
+                        ),
+                        
+                        ),
+                    suggestionsCallback:(String query) async {
+                    List<Marker> matchingMarkers = markers.where((marker) {
+                    return marker.infoWindow.title?.toLowerCase().contains(query.toLowerCase()) ?? false;
+                    }).toList();
+                    return matchingMarkers;
+                    },
+                    itemBuilder:  (context, Marker suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.infoWindow.title ?? ''),
+                        );
+                        },
+                        onSuggestionSelected: (Marker suggestion) {
+                        LatLng markerLatLng = suggestion.position;
+                        mapController?.animateCamera(CameraUpdate.newLatLngZoom(markerLatLng, 20.0),
+                        );
+                          _searchController.text = suggestion.infoWindow.title ?? '';
+
+                        setState(() {
+                              selectedSuggestion = suggestion.infoWindow.title ?? '';
+
+                        });
+
+                        },
+                      ),
+                      ),
+                      // Search button
+                      IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      onSearch(_searchController.text);
+                    },
+                    autofocus: true,
+                  ),
+                ],
+              ),
+            ),
+            ),
+          ],
         ),
       ),
     );
