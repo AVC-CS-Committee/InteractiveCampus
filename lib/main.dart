@@ -29,6 +29,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
+  MapType _currentMapType = MapType.normal;                         // 
+
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
   Set<Marker> markers = {};
@@ -419,11 +421,32 @@ class _MyAppState extends State<MyApp> {
           ),
           markers: markers,
           myLocationEnabled: true,
-          mapType: MapType.normal,
+          mapType: _currentMapType,                             // Set the map type 
           onTap: manageTap,
           polylines: _polylines,
-          )
+           ),
         ),
+          //
+          floatingActionButton: Container(
+           margin: const EdgeInsets.only(top: 16, left: 16),
+           child: FloatingActionButton(
+             mini: true,
+            onPressed: () {
+            setState(() {
+        // Toggle between MapType.normal and MapType.satellite
+        _currentMapType = _currentMapType == MapType.normal
+            ? MapType.satellite
+            : MapType.normal;
+           });
+         },
+       child: Icon(
+      _currentMapType == MapType.normal
+          ? Icons.satellite
+          : Icons.map, // Use different icons based on map type
+           ),
+            ),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
