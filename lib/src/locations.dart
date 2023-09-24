@@ -66,23 +66,23 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
     if (location.type == "parking") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/image.png');
+          'assets/images/parking.png');
     } else if (location.type == "classroom") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/image1.png');
+          'assets/images/classroom.png');
     } else if (location.type == "food") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/image1.png');
+          'assets/images/food.png');
     } else if (location.type == "athletic") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/image1.png');
+          'assets/images/athletic.png');
     } else if (location.type == "resource") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/image1.png');
+          'assets/images/resource.png');
     } else {
       markerIcon = BitmapDescriptor.defaultMarker;
     }
