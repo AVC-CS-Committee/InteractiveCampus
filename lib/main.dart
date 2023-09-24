@@ -318,6 +318,7 @@ class _MyAppState extends State<MyApp> {
           )
           ),
       home: Scaffold(
+        key: _scaffoldKey,
         drawer: Builder(
             builder: (context) => Drawer(
                 child: ListView(padding: EdgeInsets.zero, children: [
