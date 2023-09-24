@@ -424,14 +424,6 @@ class _MyAppState extends State<MyApp> {
           polylines: _polylines,
           )
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              
-            });
-          },
-          
-        ),
       ),
     );
   }
