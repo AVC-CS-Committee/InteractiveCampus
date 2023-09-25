@@ -1,11 +1,83 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/src/aboutus_page.dart';
 import 'package:interactivemap/src/emergency_page.dart';
 import 'package:interactivemap/src/faq_page.dart';
+import 'package:interactivemap/src/class_creator.dart';
+import 'package:flutter/services.dart';
+import 'dart:developer';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:interactivemap/src/faq_page.dart';
 
-class ClassPage extends StatelessWidget {
-   const ClassPage({Key? key}) : super(key: key);
+class ClassPage extends StatefulWidget {
+  @override
+  _ClassPage createState() => _ClassPage();
+}
+
+class _ClassPage extends State<ClassPage> {
+
+  void initState() {
+    loadData();
+    super.initState();
+  }
+
+  //Color textColor = Color.fromARGB(255, 255, 166, 0);
+  Color textColor = Color.fromARGB(255, 0, 140, 255);
+
+  late String class1Select = "Select a class";
+  late String class2Select = "Select a class";
+  late String class3Select = "Select a class";
+  late String class4Select = "Select a class";
+  late String class5Select = "Select a class";
+
+  late String class1_Name = "class name";
+  late String class2_Name = "class name";
+  late String class3_Name = "class name";
+  late String class4_Name = "class name";
+  late String class5_Name = "class name";
+
+  late String class1_Time = "Class Time";
+  late String class2_Time = "Class Time";
+  late String class3_Time = "Class Time";
+  late String class4_Time = "Class Time";
+  late String class5_Time = "Class Time";
+
+  late String class1_Day = "Class Day";
+  late String class2_Day = "Class Day";
+  late String class3_Day = "Class Day";
+  late String class4_Day = "Class Day";
+  late String class5_Day = "Class Day";
+
+  late Map<String, Object> data = {};
+
+
+  void loadData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    
+    setState(() {
+      class1Select = prefs.getString('Class1Select') ?? 'Select a class';
+      class2Select = prefs.getString('Class2Select') ?? 'Select a class';
+      class3Select = prefs.getString('Class3Select') ?? 'Select a class';
+      class4Select = prefs.getString('Class4Select') ?? 'Select a class';
+      class5Select = prefs.getString('Class5Select') ?? 'Select a class';
+
+      class1_Name = prefs.getString('class1_Name') ?? 'Enter Class Name';
+      class2_Name = prefs.getString('class2_Name') ?? 'Enter Class Name';
+      class3_Name = prefs.getString('class3_Name') ?? 'Enter Class Name';
+      class4_Name = prefs.getString('class4_Name') ?? 'Enter Class Name';
+      class5_Name = prefs.getString('class5_Name') ?? 'Enter Class Name';
+
+      class1_Time = prefs.getString('class1_Time') ?? 'Enter Class Time';
+
+      class1_Day = prefs.getString('class1_Day') ?? 'Enter Class Day';
+      
+      var dataString = prefs.getString('data');
+      data = dataString != null ? Map<String, Object>.from(jsonDecode(dataString)): {};
+    });
+  }
+
 
 
   @override
@@ -27,85 +99,110 @@ class ClassPage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            Text('Please Enter your Classes here!',
+          const Text('Your Class Schedule',
+             textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff8a1c40)
+                  color: Color.fromARGB(255, 255, 166, 0)
               ),
+            ),
+             Text("Class 1: ",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: textColor
+                ),
+              ),
+            const Divider(),
+            Row(
+              children: [
+                Text("Location: ",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: textColor
+                  ),
+                ),
+                Text(class1Select,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text("Class: ",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: textColor
+                  ),
+                ),
+                Text(class1_Name,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text("Time: ",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: textColor
+                  ),
+                ),
+                Text(class1_Time,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text("Day: ",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: textColor
+                  ),
+                ),
+                Text(class1_Day,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            OutlinedButton(
+              onPressed: (){}, 
+              child: const Text("GO"),
+              style: OutlinedButton.styleFrom(), 
+            ),
+            ListTile(
+              title: const Text('Create A class Schedule',
+              textAlign: TextAlign.center,
+                style: TextStyle(
+                )
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ClassCreator()),
+                );
+              },
+            ),
 
-            ),
-            const Divider(),
-            Text('Class 1: ',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff8a1c40)
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter your Class Info',
-              ),
-            ),
 
-            const Divider(),
-            Text('Class 2: ',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff8a1c40)
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter your Class Info',
-              ),
-            ),
-            const Divider(),
-            Text('Class 3: ',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff8a1c40)
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter your Class Info',
-              ),
-            ),
-            const Divider(),
-            Text('Class 4: ',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff8a1c40)
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter your Class Info',
-              ),
-            ),
-            const Divider(),
-            Text('Class 5: ',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff8a1c40)
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter your Class Info',
-              ),
-            ),
           ],
         ),
       ),
