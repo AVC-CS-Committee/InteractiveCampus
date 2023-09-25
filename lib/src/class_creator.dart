@@ -80,7 +80,7 @@ class _ClassCreator extends State<ClassCreator> {
   }
 
    //const ClassPage({Key? key}) : super(key: key);
-  List<String> classList = ['Select a class', 'YH/Yoshida Hal', 'UH/Uhazy Hall', 'Four'];
+  List<String> classList = ['Select a class', 'YH/Yoshida Hall', 'UH/Uhazy Hall', 'Four'];
   String? selectedItem = 'Select a class';
 
   @override

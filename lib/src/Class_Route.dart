@@ -1,5 +1,17 @@
-import 'dart:developer';
 
+/* 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+OLD FUNCTIONS HERE WERE PUT INTO MAIN DONT USE 
+*/
+
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,40 +21,33 @@ import 'package:location/location.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:google_maps_routes/google_maps_routes.dart';
-import 'src/locations.dart' as locations;
-import 'src/help_page.dart';
-import 'src/classes_page.dart';
+import 'package:interactivemap/src/locations.dart' as locations;
+import 'package:interactivemap/src/help_page.dart';
+import 'package:interactivemap/src/classes_page.dart';
 
+class ClassRoute extends StatefulWidget {
+  final double latitude;
+  final double longitude;
 
-void main() async {
+  const ClassRoute({super.key, required this.latitude, required this.longitude});
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await FlutterConfig.loadEnvVariables();
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  //const MyApp({super.key});
-
-  final double? latitude;
-  final double? longitude;
-  const MyApp({super.key, this.latitude, this.longitude});
-  
-  
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<ClassRoute> createState() => _ClassRoute();
+
 }
 
-class _MyAppState extends State<MyApp> {
+class _ClassRoute extends State<ClassRoute> {
 
-  double? latitude;
-  double? longitude;
+
+  double latitude = 0.0;
+  double longitude = 0.0;
+
+
+ 
 
   late GoogleMapController mapController;
 
-  //final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
+  //final LatLng _center = LatLng(latitude, longitude);
 
   Set<Marker> markers = {};
   // Always contains all markers. Used for resetting markers
@@ -438,7 +443,7 @@ class _MyAppState extends State<MyApp> {
           onMapCreated: (controller) => _onMapCreated(controller, context),
 
           initialCameraPosition: CameraPosition(
-            target: LatLng(latitude ?? 34.678652329599096 ,longitude ?? -118.18616290156892),
+            target: LatLng(latitude ,longitude),
             zoom: 17.0,
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map

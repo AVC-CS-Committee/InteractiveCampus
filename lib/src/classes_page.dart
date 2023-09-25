@@ -1,15 +1,19 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/src/aboutus_page.dart';
+import 'package:interactivemap/main.dart';
 import 'package:interactivemap/src/emergency_page.dart';
 import 'package:interactivemap/src/faq_page.dart';
+import 'package:interactivemap/src/faq_page.dart';
+import 'package:interactivemap/src/Class_Route.dart';
 import 'package:interactivemap/src/class_creator.dart';
 import 'package:flutter/services.dart';
 import 'dart:developer';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:interactivemap/src/faq_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ClassPage extends StatefulWidget {
   @override
@@ -25,6 +29,9 @@ class _ClassPage extends State<ClassPage> {
 
   //Color textColor = Color.fromARGB(255, 255, 166, 0);
   Color textColor = Color.fromARGB(255, 0, 140, 255);
+
+  double latitudeClass1 = 34.67613026710341;
+  double longitudeClass1 = -118.19203306356845;
 
   late String class1Select = "Select a class";
   late String class2Select = "Select a class";
@@ -184,7 +191,7 @@ class _ClassPage extends State<ClassPage> {
               ],
             ),
             OutlinedButton(
-              onPressed: (){}, 
+              onPressed: goPress,
               child: const Text("GO"),
               style: OutlinedButton.styleFrom(), 
             ),
@@ -208,4 +215,37 @@ class _ClassPage extends State<ClassPage> {
       ),
     );
   }
+
+  void goPress() async{
+
+    if (class1Select == 'YH/Yoshida Hall'){
+      latitudeClass1 =  34.680353586506165;
+      longitudeClass1 = -118.18506976951421;
+    }
+    else if (class1Select == 'UH/Uhazy Hall'){
+      latitudeClass1 =  34.680353586506165;
+      longitudeClass1 = -118.18506976951421;
+    }
+    else if (class1Select == '1'){
+      latitudeClass1 =  34.680353586506165;
+      longitudeClass1 = -118.18506976951421;
+    }
+    else if (class1Select == '2'){
+      latitudeClass1 =  34.680353586506165;
+      longitudeClass1 = -118.18506976951421;
+    }
+    else if (class1Select == '3'){
+      latitudeClass1 =  34.680353586506165;
+      longitudeClass1 = -118.18506976951421;
+    }
+    else if (class1Select == '4'){
+      latitudeClass1 =  34.680353586506165;
+      longitudeClass1 = -118.18506976951421;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyApp(latitude: latitudeClass1, longitude: longitudeClass1,)),
+      );
+  }
+
 }
