@@ -494,7 +494,7 @@ class _MyAppState extends State<MyApp> {
 
         // Positioned widget to control the position of your content
         Positioned(
-            top: 20.0,
+            top: 30.0,
             left: 20.0,
             right: 20.0,
             child: Container(
