@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
-import 'package:interactivemap/src/Themes/themes.dart';
 
 
 void main() async {
@@ -30,6 +29,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+/*
+  //this is a test can be ignored
+  //
+  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
+
+
+
+  void addCustomIcon(){
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
+        .then(
+          (icon) {
+        setState((){
+          markericon = icon;
+        });
+      },
+    );
+  }
+
+*/
+
+
+
+
 
   late GoogleMapController mapController;
 
@@ -246,9 +271,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeClass.lightTheme,
-      darkTheme: ThemeClass.darkTheme,
-      themeMode: ThemeMode.system,
+      theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff8d1c40),
+            primary: const Color(0xff8d1c40),
+            secondary: const Color(0xff8a1c40),
+          ),
+          appBarTheme: const AppBarTheme(
+            color: Color(0xff8a1c40),
+          )),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('AVC Interactive Map',
@@ -423,7 +455,17 @@ class _MyAppState extends State<MyApp> {
               southwest:LatLng(34.67485483411587, -118.19230586766488)
             )
           ),
+
+          //icon: markericon,
           markers: markers,
+         /* markers: {
+            Marker(
+              markerId: MarkerId('demo'),
+              position: LatLng(34.67796141360417, -118.1847488798502),
+
+            ),
+          },
+          */
           myLocationEnabled: true,
           mapType: MapType.normal,
           onTap: manageTap,
