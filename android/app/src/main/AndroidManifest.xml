@@ -7,7 +7,7 @@
    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
    <application
-        android:label="interactivemap"
+        android:label="AVC Campus"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data

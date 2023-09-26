@@ -14,6 +14,7 @@ import 'src/help_page.dart';
 
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
@@ -28,6 +29,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+/*
+  //this is a test can be ignored
+  //
+  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
+
+
+
+  void addCustomIcon(){
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
+        .then(
+          (icon) {
+        setState((){
+          markericon = icon;
+        });
+      },
+    );
+  }
+
+*/
+
+
+
+
+
   late GoogleMapController mapController;
 
   // Added by matthew for building route 
@@ -130,6 +158,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getCurrentLocation();
+    //addCustomIcon();
   }
 
   void _filterMarkers() {
@@ -447,11 +476,29 @@ class _MyAppState extends State<MyApp> {
         body: Builder(
           builder: (context) => GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
+
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 17.0,
           ),
+            zoomGesturesEnabled: true, //enable Zoom in, out on map
+            minMaxZoomPreference: MinMaxZoomPreference(16, 20),
+          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
+              northeast:LatLng(34.68208082459477, -118.1838193583875) ,
+              southwest:LatLng(34.67485483411587, -118.19230586766488)
+            )
+          ),
+
+          //icon: markericon,
           markers: markers,
+         /* markers: {
+            Marker(
+              markerId: MarkerId('demo'),
+              position: LatLng(34.67796141360417, -118.1847488798502),
+
+            ),
+          },
+          */
           myLocationEnabled: true,
           mapType: _currentMapType,                             // Set the current map type 
           onTap: manageTap,
