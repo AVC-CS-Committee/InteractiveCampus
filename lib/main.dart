@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
@@ -29,7 +30,29 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
-  MapType _currentMapType = MapType.normal;                         // 
+  // Added by matthew for building route 
+  Marker? userMarker;
+  
+  void manageTap(LatLng latLng) {
+    if (_isSwitched) {
+      // This will create a user marker
+      userMarker = Marker(
+        markerId: MarkerId('user_marker'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'User Marker'),
+      );
+      // Adds a userMarker to the map indicated
+      setState(() {
+        markers.add(userMarker!);
+      });
+      // Draws a polyline from the current location to the userMarker
+      drawRoute(latLng);
+    }
+  }
+
+
+  // Current map type
+  MapType _currentMapType = MapType.normal;                         
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
@@ -39,8 +62,8 @@ class _MyAppState extends State<MyApp> {
 
   // Poly-lines
   Set<Polyline> _polylines = {};
-  // MapsRoutes route = MapsRoutes();
 
+  // MapsRoutes route = MapsRoutes();
   LocationData? currentLocation;
   LatLng? currentLocationLatLng;
 
@@ -139,6 +162,8 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
+
+  /* This is in a comment because testing building route by matthew
   Marker? userMarker;
   void manageTap(LatLng latLng){
     if(_isSwitched){
@@ -157,6 +182,7 @@ class _MyAppState extends State<MyApp> {
       drawRoute(latLng);
     }
   }
+  */
 
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
@@ -180,7 +206,13 @@ class _MyAppState extends State<MyApp> {
       width: 5,
     );
 
-   _polylines.add(polyline);
+    //added by matthew for building routes
+    setState(() {
+      _polylines.clear();
+      _polylines.add(polyline);
+    });
+
+   // _polylines.add(polyline);        temp blocked by matthew for building route
 
   }
 
@@ -421,32 +453,33 @@ class _MyAppState extends State<MyApp> {
           ),
           markers: markers,
           myLocationEnabled: true,
-          mapType: _currentMapType,                             // Set the map type 
+          mapType: _currentMapType,                             // Set the current map type 
           onTap: manageTap,
           polylines: _polylines,
            ),
         ),
-          //
+          // A FloatingActionButton to toggle map type
           floatingActionButton: Container(
            margin: const EdgeInsets.only(top: 16, left: 16),
            child: FloatingActionButton(
              mini: true,
-            onPressed: () {
-            setState(() {
-        // Toggle between MapType.normal and MapType.satellite
+             onPressed: () {
+             setState(() {
+          // Toggle between MapType.normal and MapType.hybrid
         _currentMapType = _currentMapType == MapType.normal
-            ? MapType.satellite
+            ? MapType.hybrid
             : MapType.normal;
            });
          },
-       child: Icon(
-      _currentMapType == MapType.normal
-          ? Icons.satellite
-          : Icons.map, // Use different icons based on map type
+           child: Icon(
+          _currentMapType == MapType.normal
+          ? Icons.satellite                               // Different icons based on map type
+          : Icons.map,                                 
            ),
             ),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            // Location of the FloatingActionButton
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,  
       ),
     );
   }
