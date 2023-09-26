@@ -26,24 +26,32 @@ class _ClassCreator extends State<ClassCreator> {
   late String class3Select = "Select a class";
   late String class4Select = "Select a class";
   late String class5Select = "Select a class";
+  late String class6Select = "Select a class";
+
 
   late String class1_Name = "class name";
   late String class2_Name = "class name";
   late String class3_Name = "class name";
   late String class4_Name = "class name";
   late String class5_Name = "class name";
+  late String class6_Name = "class name";
+
 
   late String class1_Time = "Class Time";
   late String class2_Time = "Class Time";
   late String class3_Time = "Class Time";
   late String class4_Time = "Class Time";
   late String class5_Time = "Class Time";
+  late String class6_Time = "Class Time";
+
 
   late String class1_Day = "Class Day";
   late String class2_Day = "Class Day";
   late String class3_Day = "Class Day";
   late String class4_Day = "Class Day";
   late String class5_Day = "Class Day";
+  late String class6_Day = "Class Day";
+
 
   late Map<String, Object> data = {};
 
@@ -57,21 +65,33 @@ class _ClassCreator extends State<ClassCreator> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     
     setState(() {
-      class1Select = prefs.getString('Class1Select') ?? 'Select a class';
-      class2Select = prefs.getString('Class2Select') ?? 'Select a class';
-      class3Select = prefs.getString('Class3Select') ?? 'Select a class';
-      class4Select = prefs.getString('Class4Select') ?? 'Select a class';
-      class5Select = prefs.getString('Class5Select') ?? 'Select a class';
+      class1Select = prefs.getString('Class1Select') ?? '';
+      class2Select = prefs.getString('Class2Select') ?? '';
+      class3Select = prefs.getString('Class3Select') ?? '';
+      class4Select = prefs.getString('Class4Select') ?? '';
+      class5Select = prefs.getString('Class5Select') ?? '';
+      class6Select = prefs.getString('Class6Select') ?? '';
 
-      class1_Name = prefs.getString('class1_Name') ?? 'Enter Class Name';
-      class2_Name = prefs.getString('class2_Name') ?? 'Enter Class Name';
-      class3_Name = prefs.getString('class3_Name') ?? 'Enter Class Name';
-      class4_Name = prefs.getString('class4_Name') ?? 'Enter Class Name';
-      class5_Name = prefs.getString('class5_Name') ?? 'Enter Class Name';
+      class1_Name = prefs.getString('class1_Name') ?? '';
+      class2_Name = prefs.getString('class2_Name') ?? '';
+      class3_Name = prefs.getString('class3_Name') ?? '';
+      class4_Name = prefs.getString('class4_Name') ?? '';
+      class5_Name = prefs.getString('class5_Name') ?? '';
+      class6_Name = prefs.getString('class6_Name') ?? '';
 
-      class1_Time = prefs.getString('class1_Time') ?? 'Enter Class Time';
+      class1_Time = prefs.getString('class1_Time') ?? '';
+      class2_Time = prefs.getString('class2_Time') ?? '';
+      class3_Time = prefs.getString('class3_Time') ?? '';
+      class4_Time = prefs.getString('class4_Time') ?? '';
+      class5_Time = prefs.getString('class5_Time') ?? '';
+      class6_Time = prefs.getString('class6_Time') ?? '';
 
-      class1_Day = prefs.getString('class1_Day') ?? 'Enter Class Day';
+      class1_Day = prefs.getString('class1_Day') ?? '';
+      class2_Day = prefs.getString('class2_Day') ?? '';
+      class3_Day = prefs.getString('class3_Day') ?? '';
+      class4_Day = prefs.getString('class4_Day') ?? '';
+      class5_Day = prefs.getString('class5_Day') ?? '';
+      class6_Day = prefs.getString('class6_Day') ?? '';
 
       
       var dataString = prefs.getString('data');
@@ -80,7 +100,7 @@ class _ClassCreator extends State<ClassCreator> {
   }
 
    //const ClassPage({Key? key}) : super(key: key);
-  List<String> classList = ['Select a class', 'YH/Yoshida Hall', 'UH/Uhazy Hall', 'Four'];
+  List<String> classList = ['Select a class', 'CSUB/CSU Bakersfield', 'DL/Discovery Lab ', 'AL/Auto Lab', 'UH/Uhazy Hall', 'YH/Yoshida Hall', 'S1-9/SOAR High School', 'PA/Performing Arts Theatre', 'FA1/Art Gallery', 'FA2/Black Box', 'MH/Mesquite Hall', 'LH/Lecture Hall', 'SH/Sage Hall', 'ME/Math and Engineering', 'FA4/Fine Arts', 'FA3/Fine Arts Music and Offices', 'EL/Enterprise Lab', 'HL/Horticulture Lab', 'GH1-4/Greenhouses'];
   String? selectedItem = 'Select a class';
 
   @override
@@ -188,14 +208,36 @@ class _ClassCreator extends State<ClassCreator> {
   }
 
 
-
     void saveData() async{
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
         prefs.setString('Class1Select', class1Select);
+        prefs.setString('Class2Select', class2Select);
+        prefs.setString('Class3Select', class4Select);
+        prefs.setString('Class4Select', class4Select);
+        prefs.setString('Class5Select', class5Select);
+        prefs.setString('Class6Select', class6Select);
+
         prefs.setString('class1_Name', class1_Name);
+        prefs.setString('class2_Name', class2_Name);
+        prefs.setString('class3_Name', class3_Name);
+        prefs.setString('class4_Name', class4_Name);
+        prefs.setString('class5_Name', class5_Name);
+        prefs.setString('class6_Name', class6_Name);
+
         prefs.setString('class1_Time', class1_Time);
+        prefs.setString('class2_Time', class2_Time);
+        prefs.setString('class3_Time', class3_Time);
+        prefs.setString('class4_Time', class4_Time);
+        prefs.setString('class5_Time', class5_Time);
+        prefs.setString('class6_Time', class6_Time);
+
         prefs.setString('class1_Day', class1_Day);
+        prefs.setString('class2_Day', class2_Day);
+        prefs.setString('class3_Day', class3_Day);
+        prefs.setString('class4_Day', class4_Day);
+        prefs.setString('class5_Day', class5_Day);
+        prefs.setString('class6_Day', class6_Day);
       });
     }
 
@@ -207,12 +249,29 @@ class _ClassCreator extends State<ClassCreator> {
       prefs.setString('Class3Select' , '');
       prefs.setString('Class4Select' , '');
       prefs.setString('Class5Select' , '');
+      prefs.setString('Class6Select' , '');
 
       prefs.setString('class1_Name', '');
+      prefs.setString('class2_Name', '');
+      prefs.setString('class3_Name', '');
+      prefs.setString('class4_Name', '');
+      prefs.setString('class5_Name', '');
+      prefs.setString('class6_Name', '');
+
 
       prefs.setString('class1_Day', '');
+      prefs.setString('class2_Day', '');
+      prefs.setString('class3_Day', '');
+      prefs.setString('class4_Day', '');
+      prefs.setString('class5_Day', '');
+      prefs.setString('class6_Day', '');
 
       prefs.setString('class1_Time', '');
+      prefs.setString('class2_Time', '');
+      prefs.setString('class3_Time', '');
+      prefs.setString('class4_Time', '');
+      prefs.setString('class5_Time', '');
+      prefs.setString('class6_Time', '');
       });
     }
 

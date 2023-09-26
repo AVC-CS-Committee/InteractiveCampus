@@ -28,7 +28,8 @@ class MyApp extends StatefulWidget {
 
   final double? latitude;
   final double? longitude;
-  const MyApp({super.key, this.latitude, this.longitude});
+  final double? zoom;
+  const MyApp({super.key, this.latitude, this.longitude, this.zoom});
   
   
   @override
@@ -39,6 +40,7 @@ class _MyAppState extends State<MyApp> {
 
   double? latitude;
   double? longitude;
+  double? zoom;
 
   late GoogleMapController mapController;
 
@@ -120,6 +122,7 @@ class _MyAppState extends State<MyApp> {
     getCurrentLocation();
     latitude = widget.latitude;
     longitude = widget.longitude;
+    zoom = widget.zoom;
   }
 
   void _filterMarkers() {
@@ -365,7 +368,6 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 const Divider(),
-
                   // Filters
                   CheckboxListTile(
                     title: const Text('Parking Lots'),
@@ -436,10 +438,9 @@ class _MyAppState extends State<MyApp> {
         body: Builder(
           builder: (context) => GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
-
           initialCameraPosition: CameraPosition(
             target: LatLng(latitude ?? 34.678652329599096 ,longitude ?? -118.18616290156892),
-            zoom: 17.0,
+            zoom: zoom ?? 17,
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
@@ -448,8 +449,6 @@ class _MyAppState extends State<MyApp> {
               southwest:LatLng(34.67485483411587, -118.19230586766488)
             )
           ),
-          
-          //icon: markericon,
           markers: markers,
           myLocationEnabled: true,
           mapType: MapType.normal,
