@@ -65,24 +65,24 @@ Future<Set<Marker>> getMarkers(BuildContext context) async {
      // Set custom marker icon based on location type
     if (location.type == "parking") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/parking.png');
+          const ImageConfiguration(),
+            'assets/images/parking.png');
     } else if (location.type == "classroom") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(devicePixelRatio: 2.5),
+          const ImageConfiguration(),
           'assets/images/classroom.png');
     } else if (location.type == "food") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(devicePixelRatio: 2.5),
+          const ImageConfiguration(),
           'assets/images/food.png');
     } else if (location.type == "athletic") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/athletic.png');
+          const ImageConfiguration(),
+          'assets/images/athletics.png');
     } else if (location.type == "resource") {
       markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(devicePixelRatio: 2.5),
-          'assets/images/resource.png');
+          const ImageConfiguration(),
+          'assets/images/resources.png');
     } else {
       markerIcon = BitmapDescriptor.defaultMarker;
     }
