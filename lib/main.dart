@@ -593,11 +593,12 @@ class _MyAppState extends State<MyApp> {
 
         // Positioned widget to control the position of your content
         Positioned(
-            top: 35.0,
+            top: 30.0,
             left: 20.0,
             right: 20.0,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.5),
+              margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
               height: 50.0,
                width: MediaQuery.of(context).size.width - 100,
               decoration: BoxDecoration(
@@ -655,14 +656,14 @@ class _MyAppState extends State<MyApp> {
                     ),
                     suggestionsBoxDecoration: const SuggestionsBoxDecoration(
                       constraints: BoxConstraints(
-                      minWidth:340, 
+                      minWidth:355, 
                       ),
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(25.0),
                         topLeft: Radius.circular(25.0),
                         bottomLeft: Radius.circular(25.0),
                         bottomRight: Radius.circular(25.0),
-                        ),
+                        )
                         ),
                     noItemsFoundBuilder: (BuildContext context) {
                       return Padding(
@@ -700,8 +701,7 @@ class _MyAppState extends State<MyApp> {
 
                         },
                     suggestionsBoxController: SuggestionsBoxController(
-                      // offset: Offset(-_searchController.text.length * 10.0, 0),
-
+                      // suggestionsBoxVerticalOffset: 10, 
                     ),
                       ),
                         ),
@@ -715,7 +715,6 @@ class _MyAppState extends State<MyApp> {
                      if (isSearching) {
                             _clearSearch();
                           } else {
-                            // Thực hiện tìm kiếm ở đây, ví dụ:
                             final searchText = _searchController.text;
                             onSearch(searchText);
                           }
