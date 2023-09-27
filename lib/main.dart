@@ -1,10 +1,12 @@
 
 
-import 'dart:io';
+
+
 import 'dart:ui';
 import 'dart:developer';
 import 'src/help_page.dart';
 import 'package:flutter/material.dart';
+
 
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
@@ -20,19 +22,31 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 
 
+
+
+
+
 void main() async {
+
+
 
 
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
 
+
+
   runApp(const MyApp());
 }
 
 
+
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+
 
 
   @override
@@ -40,7 +54,13 @@ class MyApp extends StatefulWidget {
 }
 
 
+
+
 class _MyAppState extends State<MyApp> {
+
+
+
+
 
 
 
@@ -49,6 +69,12 @@ class _MyAppState extends State<MyApp> {
   //this is a test can be ignored
   //
   BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
+
+
+
+
+
+
 
 
 
@@ -68,7 +94,17 @@ class _MyAppState extends State<MyApp> {
   }
 
 
+
+
 */
+
+
+
+
+
+
+
+
 
 
 
@@ -80,6 +116,7 @@ class _MyAppState extends State<MyApp> {
   String searchText = '';
   bool isSearching = false;
   bool isClearPressed = false;
+
 
   late GoogleMapController? mapController;
   String selectedSuggestion = '';
@@ -126,17 +163,25 @@ class _MyAppState extends State<MyApp> {
   Set<Marker> markersCopy = {};
 
 
+
+
   // Poly-lines
   Set<Polyline> _polylines = {};
   // MapsRoutes route = MapsRoutes();
+
+
 
 
   LocationData? currentLocation;
   LatLng? currentLocationLatLng;
 
 
+
+
   // Tool States
   bool _isSwitched = false;
+
+
 
 
   // Filter States
@@ -147,11 +192,15 @@ class _MyAppState extends State<MyApp> {
   bool athleticsChecked = false;
 
 
+
+
   Future<void> _onMapCreated(
       GoogleMapController controller, BuildContext context) async {
     mapController = controller;
     markers = await locations.getMarkers(context);
     _getParkedLocation();
+
+
 
 
     // After loading the markers, update the state of the map with setState
@@ -162,16 +211,24 @@ class _MyAppState extends State<MyApp> {
   }
 
 
+
+
   // User Location Related
   void getCurrentLocation() async {
     Location location = Location();
+
+
 
 
     // Checks if location services and permissions are enabled
     checkServicesAndPermissions(location);
 
 
+
+
     currentLocation = await location.getLocation();
+
+
 
 
     // Gets location updates
@@ -184,6 +241,8 @@ class _MyAppState extends State<MyApp> {
   }
 
 
+
+
   void checkServicesAndPermissions(Location location) async {
     var serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -192,6 +251,8 @@ class _MyAppState extends State<MyApp> {
         return;
       }
     }
+
+
 
 
     var permissionGranted = await location.hasPermission();
@@ -206,15 +267,20 @@ class _MyAppState extends State<MyApp> {
   LatLng markerLatLng = suggestion.position;
   mapController?.animateCamera(CameraUpdate.newLatLngZoom(markerLatLng, 20.0));
 
+
   _searchController.text = suggestion.infoWindow.title ?? '';
+
 
   setState(() {
     selectedSuggestion = suggestion.infoWindow.title ?? '';
   });
 
+
   // Không thay đổi trạng thái "search" khi chọn suggestion
   _clearSearch();
 }
+
+
 
 
   @override
@@ -232,8 +298,12 @@ class _MyAppState extends State<MyApp> {
       isSearching = true;
       isClearPressed = true;
 
+
     });
   }
+
+
+
 
 
 
@@ -262,6 +332,8 @@ class _MyAppState extends State<MyApp> {
     }
 
 
+
+
     if (filterCount > 0) {
       markers = tmp;
     } else {
@@ -283,16 +355,24 @@ class _MyAppState extends State<MyApp> {
       });
 
 
+
+
       // Draw polyline from current location to userMarker
       drawRoute(latLng);
     }
   }
 
 
+
+
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
     LatLng? end = latLng;
+
+
+
+
 
 
 
@@ -306,6 +386,8 @@ class _MyAppState extends State<MyApp> {
     // DistanceCalculator distanceCalculator = DistanceCalculator();
 
 
+
+
     // Temporarily being used until routes are figured out
     Polyline polyline = Polyline(
       polylineId: PolylineId('polyline'),
@@ -315,10 +397,16 @@ class _MyAppState extends State<MyApp> {
     );
 
 
+
+
    _polylines.add(polyline);
 
 
+
+
   }
+
+
 
 
   Marker? savedParkingMarker;
@@ -334,13 +422,19 @@ class _MyAppState extends State<MyApp> {
     // Add savedParkingMarker to the map
 
 
+
+
     setState(() {
       markers.add(savedParkingMarker!);
     });
 
 
+
+
     _saveParkedLocation();
   }
+
+
 
 
   Future<void> _getParkedLocation() async {
@@ -361,6 +455,8 @@ class _MyAppState extends State<MyApp> {
   }
 
 
+
+
   Future<void> _saveParkedLocation() async {
     if (savedParkingMarker != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -368,6 +464,8 @@ class _MyAppState extends State<MyApp> {
       prefs.setDouble('parked_longitude', savedParkingMarker!.position.longitude);
     }
   }
+
+
 
 
   Future<void> _removeParkedLocation() async {
@@ -384,10 +482,12 @@ class _MyAppState extends State<MyApp> {
 
 
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    if(Platform.isAndroid){
-
     return MaterialApp(
       theme: ThemeData(
           useMaterial3: true,
@@ -413,6 +513,8 @@ class _MyAppState extends State<MyApp> {
                         )),
                     child: Text(''),
                   ),
+
+
 
 
                   // General Buttons
@@ -441,6 +543,8 @@ class _MyAppState extends State<MyApp> {
                   const Divider(),
 
 
+
+
                 // Tools
                 SwitchListTile(
                   title: const Text('Building Route'),
@@ -449,6 +553,8 @@ class _MyAppState extends State<MyApp> {
                   onChanged: (value) {
                     setState(() {
                       _isSwitched = value;
+
+
 
 
                       if(_isSwitched){
@@ -485,6 +591,8 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 const Divider(),
+
+
 
 
                   // Filters
@@ -566,9 +674,10 @@ class _MyAppState extends State<MyApp> {
       _clearSearch();
     }
   },
-    
+   
 
-    
+
+   
     child: Stack(
         alignment: Alignment.centerLeft,
       children: <Widget>[
@@ -594,9 +703,11 @@ class _MyAppState extends State<MyApp> {
         ),
 
 
+
+
         // Positioned widget to control the position of your content
         Positioned(
-            top: 20.0,
+            top: 30.0,
             left: 20.0,
             right: 20.0,
             child: Container(
@@ -659,7 +770,7 @@ class _MyAppState extends State<MyApp> {
                     ),
                     suggestionsBoxDecoration: const SuggestionsBoxDecoration(
                       constraints: BoxConstraints(
-                      minWidth:355, 
+                      minWidth:355,
                       ),
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(25.0),
@@ -694,25 +805,32 @@ class _MyAppState extends State<MyApp> {
                         _searchController.text = suggestion.infoWindow.title ?? '';
 
 
+
+
                         setState(() {
                         selectedSuggestion = suggestion.infoWindow.title ?? '';
                         isSearching = false;
+
 
                         });
                         isSearching = false;
 
 
+
+
                         },
                     suggestionsBoxController: SuggestionsBoxController(
-                      // suggestionsBoxVerticalOffset: 10, 
+                      // suggestionsBoxVerticalOffset: 10,
                     ),
                       ),
                         ),
                       // Search button
 
+
                       IconButton(
                         icon: Icon(isSearching ? Icons.clear : Icons.search,
                       ),
+
 
                     onPressed: () {
                      if (isSearching) {
@@ -729,380 +847,30 @@ class _MyAppState extends State<MyApp> {
             ),
             ),
       ],
-  
+ 
     )
     );
   },
-  
+ 
 ),
+
+
 
 
       ),
     );
-
-
-    }
-    return Container();
-    if(Platform.isIOS){
-      
-    return MaterialApp(
-      theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xff8d1c40),
-            primary: const Color(0xff8d1c40),
-            secondary: const Color(0xff8a1c40),
-          ),
-          appBarTheme: const AppBarTheme(
-            color: Color(0xff8a1c40),
-          )
-          ),
-      home: Scaffold(
-        key: _scaffoldKey,
-        drawer: Builder(
-            builder: (context) => Drawer(
-                child: ListView(padding: EdgeInsets.zero, children: [
-                  const DrawerHeader(
-                    decoration: BoxDecoration(
-                        color: Color(0xFF8B1C3F),
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/image_avc_logo.png'),
-                        )),
-                    child: Text(''),
-                  ),
-
-
-                  // General Buttons
-                  ListTile(
-                    leading: const Icon(Icons.map_outlined),
-                    title: const Text('Map'),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.help_outline),
-                    title: const Text('Help'),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HelpPage()),
-                      );
-                    },
-                  ),
-                  const Divider(),
-
-
-                // Tools
-                SwitchListTile(
-                  title: const Text('Building Route'),
-                  secondary: const Icon(Icons.near_me),
-                  value: _isSwitched,
-                  onChanged: (value) {
-                    setState(() {
-                      _isSwitched = value;
-
-
-                      if(_isSwitched){
-                        // Ensure current location exists before using the feature
-                        //checkServicesAndPermissions(currentLocation as Location);
-                      }
-                      // Remove marker if feature is turned off
-                      if(!_isSwitched) {
-                        // Removes all instances of user created markers
-                        markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('user_marker'));
-                        // Clears poly-lines
-                        _polylines.clear();
-                      }
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.local_parking),
-                  title: markers.contains(savedParkingMarker) ? Text('Delete Parking') : Text('Save Parking'),
-                  textColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
-                  iconColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                    // True if user intends to delete marker
-                    if(markers.contains(savedParkingMarker)) {
-                      _removeParkedLocation();
-                      markers.removeWhere((savedParkingMarker) => savedParkingMarker.markerId == const MarkerId('parking_marker'));
-                    }
-                    // Entered if user intends to save marker
-                    else {
-                      saveParking();
-                    }
-                  },
-                ),
-                const Divider(),
-
-
-                  // Filters
-                  CheckboxListTile(
-                    title: const Text('Parking Lots'),
-                    secondary: const Icon(Icons.car_repair_rounded),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: parkingChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        parkingChecked = value ?? false;
-                      });
-                      _filterMarkers();
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Classrooms'),
-                    secondary: const Icon(Icons.book),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: classroomsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        classroomsChecked = value ?? false;
-                      });
-                      _filterMarkers();
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Student Resources'),
-                    secondary: const Icon(Icons.account_balance),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: studentResourcesChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        studentResourcesChecked = value ?? false;
-                      });
-                      _filterMarkers();
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Food'),
-                    secondary: const Icon(Icons.food_bank),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: foodChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        foodChecked = value ?? false;
-                      });
-                      _filterMarkers();
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Athletics'),
-                    secondary: const Icon(Icons.sports_tennis_rounded),
-                    controlAffinity: ListTileControlAffinity.platform,
-                    value: athleticsChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        // Using a null-aware operator in case value is null
-                        athleticsChecked = value ?? false;
-                      });
-                      _filterMarkers();
-                    },
-                  ),
-                ]))),
-        body: Builder(
-  builder: (context) {
-    return GestureDetector(
-  onTap: () {
-    if (isSearching) {
-      setState(() {
-        searchText = '';
-        isSearching = false;
-      });
-      _clearSearch();
-    }
-  },
-    
-
-    
-    child: Stack(
-        alignment: Alignment.centerLeft,
-      children: <Widget>[
-        GoogleMap(
-          onMapCreated: (controller) => _onMapCreated(controller, context),
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 17.0,
-          ),
-          zoomGesturesEnabled: true,
-          minMaxZoomPreference: MinMaxZoomPreference(16, 20),
-          cameraTargetBounds: CameraTargetBounds(
-            LatLngBounds(
-              northeast: LatLng(34.68208082459477, -118.1838193583875),
-              southwest: LatLng(34.67485483411587, -118.19230586766488),
-            ),
-          ),
-          markers: markers,
-          myLocationEnabled: true,
-          mapType: MapType.normal,
-          onTap: manageTap,
-          polylines: _polylines,
-        ),
-
-
-        // Positioned widget to control the position of your content
-        Positioned(
-            top: 45.0,
-            left: 20.0,
-            right: 20.0,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.5),
-              margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              height: 50.0,
-               width: MediaQuery.of(context).size.width - 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(55.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    offset: Offset(0, 2),
-                    blurRadius: 4.0,
-                  ),
-                ],
-              ),
-              // Menu botton
-              child: Row(
-                children: [
-                  if(!isSearching)
-                  IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () {
-                     _scaffoldKey.currentState!.openDrawer();
-                    },
-                  ),
-                 
-                  SizedBox(width:0),
-                  Expanded(
-                    // suggestionsBox
-                    child: TypeAheadField(
-                    textFieldConfiguration: TextFieldConfiguration(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search Campus Locations',
-                        alignLabelWithHint: true,
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          searchText = value;
-                        });
-                      },
-                      onSubmitted: (value) {
-                        if (isSearching) {
-                          (value);
-                        }
-                        setState(() {
-                              isSearching = false;
-                            });
-                      },
-                      onTap: () {
-                        setState(() {
-                          isSearching = true;
-                        });
-                      },
-                     
-                    ),
-                    suggestionsBoxDecoration: const SuggestionsBoxDecoration(
-                      constraints: BoxConstraints(
-                      minWidth:355, 
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(25.0),
-                        topLeft: Radius.circular(25.0),
-                        bottomLeft: Radius.circular(25.0),
-                        bottomRight: Radius.circular(25.0),
-                        )
-                        ),
-                    noItemsFoundBuilder: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text('Not Found Locations',
-                          style: TextStyle(fontSize: 18.0),
-                          ),
-                          );
-                          },
-                    suggestionsCallback:(String query) async {
-                    List<Marker> matchingMarkers = markers.where((marker) {
-                    return marker.infoWindow.title?.toLowerCase().contains(query.toLowerCase()) ?? false;
-                    }).toList();
-                    return matchingMarkers;
-                    },
-                    itemBuilder:  (context, Marker suggestion) {
-                      return ListTile(
-                        title: Text(suggestion.infoWindow.title ?? ''),
-                        );
-                        },
-                        onSuggestionSelected: (Marker suggestion) {
-                        LatLng markerLatLng = suggestion.position;
-                        mapController?.animateCamera(CameraUpdate.newLatLngZoom(markerLatLng, 20.0),
-                        );
-                        _searchController.text = suggestion.infoWindow.title ?? '';
-
-
-                        setState(() {
-                        selectedSuggestion = suggestion.infoWindow.title ?? '';
-                        isSearching = false;
-
-                        });
-                        isSearching = false;
-
-
-                        },
-                    suggestionsBoxController: SuggestionsBoxController(
-                      // suggestionsBoxVerticalOffset: 10, 
-                    ),
-                      ),
-                        ),
-                      // Search button
-
-                      IconButton(
-                        icon: Icon(isSearching ? Icons.clear : Icons.search,
-                      ),
-
-                    onPressed: () {
-                     if (isSearching) {
-                            _clearSearch();
-                          } else {
-                            final searchText = _searchController.text;
-                            onSearch(searchText);
-                          }
-                    },
-                    autofocus: true,
-                  ),
-                ],
-              ),
-            ),
-            ),
-      ],
-  
-    )
-    );
-  },
-  
-),
-
-
-      ),
-    );
-
-
-
-
-    }
   }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
