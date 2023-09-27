@@ -1,8 +1,10 @@
 
+
 import 'dart:ui';
 import 'dart:developer';
 import 'src/help_page.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'src/locations.dart' as locations;
@@ -15,28 +17,40 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 
 
+
+
 void main() async {
+
 
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
+
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
+
 class _MyAppState extends State<MyApp> {
+
+
 
 
 /*
   //this is a test can be ignored
   //
   BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
+
+
+
 
 
 
@@ -52,11 +66,19 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+
 */
 
 
 
 
+
+
+
+
+  String searchText = '';
+  bool isSearching = false;
+  bool isClearPressed = false;
 
   late GoogleMapController? mapController;
   String selectedSuggestion = '';
@@ -74,7 +96,18 @@ class _MyAppState extends State<MyApp> {
   }
   void onSearch(String query) {
   Marker? searchedMarker = searchMarkerByName(query, markers);
-
+      if (query.isNotEmpty) {
+      setState(() {
+        isSearching = true;
+      });
+    } else {
+      if (!isClearPressed) {
+      setState(() {
+        isSearching = false;
+      });
+      }
+    }
+    isClearPressed = false;
     if(searchedMarker != null){
         LatLng markerLatLng = searchedMarker.position;
        
@@ -84,22 +117,26 @@ class _MyAppState extends State<MyApp> {
       );
     }
   }
-    
-    
+   
+   
 }
   Set<Marker> markers = {};
   // Always contains all markers. Used for resetting markers
   Set<Marker> markersCopy = {};
 
+
   // Poly-lines
   Set<Polyline> _polylines = {};
   // MapsRoutes route = MapsRoutes();
 
+
   LocationData? currentLocation;
   LatLng? currentLocationLatLng;
 
+
   // Tool States
   bool _isSwitched = false;
+
 
   // Filter States
   bool parkingChecked = false;
@@ -108,11 +145,13 @@ class _MyAppState extends State<MyApp> {
   bool foodChecked = false;
   bool athleticsChecked = false;
 
+
   Future<void> _onMapCreated(
       GoogleMapController controller, BuildContext context) async {
     mapController = controller;
     markers = await locations.getMarkers(context);
     _getParkedLocation();
+
 
     // After loading the markers, update the state of the map with setState
     setState(() {
@@ -121,14 +160,18 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+
   // User Location Related
   void getCurrentLocation() async {
     Location location = Location();
 
+
     // Checks if location services and permissions are enabled
     checkServicesAndPermissions(location);
 
+
     currentLocation = await location.getLocation();
+
 
     // Gets location updates
     location.onLocationChanged.listen(
@@ -139,6 +182,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+
   void checkServicesAndPermissions(Location location) async {
     var serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -148,6 +192,7 @@ class _MyAppState extends State<MyApp> {
       }
     }
 
+
     var permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
@@ -156,6 +201,20 @@ class _MyAppState extends State<MyApp> {
       }
     }
   }
+  void _onSuggestionSelected(Marker suggestion) {
+  LatLng markerLatLng = suggestion.position;
+  mapController?.animateCamera(CameraUpdate.newLatLngZoom(markerLatLng, 20.0));
+
+  _searchController.text = suggestion.infoWindow.title ?? '';
+
+  setState(() {
+    selectedSuggestion = suggestion.infoWindow.title ?? '';
+  });
+
+  // Không thay đổi trạng thái "search" khi chọn suggestion
+  _clearSearch();
+}
+
 
   @override
   void initState() {
@@ -169,8 +228,13 @@ class _MyAppState extends State<MyApp> {
   void _clearSearch() {
     setState(() {
       _searchController.clear();
+      isSearching = true;
+      isClearPressed = true;
+
     });
   }
+
+
 
   void _filterMarkers() {
     int filterCount = 0;
@@ -196,6 +260,7 @@ class _MyAppState extends State<MyApp> {
       ++filterCount;
     }
 
+
     if (filterCount > 0) {
       markers = tmp;
     } else {
@@ -216,15 +281,19 @@ class _MyAppState extends State<MyApp> {
         markers.add(userMarker!);
       });
 
+
       // Draw polyline from current location to userMarker
       drawRoute(latLng);
     }
   }
 
+
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
     LatLng? end = latLng;
+
+
 
 
     // IMPORTANT NOTE: This piece of code works by showing routes based on google map data. However, the routes only seem to
@@ -235,6 +304,7 @@ class _MyAppState extends State<MyApp> {
     // _polylines = route.routes;
     // DistanceCalculator distanceCalculator = DistanceCalculator();
 
+
     // Temporarily being used until routes are figured out
     Polyline polyline = Polyline(
       polylineId: PolylineId('polyline'),
@@ -243,9 +313,12 @@ class _MyAppState extends State<MyApp> {
       width: 5,
     );
 
+
    _polylines.add(polyline);
 
+
   }
+
 
   Marker? savedParkingMarker;
   void saveParking() {
@@ -259,12 +332,15 @@ class _MyAppState extends State<MyApp> {
     );
     // Add savedParkingMarker to the map
 
+
     setState(() {
       markers.add(savedParkingMarker!);
     });
 
+
     _saveParkedLocation();
   }
+
 
   Future<void> _getParkedLocation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -283,6 +359,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+
   Future<void> _saveParkedLocation() async {
     if (savedParkingMarker != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -290,6 +367,7 @@ class _MyAppState extends State<MyApp> {
       prefs.setDouble('parked_longitude', savedParkingMarker!.position.longitude);
     }
   }
+
 
   Future<void> _removeParkedLocation() async {
     if (savedParkingMarker != null) {
@@ -301,6 +379,8 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
+
+
 
 
   @override
@@ -331,6 +411,7 @@ class _MyAppState extends State<MyApp> {
                     child: Text(''),
                   ),
 
+
                   // General Buttons
                   ListTile(
                     leading: const Icon(Icons.map_outlined),
@@ -356,6 +437,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                   const Divider(),
 
+
                 // Tools
                 SwitchListTile(
                   title: const Text('Building Route'),
@@ -364,6 +446,7 @@ class _MyAppState extends State<MyApp> {
                   onChanged: (value) {
                     setState(() {
                       _isSwitched = value;
+
 
                       if(_isSwitched){
                         // Ensure current location exists before using the feature
@@ -399,6 +482,7 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 const Divider(),
+
 
                   // Filters
                   CheckboxListTile(
@@ -469,7 +553,21 @@ class _MyAppState extends State<MyApp> {
                 ]))),
         body: Builder(
   builder: (context) {
-    return Stack(
+    return GestureDetector(
+  onTap: () {
+    if (isSearching) {
+      setState(() {
+        searchText = '';
+        isSearching = false;
+      });
+      _clearSearch();
+    }
+  },
+    
+
+    
+    child: Stack(
+        alignment: Alignment.centerLeft,
       children: <Widget>[
         GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
@@ -492,14 +590,16 @@ class _MyAppState extends State<MyApp> {
           polylines: _polylines,
         ),
 
+
         // Positioned widget to control the position of your content
         Positioned(
-            top: 30.0,
+            top: 35.0,
             left: 20.0,
             right: 20.0,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               height: 50.0,
+               width: MediaQuery.of(context).size.width - 100,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(55.0),
@@ -510,10 +610,11 @@ class _MyAppState extends State<MyApp> {
                     blurRadius: 4.0,
                   ),
                 ],
-              ), 
+              ),
               // Menu botton
               child: Row(
                 children: [
+                  if(!isSearching)
                   IconButton(
                     icon: Icon(Icons.menu),
                     onPressed: () {
@@ -521,7 +622,7 @@ class _MyAppState extends State<MyApp> {
                     },
                   ),
                  
-                  SizedBox(width: 10.0),
+                  SizedBox(width:0),
                   Expanded(
                     // suggestionsBox
                     child: TypeAheadField(
@@ -529,20 +630,48 @@ class _MyAppState extends State<MyApp> {
                       controller: _searchController,
                       decoration: InputDecoration(
                         hintText: 'Search Campus Locations',
+                        alignLabelWithHint: true,
                         border: InputBorder.none,
                       ),
-                      onSubmitted: (value) {
-                            onSearch(value);
+                      onChanged: (value) {
+                        setState(() {
+                          searchText = value;
+                        });
                       },
-                      
+                      onSubmitted: (value) {
+                        if (isSearching) {
+                          (value);
+                        }
+                        setState(() {
+                              isSearching = false;
+                            });
+                      },
+                      onTap: () {
+                        setState(() {
+                          isSearching = true;
+                        });
+                      },
+                     
                     ),
-                    suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                    suggestionsBoxDecoration: const SuggestionsBoxDecoration(
+                      constraints: BoxConstraints(
+                      minWidth:340, 
+                      ),
                       borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(25.0),
+                        topLeft: Radius.circular(25.0),
                         bottomLeft: Radius.circular(25.0),
                         bottomRight: Radius.circular(25.0),
                         ),
-                        
                         ),
+                    noItemsFoundBuilder: (BuildContext context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text('Not Found Locations',
+                          style: TextStyle(fontSize: 18.0),
+                          ),
+                          );
+                          },
                     suggestionsCallback:(String query) async {
                     List<Marker> matchingMarkers = markers.where((marker) {
                     return marker.infoWindow.title?.toLowerCase().contains(query.toLowerCase()) ?? false;
@@ -558,21 +687,38 @@ class _MyAppState extends State<MyApp> {
                         LatLng markerLatLng = suggestion.position;
                         mapController?.animateCamera(CameraUpdate.newLatLngZoom(markerLatLng, 20.0),
                         );
-                          _searchController.text = suggestion.infoWindow.title ?? '';
+                        _searchController.text = suggestion.infoWindow.title ?? '';
+
 
                         setState(() {
-                              selectedSuggestion = suggestion.infoWindow.title ?? '';
+                        selectedSuggestion = suggestion.infoWindow.title ?? '';
+                        isSearching = false;
 
                         });
+                        isSearching = false;
+
 
                         },
+                    suggestionsBoxController: SuggestionsBoxController(
+                      // offset: Offset(-_searchController.text.length * 10.0, 0),
+
+                    ),
                       ),
-                      ),
+                        ),
                       // Search button
+
                       IconButton(
-                    icon: Icon(Icons.search),
+                        icon: Icon(isSearching ? Icons.clear : Icons.search,
+                      ),
+
                     onPressed: () {
-                      onSearch(_searchController.text);
+                     if (isSearching) {
+                            _clearSearch();
+                          } else {
+                            // Thực hiện tìm kiếm ở đây, ví dụ:
+                            final searchText = _searchController.text;
+                            onSearch(searchText);
+                          }
                     },
                     autofocus: true,
                   ),
@@ -581,11 +727,20 @@ class _MyAppState extends State<MyApp> {
             ),
             ),
       ],
+  
+    )
     );
   },
+  
 ),
+
 
       ),
     );
   }
 }
+
+
+
+
+
