@@ -2,6 +2,7 @@
 
 
 
+import 'dart:io';
 import 'dart:ui';
 import 'dart:developer';
 import 'src/help_page.dart';
@@ -707,7 +708,9 @@ class _MyAppState extends State<MyApp> {
 
         // Positioned widget to control the position of your content
         Positioned(
-            top: 30.0,
+            top: Platform.isIOS 
+            ? 35.0    //edit on ios
+            : 20.0,   //edit on android
             left: 20.0,
             right: 20.0,
             child: Container(
@@ -861,18 +864,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
