@@ -13,37 +13,27 @@ import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 import 'src/classes_page.dart';
 
-
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
-
   runApp(const MyApp());
 }
-
 class MyApp extends StatefulWidget {
-  //const MyApp({super.key});
-
+  //used to take in lon and lat from go press in class screen
   final double? latitude;
   final double? longitude;
   final double? zoom;
   const MyApp({super.key, this.latitude, this.longitude, this.zoom});
-  
-  
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
-
+  //used to pass long and lat into the map default is overview of avc,
+  // only changes when pressing go in the class screen
   double? latitude;
   double? longitude;
   double? zoom;
-
   late GoogleMapController mapController;
-
-  //final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
   Set<Marker> markers = {};
   // Always contains all markers. Used for resetting markers
@@ -254,8 +244,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -264,7 +252,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xff8d1c40),
+          backgroundColor: const Color(0xff8d1c40),
           title: const Text('AVC Interactive Map',
               style: TextStyle(
                 color: Colors.white,
