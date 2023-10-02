@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:interactivemap/src/Themes/themes.dart';
@@ -160,9 +159,9 @@ class _MyAppState extends State<MyApp> {
     if(_isSwitched){
       // Create user marker
       userMarker = Marker(
-        markerId: MarkerId('user_marker'),
+        markerId: const MarkerId('user_marker'),
         position: latLng,
-        infoWindow: InfoWindow(title: 'User Marker'),
+        infoWindow: const InfoWindow(title: 'User Marker'),
       );
       // Add userMarker to the map
       setState(() {

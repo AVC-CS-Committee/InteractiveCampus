@@ -53,6 +53,9 @@ class _ClassCreator extends State<ClassCreator> {
   late String class6_Day = "Class Day";
 
 
+  late String class1image = "https://www.avc.edu/themes/custom/antelopevc/logo.svg" ;
+
+
   late Map<String, Object> data = {};
 
   @override
@@ -92,6 +95,8 @@ class _ClassCreator extends State<ClassCreator> {
       class4_Day = prefs.getString('class4_Day') ?? '';
       class5_Day = prefs.getString('class5_Day') ?? '';
       class6_Day = prefs.getString('class6_Day') ?? '';
+
+      class1image = prefs.getString('class1_image') ?? 'https://www.avc.edu/themes/custom/antelopevc/logo.svg';
 
       
       var dataString = prefs.getString('data');
@@ -210,6 +215,64 @@ class _ClassCreator extends State<ClassCreator> {
 
     void saveData() async{
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (class1Select == 'CSUB/CSU Bakersfield'){
+
+      }
+      else if (class1Select == 'DL/Discovery Lab'){
+
+      }
+      else if (class1Select == 'AL/Auto Lab'){
+
+      }
+      else if (class1Select == 'UH/Uhazy Hall'){
+        class1image = "https://www.avc.edu/sites/default/files/inline-images/measureavFeb25-002.jpg";
+      }
+      else if (class1Select == 'YH/Yoshida Hall'){
+
+      }
+      else if (class1Select == 'S1-9/SOAR High School'){
+
+      }
+      else if (class1Select == 'PA/Performing Arts Theatre'){
+
+      }
+      else if (class1Select == 'FA1/Art Gallery'){
+
+      }
+      else if (class1Select == 'FA2/Black Box'){
+
+      }
+      else if (class1Select == 'MH/Mesquite Hall'){
+
+      }
+      else if (class1Select == 'LH/Lecture Hall'){
+
+      }
+      else if (class1Select == 'SH/Sage Hall'){
+        class1image = "https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png";
+      }
+      else if (class1Select == 'ME/Math and Engineering'){
+
+      }
+      else if (class1Select == 'FA4/Fine Arts'){
+
+      }
+      else if (class1Select == 'FA3/Fine Arts Music and Offices'){
+
+      }
+      else if (class1Select == 'EL/Enterprise Lab'){
+
+      }
+      else if (class1Select == 'HL/Horticulture Lab'){
+
+      }
+      else if (class1Select == 'GH1-4/Greenhouses'){
+
+      }
+      else{
+
+      }
+
       setState(() {
         prefs.setString('Class1Select', class1Select);
         prefs.setString('Class2Select', class2Select);
@@ -238,6 +301,8 @@ class _ClassCreator extends State<ClassCreator> {
         prefs.setString('class4_Day', class4_Day);
         prefs.setString('class5_Day', class5_Day);
         prefs.setString('class6_Day', class6_Day);
+
+        prefs.setString('class1_image', class1image);
       });
     }
 

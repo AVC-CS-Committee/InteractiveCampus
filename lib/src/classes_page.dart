@@ -1,40 +1,35 @@
 import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:interactivemap/src/aboutus_page.dart';
 import 'package:interactivemap/main.dart';
-import 'package:interactivemap/src/emergency_page.dart';
-import 'package:interactivemap/src/faq_page.dart';
-import 'package:interactivemap/src/faq_page.dart';
-import 'package:interactivemap/src/class_creator.dart';
-import 'package:flutter/services.dart';
-import 'dart:developer';
-import 'package:interactivemap/src/faq_page.dart';
+import 'package:interactivemap/src/class_1_creator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClassPage extends StatefulWidget {
+  const ClassPage({super.key});
+
   @override
   _ClassPage createState() => _ClassPage();
 }
 
 class _ClassPage extends State<ClassPage> {
 
+  @override
   void initState() {
     loadData();
     super.initState();
   }
 
-  //Color textColor = Color.fromARGB(255, 255, 166, 0);
-  Color textColor = Color.fromARGB(255, 0, 140, 255);
+
+  Color textColor = Color.fromARGB(255, 241, 138, 32); // avc orange
+  //Color textColor = Color.fromARGB(255, 141, 185, 202);// avc blue
+ //Color textColor = Color.fromARGB(255, 0, 107, 103); // avc green
 
   double latitudeClass1 = 34.67613026710341;
   double longitudeClass1 = -118.19203306356845;
 
   late int class1pick = 0;
 
-  late String classforCords = "Select a class";
+  late String classforCords = "";
 
 
   late String class1Select = "Select a class";
@@ -45,28 +40,43 @@ class _ClassPage extends State<ClassPage> {
   late String class6Select = "Select a class";
 
 
-  late String class1_Name = "class name";
-  late String class2_Name = "class name";
-  late String class3_Name = "class name";
-  late String class4_Name = "class name";
-  late String class5_Name = "class name";
-  late String class6_Name = "class name";
+  late String class1name = "class name";
+  late String class2name = "class name";
+  late String class3name = "class name";
+  late String class4name = "class name";
+  late String class5name = "class name";
+  late String class6name = "class name";
 
 
-  late String class1_Time = "Class Time";
-  late String class2_Time = "Class Time";
-  late String class3_Time = "Class Time";
-  late String class4_Time = "Class Time";
-  late String class5_Time = "Class Time";
-  late String class6_Time = "Class Time";
+  late String class1time = "Class Time";
+  late String class2time = "Class Time";
+  late String class3time = "Class Time";
+  late String class4time = "Class Time";
+  late String class5time = "Class Time";
+  late String class6time = "Class Time";
 
 
-  late String class1_Day = "Class Day";
-  late String class2_Day = "Class Day";
-  late String class3_Day = "Class Day";
-  late String class4_Day = "Class Day";
-  late String class5_Day = "Class Day";
-  late String class6_Day = "Class Day";
+  late String class1day = "Class Day";
+  late String class2day = "Class Day";
+  late String class3day = "Class Day";
+  late String class4day = "Class Day";
+  late String class5day = "Class Day";
+  late String class6day = "";
+
+  late String class1image = "" ;
+  late String class2image = "" ;
+  late String class3image = "" ;
+  late String class4image = "" ;
+  late String class5image = "" ;
+  late String class6image = "" ;
+
+  late String class1room = "";
+  late String class2room = "";
+  late String class3room = "";
+  late String class4room = "";
+  late String class5room = "";
+  late String class6room = "";
+
 
   late Map<String, Object> data = {};
 
@@ -82,35 +92,45 @@ class _ClassPage extends State<ClassPage> {
       class5Select = prefs.getString('Class5Select') ?? '';
       class6Select = prefs.getString('Class6Select') ?? '';
 
-      class1_Name = prefs.getString('class1_Name') ?? '';
-      class2_Name = prefs.getString('class2_Name') ?? '';
-      class3_Name = prefs.getString('class3_Name') ?? '';
-      class4_Name = prefs.getString('class4_Name') ?? '';
-      class5_Name = prefs.getString('class5_Name') ?? '';
-      class6_Name = prefs.getString('class6_Name') ?? '';
+      class1name = prefs.getString('class1_Name') ?? '';
+      class2name = prefs.getString('class2_Name') ?? '';
+      class3name = prefs.getString('class3_Name') ?? '';
+      class4name = prefs.getString('class4_Name') ?? '';
+      class5name = prefs.getString('class5_Name') ?? '';
+      class6name = prefs.getString('class6_Name') ?? '';
 
-      class1_Time = prefs.getString('class1_Time') ?? '';
-      class2_Time = prefs.getString('class2_Time') ?? '';
-      class3_Time = prefs.getString('class3_Time') ?? '';
-      class4_Time = prefs.getString('class4_Time') ?? '';
-      class5_Time = prefs.getString('class5_Time') ?? '';
-      class6_Time = prefs.getString('class6_Time') ?? '';
+      class1time = prefs.getString('class1_Time') ?? '';
+      class2time = prefs.getString('class2_Time') ?? '';
+      class3time = prefs.getString('class3_Time') ?? '';
+      class4time = prefs.getString('class4_Time') ?? '';
+      class5time = prefs.getString('class5_Time') ?? '';
+      class6time = prefs.getString('class6_Time') ?? '';
 
-      class1_Day = prefs.getString('class1_Day') ?? '';
-      class2_Day = prefs.getString('class2_Day') ?? '';
-      class3_Day = prefs.getString('class3_Day') ?? '';
-      class4_Day = prefs.getString('class4_Day') ?? '';
-      class5_Day = prefs.getString('class5_Day') ?? '';
-      class6_Day = prefs.getString('class6_Day') ?? '';
+      class1day = prefs.getString('class1_Day') ?? '';
+      class2day = prefs.getString('class2_Day') ?? '';
+      class3day = prefs.getString('class3_Day') ?? '';
+      class4day = prefs.getString('class4_Day') ?? '';
+      class5day = prefs.getString('class5_Day') ?? '';
+      class6day = prefs.getString('class6_Day') ?? '';
 
+      class1room = prefs.getString('class1_Room') ?? '';
+      class2room = prefs.getString('class2_Room') ?? '';
+      class3room = prefs.getString('class3_Room') ?? '';
+      class4room = prefs.getString('class4_Room') ?? '';
+      class5room = prefs.getString('class5_Room') ?? '';
+      class6room = prefs.getString('class6_Room') ?? '';
+
+      class1image = prefs.getString('class1_image') ?? '';
+      class2image = prefs.getString('class2_image') ?? '';
+      class3image = prefs.getString('class3_image') ?? '';
+      class4image = prefs.getString('class4_image') ?? '';
+      class5image = prefs.getString('class5_image') ?? '';
+      class6image = prefs.getString('class6_image') ?? '';
       
       var dataString = prefs.getString('data');
       data = dataString != null ? Map<String, Object>.from(jsonDecode(dataString)): {};
     });
   }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,32 +148,36 @@ class _ClassPage extends State<ClassPage> {
       ),
       body: Center(
         child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-          const Text('Your Class Schedule',
-             textAlign: TextAlign.center,
+          padding: const EdgeInsets.all(30),
+          children:<Widget> [
+          const Text('Class Schedule',
+             textAlign: TextAlign.left,
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 255, 166, 0)
+                  color: Color.fromARGB(255, 241, 138, 32)
               ),
             ),
-             Text("Class 1: ",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                  color: textColor
-                ),
-              ),
-            const Divider(),
-            Row(
+          const Divider(
+            thickness: 3,
+            color: Colors.black,
+          ),
+          const Divider(
+            thickness: 3,
+            color: Colors.transparent,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xFF8B1C3F)
+            ),
+            height: 420,
+            width: 100,
+            clipBehavior: Clip.antiAlias,
+            child: Column(
               children: [
-                Text("Location: ",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: textColor
-                  ),
+                Image(image: NetworkImage(class1image),
+                  alignment: Alignment.topCenter,
                 ),
                 Text(class1Select,
                   style: const TextStyle(
@@ -161,66 +185,118 @@ class _ClassPage extends State<ClassPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const Divider(
+                  thickness: 2,
+                  color: Color.fromARGB(255, 141, 185, 202),
+                ),
+                Row(
+                  children: [
+                    Text("  Class: ",
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: textColor
+                      ),
+                    ),
+                    Text(class1name,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("  Room: ",
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: textColor
+                      ),
+                    ),
+                    Text(class1room,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("  Time: ",
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: textColor
+                      ),
+                    ),
+                    Text(class1time,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("  Day: ",
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: textColor
+                      ),
+                    ),
+                    Text(class1day,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                ListTile(
+                  title: const Text('Manage',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15,
+                      )
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Class1creator()),
+                    );
+                  },
+                ),
               ],
             ),
-            Row(
-              children: [
-                Text("Class: ",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: textColor
-                  ),
-                ),
-                Text(class1_Name,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text("Time: ",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: textColor
-                  ),
-                ),
-                Text(class1_Time,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text("Day: ",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: textColor
-                  ),
-                ),
-                Text(class1_Day,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            OutlinedButton(
+          ),
+            const Divider(),
+            ElevatedButton(
               onPressed: (){
-                class1pick = 1;
                 goPress();
               },
-              child: const Text("GO"),
-              style: OutlinedButton.styleFrom(), 
+              style:  ButtonStyle(
+                  backgroundColor: const MaterialStatePropertyAll(
+                    Color(0xff006b67),
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: const BorderSide(color: Colors.transparent),
+                      ),
+                  ),
+              ),
+              child: const Text(
+                'GO',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
             ),
             ListTile(
               title: const Text('Create A class Schedule',
@@ -231,39 +307,34 @@ class _ClassPage extends State<ClassPage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ClassCreator()),
+                  MaterialPageRoute(builder: (context) => Class1creator()),
                 );
               },
             ),
-
-
           ],
         ),
       ),
     );
   }
-
   void goPress() async{
-      if (class1pick == 1){
-        classforCords = class1Select;
-      }
-      else if(class1pick == 2){
-        classforCords = class2Select;
-      }
-      else if(class1pick == 3){
-        classforCords = class3Select;
-      }
-      else if(class1pick == 4){
-        classforCords = class4Select;
-      }
-      else if(class1pick == 5){
-        classforCords = class5Select;
-      }
-      else if(class1pick == 6){
-        classforCords = class6Select;
-      }
-
-
+    if (class1pick == 1){
+      classforCords = class1Select;
+    }
+    else if(class1pick == 2){
+      classforCords = class2Select;
+    }
+    else if(class1pick == 3){
+      classforCords = class3Select;
+    }
+    else if(class1pick == 4){
+      classforCords = class4Select;
+    }
+    else if(class1pick == 5){
+      classforCords = class5Select;
+    }
+    else if(class1pick == 6){
+      classforCords = class6Select;
+    }
     if (classforCords == 'CSUB/ CSU Bakersfield'){
       latitudeClass1 =  34.680353586506165;
       longitudeClass1 = -118.18506976951421;
@@ -340,12 +411,9 @@ class _ClassPage extends State<ClassPage> {
       latitudeClass1 =  34.678652329599096;
       longitudeClass1 = -118.18616290156892;
     }
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MyApp(latitude: latitudeClass1, longitude: longitudeClass1, zoom: 19,)),
       );
   }
-
-
 }
