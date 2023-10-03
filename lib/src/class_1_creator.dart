@@ -20,7 +20,7 @@ class _Class1creator extends State<Class1creator> {
   late String timepart2 = "00";
   late String timepart3 = "1";
   late String timepart4 = "00";
-  late String timepart5 = "PM";
+  late String timepart5 = "p.m.";
 
   late String daypart1 = class1day;
   late String daypart2 = "";
@@ -67,12 +67,12 @@ class _Class1creator extends State<Class1creator> {
 
   List<String> classtimeList1 = ['1', '2', '3','4','5','6','7','8','9','10','11','12'];
   List<String> classtimeList2 = ['00', '05', '10','15','20','25','30','35','40','45','50','55'];
-  List<String> classtimeList3 = ['AM', 'PM'];
+  List<String> classtimeList3 = ['a.m.', 'p.m.'];
   String? selectedtimeitem1 = '1';
   String? selectedtimeitem2 = '00';
   String? selectedtimeitem3 = '1';
   String? selectedtimeitem4 = '00';
-  String? selectedtimeitem5 = 'PM';
+  String? selectedtimeitem5 = 'p.m.';
 
   Color togcolor = Color.fromARGB(255, 241, 138, 32);
   Color togcolor2 = Color.fromARGB(255, 241, 138, 32);

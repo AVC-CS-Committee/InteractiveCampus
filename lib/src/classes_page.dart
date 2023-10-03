@@ -171,9 +171,9 @@ class _ClassPage extends State<ClassPage> {
                 borderRadius: BorderRadius.circular(20),
                 color: const Color(0xFF8B1C3F)
             ),
-            height: 420,
-            width: 100,
+           
             clipBehavior: Clip.antiAlias,
+            child: AspectRatio(aspectRatio: .82/1,
             child: Column(
               children: [
                 Image(image: NetworkImage(class1image),
@@ -181,7 +181,7 @@ class _ClassPage extends State<ClassPage> {
                 ),
                 Text(class1Select,
                   style: const TextStyle(
-                    fontSize: 17,
+                    fontSize: 18.5,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -191,16 +191,16 @@ class _ClassPage extends State<ClassPage> {
                 ),
                 Row(
                   children: [
-                    Text("  Class: ",
+                    Text("       Class: ",
                       style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 18.5,
                           fontWeight: FontWeight.bold,
                           color: textColor
                       ),
                     ),
                     Text(class1name,
                       style: const TextStyle(
-                        fontSize: 17,
+                        fontSize: 18.5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -208,16 +208,16 @@ class _ClassPage extends State<ClassPage> {
                 ),
                 Row(
                   children: [
-                    Text("  Room: ",
+                    Text("       Room: ",
                       style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 18.5,
                           fontWeight: FontWeight.bold,
                           color: textColor
                       ),
                     ),
                     Text(class1room,
                       style: const TextStyle(
-                        fontSize: 17,
+                        fontSize: 18.5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -225,16 +225,16 @@ class _ClassPage extends State<ClassPage> {
                 ),
                 Row(
                   children: [
-                    Text("  Time: ",
+                    Text("       Time: ",
                       style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 18.5,
                           fontWeight: FontWeight.bold,
                           color: textColor
                       ),
                     ),
                     Text(class1time,
                       style: const TextStyle(
-                        fontSize: 17,
+                        fontSize: 18.5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -242,16 +242,16 @@ class _ClassPage extends State<ClassPage> {
                 ),
                 Row(
                   children: [
-                    Text("  Day: ",
+                    Text("       Day: ",
                       style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 18.5,
                           fontWeight: FontWeight.bold,
                           color: textColor
                       ),
                     ),
                     Text(class1day,
                       style: const TextStyle(
-                        fontSize: 17,
+                        fontSize: 18.5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -272,7 +272,7 @@ class _ClassPage extends State<ClassPage> {
                   },
                 ),
               ],
-            ),
+            ),),
           ),
             const Divider(),
             ElevatedButton(
@@ -302,7 +302,7 @@ class _ClassPage extends State<ClassPage> {
               title: const Text('Create A class Schedule',
               textAlign: TextAlign.center,
                 style: TextStyle(
-                )
+                ),
               ),
               onTap: () {
                 Navigator.push(
