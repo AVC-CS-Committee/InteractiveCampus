@@ -101,21 +101,17 @@ Future<BitmapDescriptor> createCustomMarkerIcon(BuildContext context, String ass
       markerIcon = await createCustomMarkerIcon(context, 'assets/images/parking.png', iconSize);
 
     } else if (location.type == "classroom") {
-      markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(),
-          'assets/images/classroom.png');
+      double iconSize = MediaQuery.of(context).size.width * 0.05; // Calculate the desired icon size
+      markerIcon = await createCustomMarkerIcon(context, 'assets/images/classroom.png', iconSize);
     } else if (location.type == "food") {
-      markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(),
-          'assets/images/food.png');
+      double iconSize = MediaQuery.of(context).size.width * 0.05; // Calculate the desired icon size
+      markerIcon = await createCustomMarkerIcon(context, 'assets/images/food.png', iconSize);
     } else if (location.type == "athletic") {
-      markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(),
-          'assets/images/athletics.png');
+      double iconSize = MediaQuery.of(context).size.width * 0.05; // Calculate the desired icon size
+      markerIcon = await createCustomMarkerIcon(context, 'assets/images/athletics.png', iconSize);
     } else if (location.type == "resource") {
-      markerIcon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(),
-          'assets/images/resources.png');
+      double iconSize = MediaQuery.of(context).size.width * 0.05; // Calculate the desired icon size
+      markerIcon = await createCustomMarkerIcon(context, 'assets/images/resources.png', iconSize);
     } else {
       markerIcon = BitmapDescriptor.defaultMarker;
     }
