@@ -251,33 +251,40 @@ class _MyAppState extends State<MyApp> {
             secondary: const Color(0xff8a1c40),
           ),
           appBarTheme: const AppBarTheme(
-            color: Color(0xff8a1c40),
+            color: Colors.transparent,
           )),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SearchAnchor(
               builder: (BuildContext context, SearchController controller) {
             return SearchBar(
               controller: controller,
-              padding: const MaterialStatePropertyAll<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: 16.0)),
+              //padding: MaterialStatePropertyAll<EdgeInsets>(
+                 // EdgeInsets.symmetric(horizontal: 16.0)),
+                 padding: MaterialStateProperty.all<EdgeInsets>(
+                 const EdgeInsets.symmetric(horizontal: 16.0),
+                 ),
               onTap: () {
                 controller.openView();
               },
               onChanged: (_) {
                 controller.openView();
               },
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) {
+                  return Colors.transparent;
+                },
+              ),
               leading: const Icon(Icons.search),
               trailing: <Widget>[
                 Tooltip(
                   message: 'Change brightness mode',
                   child: IconButton(
-                    
                     onPressed: () {
                       setState(() {
-                      
                       });
                     },
                     icon: const Icon(Icons.wb_sunny_outlined),
@@ -302,9 +309,8 @@ class _MyAppState extends State<MyApp> {
           }),
         ),
           centerTitle: true,
-          elevation: 2,
           iconTheme: const IconThemeData(color: Colors.white),
-        ),
+        ), extendBodyBehindAppBar: true,
         drawer: Builder(
             builder: (context) => Drawer(
                 child: ListView(padding: EdgeInsets.zero, children: [
