@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/main.dart';
 import 'package:interactivemap/src/class_1_creator.dart';
@@ -178,14 +179,22 @@ class _ClassPage extends State<ClassPage> {
   late String class5room = "";
   late String class6room = "";
 
+  late double boxheight = 420;
 
   late Map<String, Object> data = {};
-
 
   void loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     
+    
     setState(() {
+
+      if(Platform.isAndroid){
+        boxheight = 415;
+      }
+      else{
+        boxheight = 420;
+      }
       showclass1 = prefs.getBool('ShowClass1') ?? false;
       showclass2 = prefs.getBool('ShowClass2') ?? false;
       showclass3 = prefs.getBool('ShowClass3') ?? false;
@@ -240,7 +249,10 @@ class _ClassPage extends State<ClassPage> {
       var dataString = prefs.getString('data');
       data = dataString != null ? Map<String, Object>.from(jsonDecode(dataString)): {};
     });
+    
   }
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -276,6 +288,190 @@ class _ClassPage extends State<ClassPage> {
             thickness: 3,
             color: Colors.transparent,
           ),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            height: showclass1 ? 500:60,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Column(
+              children: [
+                showclass1 ? Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  width: 3,
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color(0xFF8B1C3F)
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      children: [
+                        FadeInImage(image: NetworkImage(class1image),
+                          placeholder: AssetImage('assets/images/here_you_go_bblake.png'),
+                          imageErrorBuilder: (c, o, s) => Image.asset(
+                              'assets/images/image_avc_logo.png',
+                            height: 100,
+                          ),
+                          alignment: Alignment.topCenter,
+                        ),
+                        Text(class1Select,
+                          style: const TextStyle(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 141, 185, 202),
+                        ),
+
+                        Row(
+                          children: [
+                            Text("       Class: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class1name,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Room: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class1room,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Time: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class1time,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Day: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class1day,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListTile(
+                          title: const Text('Manage Class',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                              )
+                          ),
+                          onTap: () {
+                            _showSlideUpPanelclass1(context);
+                          },
+                        ),
+                      ],
+                    ), //),
+                  )
+                ],
+              ),
+            ) :const SizedBox(),
+           showclass1 ? ElevatedButton(
+             onPressed: (){
+               class_go_pick = 1;
+               goPress();
+             },
+             style:ButtonStyle(
+               backgroundColor: const MaterialStatePropertyAll(
+                 Color(0xff006b67),
+               ),
+               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                 RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(18.0),
+                   side: const BorderSide(color: Colors.transparent),
+                 ),
+               ),
+             ),
+             child: const Text(
+               'GO',
+               style: TextStyle(
+                 fontSize: 18,
+                 color: Colors.white,
+               ),
+             ),
+           ): const SizedBox(),
+            showclass1 ? const SizedBox():
+            ElevatedButton(
+              onPressed: (){
+                showclass1 = true;
+                classaddbutton();
+              },
+              style:ButtonStyle(
+                backgroundColor: const MaterialStatePropertyAll(
+                  Color(0xff006b67),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: const BorderSide(color: Colors.transparent),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'Add a class',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+              ],
+            ),
+          ),
+          
            // start class 1 ----------------------------------------------------
            showclass1 ? Container(
               decoration: BoxDecoration(
@@ -655,8 +851,9 @@ class _ClassPage extends State<ClassPage> {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.85, // Set maximum height,
+            return AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              height: MediaQuery.of(context).size.height * 0.87, // Set maximum height,
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
