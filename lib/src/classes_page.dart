@@ -94,6 +94,13 @@ class _ClassPage extends State<ClassPage>{
 
   late bool showManage = false;
 
+  late bool shownext2 = false;
+  late bool shownext3 = false;
+  late bool shownext4 = false;
+  late bool shownext5 = false;
+  late bool shownext6 = false;
+  late bool shownext7 = false;
+
   late bool showclass1 = false;
   late bool showclass2 = false;
   late bool showclass3 = false;
@@ -168,6 +175,12 @@ class _ClassPage extends State<ClassPage>{
       showclass6 = prefs.getBool('ShowClass6') ?? false;
       showclass7 = prefs.getBool('ShowClass7') ?? false;
 
+      shownext2 = prefs.getBool('shownext2') ?? false;
+      shownext3 = prefs.getBool('shownext3') ?? false;
+      shownext4 = prefs.getBool('shownext4') ?? false;
+      shownext5 = prefs.getBool('shownext5') ?? false;
+      shownext6 = prefs.getBool('shownext6') ?? false;
+      shownext7 = prefs.getBool('shownext7') ?? false;
 
       class1Select = prefs.getString('Class1Select') ?? '';
       class2Select = prefs.getString('Class2Select') ?? '';
@@ -410,6 +423,7 @@ class _ClassPage extends State<ClassPage>{
             showclass1 ? const SizedBox():
             ElevatedButton(
               onPressed: (){
+                shownext2 = true;
                 showclass1 = true;
                 classaddbutton();
               },
@@ -589,30 +603,35 @@ class _ClassPage extends State<ClassPage>{
               ),
             ): const SizedBox(),
             showclass2 ? const SizedBox():
-            ElevatedButton(
-              onPressed: (){
-                showclass2 = true;
-                classaddbutton();
-              },
-              style:ButtonStyle(
-                backgroundColor: const MaterialStatePropertyAll(
-                  Color(0xff006b67),
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: Colors.transparent),
+                Visibility(
+                  visible: shownext2,
+                  child: ElevatedButton(
+                  onPressed: (){
+                    shownext3 = true;
+                    showclass2 = true;
+                    classaddbutton();
+                  },
+                  style:ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll(
+                      Color(0xff006b67),
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: const BorderSide(color: Colors.transparent),
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    'Add a class',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              child: const Text(
-                'Add a class',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
                 ),
-              ),
-            ),
+
             //end class 2 ------------------------------------------------------
 
             const Divider(thickness: 5, color: Colors.transparent,),
@@ -770,30 +789,35 @@ class _ClassPage extends State<ClassPage>{
              ),
            ): const SizedBox(),
             showclass3 ? const SizedBox():
-            ElevatedButton(
-              onPressed: (){
-                showclass3 = true;
-                classaddbutton();
-              },
-              style:ButtonStyle(
-                backgroundColor: const MaterialStatePropertyAll(
-                  Color(0xff006b67),
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: Colors.transparent),
+                Visibility(
+                  visible: shownext3,
+                  child: ElevatedButton(
+                  onPressed: (){
+                    shownext4 = true;
+                    showclass3 = true;
+                    classaddbutton();
+                  },
+                  style:ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll(
+                      Color(0xff006b67),
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: const BorderSide(color: Colors.transparent),
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    'Add a class',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              child: const Text(
-                'Add a class',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+
 
             const Divider(thickness: 5, color: Colors.transparent,),
             const Divider(thickness: 5, color: Colors.transparent,),
@@ -950,30 +974,35 @@ class _ClassPage extends State<ClassPage>{
              ),
            ): const SizedBox(),
             showclass4 ? const SizedBox():
-            ElevatedButton(
-              onPressed: (){
-                showclass4 = true;
-                classaddbutton();
-              },
-              style:ButtonStyle(
-                backgroundColor: const MaterialStatePropertyAll(
-                  Color(0xff006b67),
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: Colors.transparent),
+                Visibility(
+                  visible: shownext4,
+                  child: ElevatedButton(
+                  onPressed: (){
+                    shownext5 = true;
+                    showclass4 = true;
+                    classaddbutton();
+                  },
+                  style:ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll(
+                      Color(0xff006b67),
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: const BorderSide(color: Colors.transparent),
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    'Add a class',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
                   ),
                 ),
-              ),
-              child: const Text(
-                'Add a class',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+
             const Divider(thickness: 5, color: Colors.transparent,),
             const Divider(thickness: 5, color: Colors.transparent,),
             const Divider(thickness: 5, color: Colors.transparent,),
@@ -1606,6 +1635,13 @@ class _ClassPage extends State<ClassPage>{
       showclass7 = true;
     }
     setState(() {
+      prefs.setBool('shownext2', shownext2);
+      prefs.setBool('shownext3', shownext3);
+      prefs.setBool('shownext4', shownext4);
+      prefs.setBool('shownext5', shownext5);
+      prefs.setBool('shownext6', shownext6);
+      prefs.setBool('shownext7', shownext7);
+
       prefs.setBool('ShowClass1', showclass1);
       prefs.setBool('ShowClass2', showclass2);
       prefs.setBool('ShowClass3', showclass3);
@@ -1621,24 +1657,72 @@ class _ClassPage extends State<ClassPage>{
       //prefs.clear();
       if(showclasscode == 1){
         prefs.setBool('ShowClass1', false);
+        prefs.setBool('shownext2', false);
+        prefs.setBool('shownext3', false);
+        prefs.setBool('shownext4', false);
+        prefs.setBool('shownext5', false);
+        prefs.setBool('shownext6', false);
+        prefs.setBool('shownext7', false);
       }
       else if (showclasscode == 2){
         prefs.setBool('ShowClass2', false);
+
+        prefs.setBool('shownext2', true);
+        prefs.setBool('shownext3', false);
+        prefs.setBool('shownext4', false);
+        prefs.setBool('shownext5', false);
+        prefs.setBool('shownext6', false);
+        prefs.setBool('shownext7', false);
       }
       else if (showclasscode == 3){
         prefs.setBool('ShowClass3', false);
+
+        prefs.setBool('shownext2', false);
+        prefs.setBool('shownext3', true);
+        prefs.setBool('shownext4', false);
+        prefs.setBool('shownext5', false);
+        prefs.setBool('shownext6', false);
+        prefs.setBool('shownext7', false);
       }
       else if (showclasscode == 4){
         prefs.setBool('ShowClass4', false);
+
+        prefs.setBool('shownext2', false);
+        prefs.setBool('shownext3', false);
+        prefs.setBool('shownext4', true);
+        prefs.setBool('shownext5', false);
+        prefs.setBool('shownext6', false);
+        prefs.setBool('shownext7', false);
       }
       else if (showclasscode == 5){
         prefs.setBool('ShowClass5', false);
+
+        prefs.setBool('shownext2', false);
+        prefs.setBool('shownext3', false);
+        prefs.setBool('shownext4', false);
+        prefs.setBool('shownext5', true);
+        prefs.setBool('shownext6', false);
+        prefs.setBool('shownext7', false);
       }
       else if (showclasscode == 6){
         prefs.setBool('ShowClass6', false);
+
+        prefs.setBool('shownext2', false);
+        prefs.setBool('shownext3', false);
+        prefs.setBool('shownext4', false);
+        prefs.setBool('shownext5', false);
+        prefs.setBool('shownext6', true);
+        prefs.setBool('shownext7', false);
       }
       else if (showclasscode == 7){
         prefs.setBool('ShowClass7', false);
+
+        prefs.setBool('shownext2', false);
+        prefs.setBool('shownext3', false);
+        prefs.setBool('shownext4', false);
+        prefs.setBool('shownext5', false);
+        prefs.setBool('shownext6', false);
+        prefs.setBool('shownext7', true);
       }
     });
   }
