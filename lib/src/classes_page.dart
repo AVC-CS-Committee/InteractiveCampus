@@ -56,13 +56,6 @@ class _ClassPage extends State<ClassPage>{
   List<String> classList = ['Select a class', 'CSUB/CSU Bakersfield', 'DL/Discovery Lab ', 'AL/Auto Lab', 'UH/Uhazy Hall', 'YH/Yoshida Hall', 'S1-9/SOAR High School', 'PA/Performing Arts Theatre', 'FA1/Art Gallery', 'FA2/Black Box', 'MH/Mesquite Hall', 'LH/Lecture Hall', 'SH/Sage Hall', 'ME/Math and Engineering', 'FA4/Fine Arts', 'FA3/Fine Arts Music and Offices', 'EL/Enterprise Lab', 'HL/Horticulture Lab', 'GH1-4/Greenhouses'];
   String? selectedItem = 'Select a class';
 
-  Color togcolor = Color.fromARGB(255, 241, 138, 32);
-  Color togcolor2 = Color.fromARGB(255, 241, 138, 32);
-  Color togcolor3 = Color.fromARGB(255, 241, 138, 32);
-  Color togcolor4 = Color.fromARGB(255, 241, 138, 32);
-  Color togcolor5 = Color.fromARGB(255, 241, 138, 32);
-  Color togcolor6 = Color.fromARGB(255, 241, 138, 32);
-  Color togcolor7 = Color.fromARGB(255, 241, 138, 32);
 
   TimeOfDay time = const TimeOfDay(hour: 1, minute: 00);
   TimeOfDay time2 = const TimeOfDay(hour: 1, minute: 00);
@@ -77,12 +70,10 @@ class _ClassPage extends State<ClassPage>{
   late bool classdeletetog = false;
   late String timepart1 = "01";
   late String timepart2 = "00";
-  // late String timepart3 = "1";
-  // late String timepart4 = "00";
-  // late String timepart5 = "p.m.";
 
+  late int classmanagecode = 0;   //used to select which class is picked when you press manage
 
-  late String daypart1 = class1day;
+  late String daypart1 = "";
   late String daypart2 = "";
   late String daypart3 = "";
   late String daypart4 = "";
@@ -90,30 +81,14 @@ class _ClassPage extends State<ClassPage>{
   late String daypart6 = "";
   late String daypart7 = "";
 
-  // late bool montog = false;
-  // late bool tuetog = false;
-  // late bool wedtog = false;
-  // late bool thurtog = false;
-  // late bool fritog = false;
-  // late bool sattog = false;
-  // late bool suntog = false;
+  late int sendcodec1 = 0; //old?
 
-  late int sendcodec1 = 0;
-  late int sendcodec2 = 0;
-  late int sendcodec3 = 0;
-  late int sendcodec4 = 0;
-  late int sendcodec5 = 0;
-  late int sendcodec6 = 0;
-  late int sendcodec7 = 0;
 
   late int classsendcode = 0;
 
   late int showclasscode = 0;
 
-
   late int timesendcode = 0;
-
-
 
   late int class_go_pick = 0;
 
@@ -139,6 +114,7 @@ class _ClassPage extends State<ClassPage>{
   late String class4Select = "";
   late String class5Select = "";
   late String class6Select = "";
+  late String class7Select = "";
 
 
   late String class1name = "";
@@ -147,6 +123,7 @@ class _ClassPage extends State<ClassPage>{
   late String class4name = "";
   late String class5name = "";
   late String class6name = "";
+  late String class7name = "";
 
 
   late String class1time = "";
@@ -155,7 +132,7 @@ class _ClassPage extends State<ClassPage>{
   late String class4time = "";
   late String class5time = "";
   late String class6time = "";
-
+  late String class7time = "";
 
   late String class1day = "";
   late String class2day = "";
@@ -163,6 +140,7 @@ class _ClassPage extends State<ClassPage>{
   late String class4day = "";
   late String class5day = "";
   late String class6day = "";
+  late String class7day = "";
 
   late String class1image = "";
   late String class2image = "";
@@ -178,6 +156,7 @@ class _ClassPage extends State<ClassPage>{
   late String class4room = "";
   late String class5room = "";
   late String class6room = "";
+  late String class7room = "";
 
   late double boxheight = 420;
 
@@ -211,6 +190,7 @@ class _ClassPage extends State<ClassPage>{
       class4Select = prefs.getString('Class4Select') ?? '';
       class5Select = prefs.getString('Class5Select') ?? '';
       class6Select = prefs.getString('Class6Select') ?? '';
+      class7Select = prefs.getString('Class7Select') ?? '';
 
       class1name = prefs.getString('class1_Name') ?? '';
       class2name = prefs.getString('class2_Name') ?? '';
@@ -218,6 +198,7 @@ class _ClassPage extends State<ClassPage>{
       class4name = prefs.getString('class4_Name') ?? '';
       class5name = prefs.getString('class5_Name') ?? '';
       class6name = prefs.getString('class6_Name') ?? '';
+      class7name = prefs.getString('class7_Name') ?? '';
 
       class1time = prefs.getString('class1_Time') ?? '';
       class2time = prefs.getString('class2_Time') ?? '';
@@ -225,6 +206,7 @@ class _ClassPage extends State<ClassPage>{
       class4time = prefs.getString('class4_Time') ?? '';
       class5time = prefs.getString('class5_Time') ?? '';
       class6time = prefs.getString('class6_Time') ?? '';
+      class7time = prefs.getString('class7_Time') ?? '';
 
       class1day = prefs.getString('class1_Day') ?? '';
       class2day = prefs.getString('class2_Day') ?? '';
@@ -232,6 +214,7 @@ class _ClassPage extends State<ClassPage>{
       class4day = prefs.getString('class4_Day') ?? '';
       class5day = prefs.getString('class5_Day') ?? '';
       class6day = prefs.getString('class6_Day') ?? '';
+      class7day = prefs.getString('class7_Day') ?? '';
 
       class1room = prefs.getString('class1_Room') ?? '';
       class2room = prefs.getString('class2_Room') ?? '';
@@ -239,6 +222,7 @@ class _ClassPage extends State<ClassPage>{
       class4room = prefs.getString('class4_Room') ?? '';
       class5room = prefs.getString('class5_Room') ?? '';
       class6room = prefs.getString('class6_Room') ?? '';
+      class7room = prefs.getString('class7_Room') ?? '';
 
       class1image = prefs.getString('class1_image') ?? '';
       class2image = prefs.getString('class2_image') ?? '';
@@ -246,6 +230,7 @@ class _ClassPage extends State<ClassPage>{
       class4image = prefs.getString('class4_image') ?? '';
       class5image = prefs.getString('class5_image') ?? '';
       class6image = prefs.getString('class6_image') ?? '';
+      class7image = prefs.getString('class7_image') ?? '';
       
       var dataString = prefs.getString('data');
       data = dataString != null ? Map<String, Object>.from(jsonDecode(dataString)): {};
@@ -401,6 +386,9 @@ class _ClassPage extends State<ClassPage>{
                               )
                           ),
                           onTap: () {
+                            setState(() {
+                              classmanagecode = 1;
+                            });
                             _showSlideUpPanelclass1(context);
                           },
                         ),
@@ -579,7 +567,10 @@ class _ClassPage extends State<ClassPage>{
                             )
                         ),
                         onTap: () {
-                          _showSlideUpPanelclass2(context);
+                          setState(() {
+                            classmanagecode = 2;
+                          });
+                          _showSlideUpPanelclass1(context);
                         },
                       ),
                     ],
@@ -694,8 +685,35 @@ class _ClassPage extends State<ClassPage>{
                       setState((){
                         selectedItem = val as String;
                         buldingselect = val as String;
-                        class1Select = val as String;
-                        classsendcode = 1;
+                        if(classmanagecode == 1){
+                          class1Select = val as String;
+                          classsendcode = 1;
+                        }
+                        else if(classmanagecode == 2){
+                          class2Select = val as String;
+                          classsendcode = 2;
+                        }
+                        else if(classmanagecode == 3){
+                          class3Select = val as String;
+                          classsendcode = 3;
+                        }
+                        else if(classmanagecode == 4){
+                          class4Select = val as String;
+                          classsendcode = 4;
+                        }
+                        else if(classmanagecode == 5){
+                          class5Select = val as String;
+                          classsendcode = 5;
+                        }
+                        else if(classmanagecode == 6){
+                          class6Select = val as String;
+                          classsendcode = 6;
+                        }
+                        else if(classmanagecode == 7){
+                          class7Select = val as String;
+                          classsendcode = 7;
+                        }
+                        
                       });
                     },
                   ),
@@ -710,7 +728,28 @@ class _ClassPage extends State<ClassPage>{
                     ),
                     onChanged: (val) {
                       setState((){
-                        class1name = val as String;
+                        if(classmanagecode == 1){
+                          class1name = val as String;
+                        }
+                        else if(classmanagecode == 2){
+                          class2name = val as String;
+                        }
+                        else if(classmanagecode == 3){
+                          class3name = val as String;
+                        }
+                        else if(classmanagecode == 4){
+                          class4name = val as String;
+                        }
+                        else if(classmanagecode == 5){
+                          class5name = val as String;
+                        }
+                        else if(classmanagecode == 6){
+                          class6name = val as String;
+                        }
+                        else if(classmanagecode == 7){
+                          class7name = val as String;
+                        }
+                        
                       });
                     },
                   ),
@@ -725,7 +764,27 @@ class _ClassPage extends State<ClassPage>{
                     ),
                     onChanged: (val) {
                       setState((){
-                        class1room = val as String;
+                        if(classmanagecode == 1){
+                          class1room = val as String;
+                        }
+                        else if(classmanagecode == 2){
+                          class2room = val as String;
+                        }
+                        else if(classmanagecode == 3){
+                          class3room = val as String;
+                        }
+                        else if(classmanagecode == 4){
+                          class4room = val as String;
+                        }
+                        else if(classmanagecode == 5){
+                          class5room = val as String;
+                        }
+                        else if(classmanagecode == 6){
+                          class6room = val as String;
+                        }
+                        else if(classmanagecode == 7){
+                          class7room = val as String;
+                        }
                       });
                     },
                   ),
@@ -757,7 +816,27 @@ class _ClassPage extends State<ClassPage>{
                           }
                           setState(() {
                             time = newTime;
-                            timesendcode = 1;
+                            if(classmanagecode == 1){
+                              timesendcode = 1;
+                            }
+                            else if(classmanagecode == 2){
+                              timesendcode = 2;
+                            }
+                            else if(classmanagecode == 3){
+                              timesendcode = 3;
+                            }
+                            else if(classmanagecode == 4){
+                              timesendcode = 4;
+                            }
+                            else if(classmanagecode == 5){
+                              timesendcode = 5;
+                            }
+                            else if(classmanagecode == 6){
+                              timesendcode = 6;
+                            }
+                            else if(classmanagecode == 7){
+                              timesendcode = 7;
+                            }
                           });
                         },
                         style:  ButtonStyle(
@@ -788,8 +867,28 @@ class _ClassPage extends State<ClassPage>{
                             return;
                           }
                           setState(() {
+                            if(classmanagecode == 1){
+                              timesendcode = 1;
+                            }
+                            else if(classmanagecode == 2){
+                              timesendcode = 2;
+                            }
+                            else if(classmanagecode == 3){
+                              timesendcode = 3;
+                            }
+                            else if(classmanagecode == 4){
+                              timesendcode = 4;
+                            }
+                            else if(classmanagecode == 5){
+                              timesendcode = 5;
+                            }
+                            else if(classmanagecode == 6){
+                              timesendcode = 6;
+                            }
+                            else if(classmanagecode == 7){
+                              timesendcode = 7;
+                            }
                             time2 = newTime;
-                            timesendcode = 1;
                           });
                         },
                         style:  ButtonStyle(
@@ -840,14 +939,41 @@ class _ClassPage extends State<ClassPage>{
                         begin: Alignment.topLeft,
                         colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
                         tileMode:
-                        TileMode.repeated, // repeats the gradient over the canvas
+                        TileMode.repeated, 
                       ),
                     ),
-                    onSelect: (values) { // <== Callback to handle the selected days
+                    onSelect: (values) {
                       print(values);
-                      class1day = values.toString();
-                      class1day = class1day.substring(1, class1day.length - 1);
-                      sendcodec1 = 1;
+                      setState(){
+                        if(classmanagecode == 1){
+                          class1day = values.toString();
+                          class1day = class1day.substring(1, class1day.length - 1);
+                        }
+                        else if(classmanagecode == 2){
+                          class2day = values.toString();
+                          class2day = class2day.substring(1, class2day.length - 1);
+                        }
+                        else if(classmanagecode == 3){
+                          class3day = values.toString();
+                          class3day = class3day.substring(1, class3day.length - 1);
+                        }
+                        else if(classmanagecode == 4){
+                          class4day = values.toString();
+                          class4day = class4day.substring(1, class4day.length - 1);
+                        }
+                        else if(classmanagecode == 5){
+                          class5day = values.toString();
+                          class5day = class5day.substring(1, class5day.length - 1);
+                        }
+                        else if(classmanagecode == 6){
+                          class6day = values.toString();
+                          class6day = class6day.substring(1, class6day.length - 1);
+                        }
+                        else if(classmanagecode == 7){
+                          class7day = values.toString();
+                          class7day = class7day.substring(1, class7day.length - 1);
+                        }
+                      }
                     },
                   ),
                   const Divider(
@@ -884,7 +1010,27 @@ class _ClassPage extends State<ClassPage>{
                   ),
                   ElevatedButton(
                     onPressed: (){
-                      showclasscode = 1;
+                      if(classmanagecode == 1){
+                          showclasscode = 1;
+                        }
+                        else if(classmanagecode == 2){
+                          showclasscode = 2;
+                        }
+                        else if(classmanagecode == 3){
+                          showclasscode = 3;
+                        }
+                        else if(classmanagecode == 4){
+                          showclasscode = 4;
+                        }
+                        else if(classmanagecode == 5){
+                          showclasscode = 5;
+                        }
+                        else if(classmanagecode == 6){
+                          showclasscode = 6;
+                        }
+                        else if(classmanagecode == 7){
+                          showclasscode = 7;
+                        }
                       classremovebutton();
                     },
                     style:  ButtonStyle(
@@ -914,510 +1060,9 @@ class _ClassPage extends State<ClassPage>{
       },
     );
   }
-  void _showSlideUpPanelclass2(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.85, // Set maximum height,
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    onChanged: (newValue) {
-                      setState(() {
-                        panelValue = newValue; // Update the state
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: 'Class Info'),
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Select a building',
-                    ),
-                    items:classList.map((e) => DropdownMenuItem(value: e,child: Text(e),)).toList(),
-                    onChanged: (val) {
-                      setState((){
-                        selectedItem = val as String;
-                        buldingselect = val as String;
-                        class2Select = val as String;
-                        classsendcode = 2;
-                      });
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name of class e.g. Bio 101',
-                    ),
-                    onChanged: (val) {
-                      setState((){
-                        class2name = val as String;
-                      });
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Room number e.g. 105',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (val) {
-                      setState((){
-                        class2room = val as String;
-                      });
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                  ),
-                  const Text(
-                    'Time: ',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          TimeOfDay? newTime = await showTimePicker(
-                              context: context,
-                              initialTime: time);
-                          if(newTime == null){
-                            return;
-                          }
-                          setState(() {
-                            time = newTime;
-                            timesendcode = 2;
-                          });
-                        },
-                        style:  ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
-                            Color(0xff8d1c40),
-                          ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: const BorderSide(color: Colors.transparent),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          time.format(context) ?? 'Select start time',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          TimeOfDay? newTime = await showTimePicker(
-                              context: context,
-                              initialTime: time2);
-                          if(newTime == null){
-                            return;
-                          }
-                          setState(() {
-                            time2 = newTime;
-                            timesendcode = 2;
-                          });
-                        },
-                        style:  ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
-                            Color(0xff8d1c40),
-                          ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: const BorderSide(color: Colors.transparent),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          time2.format(context) ?? 'Select end time',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    thickness: 3,
-                  ),
-                  const Text(
-                    'Day: ',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  SelectWeekDays(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    days: _days,
-                    border: false,
-                    boxDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
-                        tileMode:
-                        TileMode.repeated, // repeats the gradient over the canvas
-                      ),
-                    ),
-                    onSelect: (values) { // <== Callback to handle the selected days
-                      print(values);
-                      class2day = values.toString();
-                      class2day = class2day.substring(1, class2day.length - 1);
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  const Divider(
-                    thickness: 5,
-                    color: Colors.transparent,
-                  ),
-//---------------------------------------------------------------------------------------------------------------------------------------------------------
-                  ElevatedButton(
-                    onPressed: (){
-                      saveData();
-                    },
-                    style:  ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(
-                        Color(0xff006b67),
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: const BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                    child: const Text(
-                      'Save Class',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: (){
-                      showclasscode = 2;
-                      classremovebutton();
-                    },
-                    style:  ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(
-                        Color(0xff8d1c40),
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: const BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                    child: const Text(
-                      'Remove Class',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-  void _showSlideUpPanelclass3(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.85, // Set maximum height,
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    onChanged: (newValue) {
-                      setState(() {
-                        panelValue = newValue; // Update the state
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: 'Class Info'),
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Select a building',
-                    ),
-                    items:classList.map((e) => DropdownMenuItem(value: e,child: Text(e),)).toList(),
-                    onChanged: (val) {
-                      setState((){
-                        selectedItem = val as String;
-                        buldingselect = val as String;
-                        classsendcode = 3;
-                      });
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name of class e.g. Bio 101',
-                    ),
-                    onChanged: (val) {
-                      setState((){
-                        class3name = val as String;
-                      });
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Room number e.g. 105',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (val) {
-                      setState((){
-                        class3room = val as String;
-                      });
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                  ),
-                  const Text(
-                    'Time: ',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          TimeOfDay? newTime = await showTimePicker(
-                              context: context,
-                              initialTime: time);
-                          if(newTime == null){
-                            return;
-                          }
-                          setState(() {
-                            time = newTime;
-                            timesendcode = 3;
-                          });
-                        },
-                        style:  ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
-                            Color(0xff8d1c40),
-                          ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: const BorderSide(color: Colors.transparent),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          time.format(context) ?? 'Select start time',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          TimeOfDay? newTime = await showTimePicker(
-                              context: context,
-                              initialTime: time2);
-                          if(newTime == null){
-                            return;
-                          }
-                          setState(() {
-                            time2 = newTime;
-                            timesendcode = 3;
-                          });
-                        },
-                        style:  ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
-                            Color(0xff8d1c40),
-                          ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: const BorderSide(color: Colors.transparent),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          time2.format(context) ?? 'Select end time',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    thickness: 3,
-                  ),
-                  const Text(
-                    'Day: ',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  SelectWeekDays(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    days: _days,
-                    border: false,
-                    boxDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
-                        tileMode:
-                        TileMode.repeated, // repeats the gradient over the canvas
-                      ),
-                    ),
-                    onSelect: (values) { // <== Callback to handle the selected days
-                      print(values);
-                      class3day = values.toString();
-                      class3day = class3day.substring(1, class3day.length - 1);
-                    },
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    color: Colors.transparent,
-                  ),
-                  const Divider(
-                    thickness: 5,
-                    color: Colors.transparent,
-                  ),
-//---------------------------------------------------------------------------------------------------------------------------------------------------------
-                  ElevatedButton(
-                    onPressed: (){
-                      saveData();
-                    },
-                    style:  ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(
-                        Color(0xff006b67),
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: const BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                    child: const Text(
-                      'Save Class',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: (){
-                      showclasscode = 3;
-                      classremovebutton();
-                    },
-                    style:  ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(
-                        Color(0xff8d1c40),
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: const BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                    child: const Text(
-                      'Remove Class',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
+  
+  
+  
   void saveData() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -1502,9 +1147,6 @@ class _ClassPage extends State<ClassPage>{
     }
 
     if(timesendcode == 1){
-      final hours = time.hour.toString().padLeft(2, '0');
-      final minute = time.minute.toString();
-      //class1time = "$timepart1:$timepart2 - $timepart3:$timepart4 $timepart5";
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class1time = "$timepart1 - $timepart2";
@@ -1525,27 +1167,55 @@ class _ClassPage extends State<ClassPage>{
     else if (timesendcode == 7){
     }
 
-
-
-
     setState(() {
       prefs.setString('Class1Select', class1Select);
       prefs.setString('Class2Select', class2Select);
+      prefs.setString('Class3Select', class3Select);
+      prefs.setString('Class4Select', class4Select);
+      prefs.setString('Class5Select', class5Select);
+      prefs.setString('Class6select', class6Select);
+      prefs.setString('Class7Select', class7Select);
 
       prefs.setString('class1_Name', class1name);
       prefs.setString('class2_Name', class2name);
+      prefs.setString('class3_Name', class3name);
+      prefs.setString('class4_Name', class4name);
+      prefs.setString('class5_Name', class5name);
+      prefs.setString('class6_Name', class6name);
+      prefs.setString('class7_Name', class7name);
 
       prefs.setString('class1_Time', class1time);
       prefs.setString('class2_Time', class2time);
+      prefs.setString('class3_Time', class3time);
+      prefs.setString('class4_Time', class4time);
+      prefs.setString('class5_Time', class5time);
+      prefs.setString('class6_Time', class6time);
+      prefs.setString('class7_Time', class7time);
 
       prefs.setString('class1_Day', class1day);
       prefs.setString('class2_Day', class2day);
+      prefs.setString('class3_Day', class3day);
+      prefs.setString('class4_Day', class4day);
+      prefs.setString('class5_Day', class5day);
+      prefs.setString('class6_Day', class6day);
+      prefs.setString('class7_Day', class7day);
 
       prefs.setString('class1_image', class1image);
       prefs.setString('class2_image', class2image);
+      prefs.setString('class3_image', class3image);
+      prefs.setString('class4_image', class4image);
+      prefs.setString('class5_image', class5image);
+      prefs.setString('class6_image', class6image);
+      prefs.setString('class7_image', class7image);
+      
 
       prefs.setString('class1_Room', class1room);
       prefs.setString('class2_Room', class2room);
+      prefs.setString('class3_Room', class3room);
+      prefs.setString('class4_Room', class4room);
+      prefs.setString('class5_Room', class5room);
+      prefs.setString('class6_Room', class6room);
+      prefs.setString('class7_Room', class7room);
     });
   }
 
@@ -1558,81 +1228,6 @@ class _ClassPage extends State<ClassPage>{
     });
   }
 
-  // void togpress() async{
-  //   setState(() {
-  //     if(!montog && sendcodec1 == 1){
-  //       togcolor = Color.fromARGB(255, 0, 107, 103);
-  //       montog = true;
-  //       daypart1 = "Mon/";
-  //     }
-  //     else if(montog && sendcodec1 == 1){
-  //       togcolor = Color.fromARGB(255, 241, 138, 32);
-  //       daypart1 = "";
-  //       montog = false;
-  //     }
-  //     if(!tuetog && sendcodec1 == 2){
-  //       togcolor2 = Color.fromARGB(255, 0, 107, 103);
-  //       tuetog = true;
-  //       daypart2 = "Tue/";
-  //     }
-  //     else if(tuetog && sendcodec1 == 2){
-  //       togcolor2 = Color.fromARGB(255, 241, 138, 32);
-  //       daypart2 = "";
-  //       tuetog = false;
-  //     }
-  //     if(!wedtog&& sendcodec1 == 3){
-  //       togcolor3 = Color.fromARGB(255, 0, 107, 103);
-  //       wedtog = true;
-  //       daypart3 = "Tue/";
-  //     }
-  //     else if(wedtog&& sendcodec1 == 3){
-  //       togcolor3 = Color.fromARGB(255, 241, 138, 32);
-  //       daypart3 = "";
-  //       wedtog = false;
-  //     }
-  //     if(!thurtog && sendcodec1 == 4){
-  //       togcolor4 = Color.fromARGB(255, 0, 107, 103);
-  //       thurtog = true;
-  //       daypart4 = "Thur/";
-  //     }
-  //     else if(thurtog && sendcodec1 == 4){
-  //       togcolor4 = Color.fromARGB(255, 241, 138, 32);
-  //       daypart4 = "";
-  //       thurtog = false;
-  //     }
-  //     if(!fritog && sendcodec1 == 5){
-  //       togcolor5 = Color.fromARGB(255, 0, 107, 103);
-  //       fritog = true;
-  //       daypart5 = "Fri/";
-  //     }
-  //     else if(fritog && sendcodec1 == 5){
-  //       togcolor5 = Color.fromARGB(255, 241, 138, 32);
-  //       daypart5 = "";
-  //       fritog = false;
-  //     }
-  //     if(!sattog && sendcodec1 == 6){
-  //       togcolor6 = Color.fromARGB(255, 0, 107, 103);
-  //       sattog = true;
-  //       daypart6 = "Sat/";
-  //     }
-  //     else if(sattog && sendcodec1 == 6){
-  //       togcolor6 = Color.fromARGB(255, 241, 138, 32);
-  //       daypart6 = "";
-  //       sattog = false;
-  //     }
-  //     if(!suntog && sendcodec1 == 7){
-  //       togcolor7 = Color.fromARGB(255, 0, 107, 103);
-  //       suntog = true;
-  //       daypart7 = "Sun/";
-  //     }
-  //     else if(suntog && sendcodec1 == 7){
-  //       togcolor7 = Color.fromARGB(255, 241, 138, 32);
-  //       daypart7 = "";
-  //       suntog = false;
-  //     }
-  //     sendcodec1 = 0;
-  //   });
-  // }
 
   void classaddbutton() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1670,6 +1265,7 @@ class _ClassPage extends State<ClassPage>{
   void classremovebutton() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      //prefs.clear();
       if(showclasscode == 1){
         prefs.setBool('ShowClass1', false);
       }
