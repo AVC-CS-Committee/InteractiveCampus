@@ -46,9 +46,12 @@ class _ClassPage extends State<ClassPage>{
     ),
   ];
 
-  Color textColor = Color.fromARGB(255, 241, 138, 32); // avc orange
-  //Color textColor = Color.fromARGB(255, 141, 185, 202);// avc blue
- //Color textColor = Color.fromARGB(255, 0, 107, 103); // avc green
+  Color textColor= Color.fromARGB(255, 141, 185, 202); // avc blue
+
+
+  final Color avcorange = Color.fromARGB(255, 241, 138, 32); // avc orange
+  final Color avcblue = Color.fromARGB(255, 141, 185, 202);// avc blue
+  final Color avcgreen = Color.fromARGB(255, 0, 107, 103); // avc green
 
   double latitudeClass1 = 34.67613026710341;
   double longitudeClass1 = -118.19203306356845;
@@ -75,11 +78,6 @@ class _ClassPage extends State<ClassPage>{
 
   late String daypart1 = "";
   late String daypart2 = "";
-  late String daypart3 = "";
-  late String daypart4 = "";
-  late String daypart5 = "";
-  late String daypart6 = "";
-  late String daypart7 = "";
 
   late int sendcodec1 = 0; //old?
 
@@ -116,7 +114,6 @@ class _ClassPage extends State<ClassPage>{
   late String class6Select = "";
   late String class7Select = "";
 
-
   late String class1name = "";
   late String class2name = "";
   late String class3name = "";
@@ -124,7 +121,6 @@ class _ClassPage extends State<ClassPage>{
   late String class5name = "";
   late String class6name = "";
   late String class7name = "";
-
 
   late String class1time = "";
   late String class2time = "";
@@ -158,23 +154,12 @@ class _ClassPage extends State<ClassPage>{
   late String class6room = "";
   late String class7room = "";
 
-  late double boxheight = 420;
-
   late Map<String, Object> data = {};
 
   void loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-
-
     setState(() {
-
-      if(Platform.isAndroid){
-        boxheight = 415;
-      }
-      else{
-        boxheight = 420;
-      }
       showclass1 = prefs.getBool('ShowClass1') ?? false;
       showclass2 = prefs.getBool('ShowClass2') ?? false;
       showclass3 = prefs.getBool('ShowClass3') ?? false;
@@ -292,7 +277,7 @@ class _ClassPage extends State<ClassPage>{
                     child: Column(
                       children: [
                         FadeInImage(image: NetworkImage(class1image),
-                          placeholder: AssetImage('assets/images/here_you_go_bblake.png'),
+                          placeholder: const AssetImage('assets/images/here_you_go_bblake.png'),
                           imageErrorBuilder: (c, o, s) => Image.asset(
                               'assets/images/image_avc_logo.png',
                             height: 100,
@@ -367,7 +352,7 @@ class _ClassPage extends State<ClassPage>{
                               style: TextStyle(
                                   fontSize: 18.5,
                                   fontWeight: FontWeight.bold,
-                                  color: textColor
+                                  color: avcblue
                               ),
                             ),
                             Text(class1day,
@@ -404,8 +389,8 @@ class _ClassPage extends State<ClassPage>{
                goPress();
              },
              style:ButtonStyle(
-               backgroundColor: const MaterialStatePropertyAll(
-                 Color(0xff006b67),
+               backgroundColor:  MaterialStatePropertyAll(
+                 avcgreen,
                ),
                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                  RoundedRectangleBorder(
@@ -630,19 +615,369 @@ class _ClassPage extends State<ClassPage>{
             ),
             //end class 2 ------------------------------------------------------
 
-            // ListTile(
-            //   title: const Text('Create a class Schedule',
-            //   textAlign: TextAlign.center,
-            //     style: TextStyle(
-            //     ),
-            //   ),
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => Class1creator()),
-            //     );
-            //   },
-            // ),
+            const Divider(thickness: 5, color: Colors.transparent,),
+            const Divider(thickness: 5, color: Colors.transparent,),
+            const Divider(thickness: 5, color: Colors.transparent,),
+            
+          //start class 3 --------------------------------------------------------
+          showclass3 ? Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  width: 3,
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color(0xFF8B1C3F)
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      children: [
+                        FadeInImage(image: NetworkImage(class3image),
+                          placeholder: const AssetImage('assets/images/here_you_go_bblake.png'),
+                          imageErrorBuilder: (c, o, s) => Image.asset(
+                              'assets/images/image_avc_logo.png',
+                            height: 100,
+                          ),
+                          alignment: Alignment.topCenter,
+                        ),
+                        Text(class3Select,
+                          style: const TextStyle(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 141, 185, 202),
+                        ),
+
+                        Row(
+                          children: [
+                            Text("       Class: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class3name,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Room: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class3room,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Time: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class3time,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Day: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: avcblue
+                              ),
+                            ),
+                            Text(class3day,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListTile(
+                          title: const Text('Manage Class',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                              )
+                          ),
+                          onTap: () {
+                            setState(() {
+                              classmanagecode = 3;
+                            });
+                            _showSlideUpPanelclass1(context);
+                          },
+                        ),
+                      ],
+                    ), //),
+                  )
+                ],
+              ),
+            ) :const SizedBox(),
+           showclass3 ? ElevatedButton(
+             onPressed: (){
+               class_go_pick = 1;
+               goPress();
+             },
+             style:ButtonStyle(
+               backgroundColor:  MaterialStatePropertyAll(
+                 avcgreen,
+               ),
+               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                 RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(18.0),
+                   side: const BorderSide(color: Colors.transparent),
+                 ),
+               ),
+             ),
+             child: const Text(
+               'GO',
+               style: TextStyle(
+                 fontSize: 18,
+                 color: Colors.white,
+               ),
+             ),
+           ): const SizedBox(),
+            showclass3 ? const SizedBox():
+            ElevatedButton(
+              onPressed: (){
+                showclass3 = true;
+                classaddbutton();
+              },
+              style:ButtonStyle(
+                backgroundColor: const MaterialStatePropertyAll(
+                  Color(0xff006b67),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: const BorderSide(color: Colors.transparent),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'Add a class',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
+            const Divider(thickness: 5, color: Colors.transparent,),
+            const Divider(thickness: 5, color: Colors.transparent,),
+            const Divider(thickness: 5, color: Colors.transparent,),
+
+            //start class 4 --------------------------------------------------------
+          showclass4 ? Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  width: 3,
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color(0xFF8B1C3F)
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      children: [
+                        FadeInImage(image: NetworkImage(class4image),
+                          placeholder: const AssetImage('assets/images/here_you_go_bblake.png'),
+                          imageErrorBuilder: (c, o, s) => Image.asset(
+                              'assets/images/image_avc_logo.png',
+                            height: 100,
+                          ),
+                          alignment: Alignment.topCenter,
+                        ),
+                        Text(class4Select,
+                          style: const TextStyle(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 141, 185, 202),
+                        ),
+
+                        Row(
+                          children: [
+                            Text("       Class: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class4name,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Room: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class4room,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Time: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class4time,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Day: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: avcblue
+                              ),
+                            ),
+                            Text(class4day,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListTile(
+                          title: const Text('Manage Class',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                              )
+                          ),
+                          onTap: () {
+                            setState(() {
+                              classmanagecode = 4;
+                            });
+                            _showSlideUpPanelclass1(context);
+                          },
+                        ),
+                      ],
+                    ), //),
+                  )
+                ],
+              ),
+            ) :const SizedBox(),
+           showclass4 ? ElevatedButton(
+             onPressed: (){
+               class_go_pick = 1;
+               goPress();
+             },
+             style:ButtonStyle(
+               backgroundColor:  MaterialStatePropertyAll(
+                 avcgreen,
+               ),
+               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                 RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(18.0),
+                   side: const BorderSide(color: Colors.transparent),
+                 ),
+               ),
+             ),
+             child: const Text(
+               'GO',
+               style: TextStyle(
+                 fontSize: 18,
+                 color: Colors.white,
+               ),
+             ),
+           ): const SizedBox(),
+            showclass4 ? const SizedBox():
+            ElevatedButton(
+              onPressed: (){
+                showclass4 = true;
+                classaddbutton();
+              },
+              style:ButtonStyle(
+                backgroundColor: const MaterialStatePropertyAll(
+                  Color(0xff006b67),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: const BorderSide(color: Colors.transparent),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'Add a class',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const Divider(thickness: 5, color: Colors.transparent,),
+            const Divider(thickness: 5, color: Colors.transparent,),
+            const Divider(thickness: 5, color: Colors.transparent,),
+
 
           ],
         ),
@@ -658,18 +993,13 @@ class _ClassPage extends State<ClassPage>{
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AnimatedContainer(
-              duration: Duration(milliseconds: 1500),
+              duration: const Duration(milliseconds: 500),
               height: MediaQuery.of(context).size.height * 0.87, // Set maximum height,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
-                  TextField(
-                    onChanged: (newValue) {
-                      setState(() {
-                        panelValue = newValue; // Update the state
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: 'Class Info'),
+                  const Text(
+                    "Class Information"
                   ),
                   const Divider(
                     thickness: 3,
@@ -806,7 +1136,18 @@ class _ClassPage extends State<ClassPage>{
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
+                      Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            colors: [avcgreen, avcgreen],
+                            tileMode:
+                            TileMode.repeated, 
+                          ),
+                        ),
+                        child: ElevatedButton(
                         onPressed: () async {
                           TimeOfDay? newTime = await showTimePicker(
                               context: context,
@@ -839,17 +1180,10 @@ class _ClassPage extends State<ClassPage>{
                             }
                           });
                         },
-                        style:  ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
-                            Color(0xff8d1c40),
-                          ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: const BorderSide(color: Colors.transparent),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent
                             ),
-                          ),
-                        ),
                         child: Text(
                           time.format(context) ?? 'Select start time',
                           style: const TextStyle(
@@ -858,7 +1192,32 @@ class _ClassPage extends State<ClassPage>{
                           ),
                         ),
                       ),
-                      ElevatedButton(
+                      ),
+                      const SizedBox(width: 10),
+
+                      const Text(
+                            'TO',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                        
+                      const SizedBox(width: 10),
+
+
+                      Container(
+                        height: 28,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            colors: [avcgreen, avcgreen],
+                            tileMode:
+                            TileMode.repeated, 
+                          ),
+                        ),
+                        child: ElevatedButton(
                         onPressed: () async {
                           TimeOfDay? newTime = await showTimePicker(
                               context: context,
@@ -891,17 +1250,10 @@ class _ClassPage extends State<ClassPage>{
                             time2 = newTime;
                           });
                         },
-                        style:  ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
-                            Color(0xff8d1c40),
-                          ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: const BorderSide(color: Colors.transparent),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent
                             ),
-                          ),
-                        ),
                         child: Text(
                           time2.format(context) ?? 'Select end time',
                           style: const TextStyle(
@@ -910,9 +1262,9 @@ class _ClassPage extends State<ClassPage>{
                           ),
                         ),
                       ),
+                      ), 
                     ],
                   ),
-
                   const Divider(
                     thickness: 3,
                   ),
@@ -935,16 +1287,15 @@ class _ClassPage extends State<ClassPage>{
                     border: false,
                     boxDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30.0),
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
-                        colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
+                        colors: [avcgreen, avcgreen],
                         tileMode:
                         TileMode.repeated, 
                       ),
                     ),
                     onSelect: (values) {
                       print(values);
-                      setState(){
                         if(classmanagecode == 1){
                           class1day = values.toString();
                           class1day = class1day.substring(1, class1day.length - 1);
@@ -973,7 +1324,6 @@ class _ClassPage extends State<ClassPage>{
                           class7day = values.toString();
                           class7day = class7day.substring(1, class7day.length - 1);
                         }
-                      }
                     },
                   ),
                   const Divider(
@@ -983,6 +1333,9 @@ class _ClassPage extends State<ClassPage>{
                   const Divider(
                     thickness: 5,
                     color: Colors.transparent,
+                  ),
+                  const Divider(
+                    thickness: 3,
                   ),
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
                   ElevatedButton(
