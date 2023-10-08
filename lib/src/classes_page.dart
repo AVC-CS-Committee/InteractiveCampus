@@ -19,6 +19,7 @@ class _ClassPage extends State<ClassPage>{
 
   @override
   void initState() {
+    //loads data on startup
     loadData();
     super.initState();
   }
@@ -44,56 +45,41 @@ class _ClassPage extends State<ClassPage>{
     DayInWeek(
       "Sun", dayKey: 'Sun',
     ),
-  ];
+  ]; //used for the list of days for the day selector
 
-  Color textColor= Color.fromARGB(255, 141, 185, 202); // avc blue
+  Color textColor= Color.fromARGB(255, 141, 185, 202); // avc blue text for the class cards
 
 
+  //colors for testing things
   final Color avcorange = Color.fromARGB(255, 241, 138, 32); // avc orange
   final Color avcblue = Color.fromARGB(255, 141, 185, 202);// avc blue
   final Color avcgreen = Color.fromARGB(255, 0, 107, 103); // avc green
 
+  //default lat and lon for if the class does not have cords
   double latitudeClass1 = 34.67613026710341;
   double longitudeClass1 = -118.19203306356845;
 
+  //list of classes for teh drop down
   List<String> classList = ['Select a class', 'CSUB/CSU Bakersfield', 'DL/Discovery Lab ', 'AL/Auto Lab', 'UH/Uhazy Hall', 'YH/Yoshida Hall', 'S1-9/SOAR High School', 'PA/Performing Arts Theatre', 'FA1/Art Gallery', 'FA2/Black Box', 'MH/Mesquite Hall', 'LH/Lecture Hall', 'SH/Sage Hall', 'ME/Math and Engineering', 'FA4/Fine Arts', 'FA3/Fine Arts Music and Offices', 'EL/Enterprise Lab', 'HL/Horticulture Lab', 'GH1-4/Greenhouses'];
   String? selectedItem = 'Select a class';
 
-
+  //time for the time selector
   TimeOfDay time = const TimeOfDay(hour: 1, minute: 00);
   TimeOfDay time2 = const TimeOfDay(hour: 1, minute: 00);
 
-  late int classselect = 0;
 
-
-  String panelValue = "";
-
-  // to do: finish adding selectors for the rest of the classes
-
-  late bool classdeletetog = false;
-  late String timepart1 = "01";
-  late String timepart2 = "00";
+  late String timepart1 = "01"; //first time slot
+  late String timepart2 = "00"; //2nd time slot
 
   late int classmanagecode = 0;   //used to select which class is picked when you press manage
 
-  late String daypart1 = "";
-  late String daypart2 = "";
+  late int timesendcode = 0;     //used to know what class is being selected for time when you press save
 
-  late int sendcodec1 = 0; //old?
+  late int classpickGO = 0;     //used to know what class go is being pressed for
 
+  late String classforCords = "";  //used to match class name to cords
 
-  late int classsendcode = 0;
-
-  late int showclasscode = 0;
-
-  late int timesendcode = 0;
-
-  late int class_go_pick = 0;
-
-  late String classforCords = "";
-
-  late bool showManage = false;
-
+  //used to show the next 'add a class' button
   late bool shownext2 = false;
   late bool shownext3 = false;
   late bool shownext4 = false;
@@ -101,6 +87,7 @@ class _ClassPage extends State<ClassPage>{
   late bool shownext6 = false;
   late bool shownext7 = false;
 
+  //used to show the class once you press the add class button
   late bool showclass1 = false;
   late bool showclass2 = false;
   late bool showclass3 = false;
@@ -109,18 +96,20 @@ class _ClassPage extends State<ClassPage>{
   late bool showclass6 = false;
   late bool showclass7 = false;
 
-  late int addclasssendcode = 0;
+  late int addclasssendcode = 0; //used to know what class the add class button was pressed for so it can make it visable
 
-  late String buldingselect = "";
+  late String buldingselect = "";  //used for cords to know what building was selected
 
-  late String class1Select = "";
-  late String class2Select = "";
-  late String class3Select = "";
-  late String class4Select = "";
-  late String class5Select = "";
-  late String class6Select = "";
-  late String class7Select = "";
+  //used holds the name of the building selected
+  late String building1select = "";
+  late String building2select = "";
+  late String building3select = "";
+  late String building4select = "";
+  late String building5select = "";
+  late String building6select = "";
+  late String building7select = "";
 
+  //the name of the class, like bio 101
   late String class1name = "";
   late String class2name = "";
   late String class3name = "";
@@ -129,6 +118,7 @@ class _ClassPage extends State<ClassPage>{
   late String class6name = "";
   late String class7name = "";
 
+  //used for the class time
   late String class1time = "";
   late String class2time = "";
   late String class3time = "";
@@ -137,6 +127,7 @@ class _ClassPage extends State<ClassPage>{
   late String class6time = "";
   late String class7time = "";
 
+  //used for class day
   late String class1day = "";
   late String class2day = "";
   late String class3day = "";
@@ -145,6 +136,7 @@ class _ClassPage extends State<ClassPage>{
   late String class6day = "";
   late String class7day = "";
 
+  //used for the class image
   late String class1image = "";
   late String class2image = "";
   late String class3image = "";
@@ -153,6 +145,7 @@ class _ClassPage extends State<ClassPage>{
   late String class6image = "";
   late String class7image = "";
 
+  //used for the room number
   late String class1room = "";
   late String class2room = "";
   late String class3room = "";
@@ -163,8 +156,11 @@ class _ClassPage extends State<ClassPage>{
 
   late Map<String, Object> data = {};
 
+
+  //all of is is used to load the data from shared prefrences
   void loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
 
     setState(() {
       showclass1 = prefs.getBool('ShowClass1') ?? false;
@@ -182,13 +178,13 @@ class _ClassPage extends State<ClassPage>{
       shownext6 = prefs.getBool('shownext6') ?? false;
       shownext7 = prefs.getBool('shownext7') ?? false;
 
-      class1Select = prefs.getString('Class1Select') ?? '';
-      class2Select = prefs.getString('Class2Select') ?? '';
-      class3Select = prefs.getString('Class3Select') ?? '';
-      class4Select = prefs.getString('Class4Select') ?? '';
-      class5Select = prefs.getString('Class5Select') ?? '';
-      class6Select = prefs.getString('Class6Select') ?? '';
-      class7Select = prefs.getString('Class7Select') ?? '';
+      building1select = prefs.getString('Class1Select') ?? '';
+      building2select = prefs.getString('Class2Select') ?? '';
+      building3select = prefs.getString('Class3Select') ?? '';
+      building4select = prefs.getString('Class4Select') ?? '';
+      building5select = prefs.getString('Class5Select') ?? '';
+      building6select = prefs.getString('Class6Select') ?? '';
+      building7select = prefs.getString('Class7Select') ?? '';
 
       class1name = prefs.getString('class1_Name') ?? '';
       class2name = prefs.getString('class2_Name') ?? '';
@@ -297,7 +293,7 @@ class _ClassPage extends State<ClassPage>{
                           ),
                           alignment: Alignment.topCenter,
                         ),
-                        Text(class1Select,
+                        Text(building1select,
                           style: const TextStyle(
                             fontSize: 18.5,
                             fontWeight: FontWeight.bold,
@@ -398,7 +394,7 @@ class _ClassPage extends State<ClassPage>{
             ) :const SizedBox(),
            showclass1 ? ElevatedButton(
              onPressed: (){
-               class_go_pick = 1;
+               classpickGO = 1;
                goPress();
              },
              style:ButtonStyle(
@@ -479,7 +475,7 @@ class _ClassPage extends State<ClassPage>{
                         ),
                         alignment: Alignment.topCenter,
                       ),
-                      Text(class2Select,
+                      Text(building2select,
                         style: const TextStyle(
                           fontSize: 18.5,
                           fontWeight: FontWeight.bold,
@@ -580,7 +576,7 @@ class _ClassPage extends State<ClassPage>{
           ) :const SizedBox(),
             showclass2 ? ElevatedButton(
               onPressed: (){
-                class_go_pick = 2;
+                classpickGO = 2;
                 goPress();
               },
               style:ButtonStyle(
@@ -665,7 +661,7 @@ class _ClassPage extends State<ClassPage>{
                           ),
                           alignment: Alignment.topCenter,
                         ),
-                        Text(class3Select,
+                        Text(building3select,
                           style: const TextStyle(
                             fontSize: 18.5,
                             fontWeight: FontWeight.bold,
@@ -766,7 +762,7 @@ class _ClassPage extends State<ClassPage>{
             ) :const SizedBox(),
            showclass3 ? ElevatedButton(
              onPressed: (){
-               class_go_pick = 1;
+               classpickGO = 3;
                goPress();
              },
              style:ButtonStyle(
@@ -850,7 +846,7 @@ class _ClassPage extends State<ClassPage>{
                           ),
                           alignment: Alignment.topCenter,
                         ),
-                        Text(class4Select,
+                        Text(building4select,
                           style: const TextStyle(
                             fontSize: 18.5,
                             fontWeight: FontWeight.bold,
@@ -951,7 +947,7 @@ class _ClassPage extends State<ClassPage>{
             ) :const SizedBox(),
            showclass4 ? ElevatedButton(
              onPressed: (){
-               class_go_pick = 1;
+               classpickGO = 4;
                goPress();
              },
              style:ButtonStyle(
@@ -1045,32 +1041,25 @@ class _ClassPage extends State<ClassPage>{
                         selectedItem = val as String;
                         buldingselect = val as String;
                         if(classmanagecode == 1){
-                          class1Select = val as String;
-                          classsendcode = 1;
+                          building1select = val as String;
                         }
                         else if(classmanagecode == 2){
-                          class2Select = val as String;
-                          classsendcode = 2;
+                          building2select = val as String;
                         }
                         else if(classmanagecode == 3){
-                          class3Select = val as String;
-                          classsendcode = 3;
+                          building3select = val as String;
                         }
                         else if(classmanagecode == 4){
-                          class4Select = val as String;
-                          classsendcode = 4;
+                          building4select = val as String;
                         }
                         else if(classmanagecode == 5){
-                          class5Select = val as String;
-                          classsendcode = 5;
+                          building5select = val as String;
                         }
                         else if(classmanagecode == 6){
-                          class6Select = val as String;
-                          classsendcode = 6;
+                          building6select = val as String;
                         }
                         else if(classmanagecode == 7){
-                          class7Select = val as String;
-                          classsendcode = 7;
+                          building7select = val as String;
                         }
                         
                       });
@@ -1392,27 +1381,6 @@ class _ClassPage extends State<ClassPage>{
                   ),
                   ElevatedButton(
                     onPressed: (){
-                      if(classmanagecode == 1){
-                          showclasscode = 1;
-                        }
-                        else if(classmanagecode == 2){
-                          showclasscode = 2;
-                        }
-                        else if(classmanagecode == 3){
-                          showclasscode = 3;
-                        }
-                        else if(classmanagecode == 4){
-                          showclasscode = 4;
-                        }
-                        else if(classmanagecode == 5){
-                          showclasscode = 5;
-                        }
-                        else if(classmanagecode == 6){
-                          showclasscode = 6;
-                        }
-                        else if(classmanagecode == 7){
-                          showclasscode = 7;
-                        }
                       classremovebutton();
                     },
                     style:  ButtonStyle(
@@ -1506,25 +1474,25 @@ class _ClassPage extends State<ClassPage>{
       selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true';
     }
 
-    if(classsendcode == 1){
+    if(classmanagecode == 1){
       class1image = selectedimg;
     }
-    else if (classsendcode == 2){
+    else if (classmanagecode == 2){
       class2image = selectedimg;
     }
-    else if (classsendcode == 3){
+    else if (classmanagecode == 3){
       class3image = selectedimg;
     }
-    else if (classsendcode == 4){
+    else if (classmanagecode == 4){
       class4image = selectedimg;
     }
-    else if (classsendcode == 5){
+    else if (classmanagecode == 5){
       class5image = selectedimg;
     }
-    else if (classsendcode == 6){
+    else if (classmanagecode == 6){
       class6image = selectedimg;
     }
-    else if (classsendcode == 7){
+    else if (classmanagecode == 7){
       class7image = selectedimg;
     }
 
@@ -1550,13 +1518,13 @@ class _ClassPage extends State<ClassPage>{
     }
 
     setState(() {
-      prefs.setString('Class1Select', class1Select);
-      prefs.setString('Class2Select', class2Select);
-      prefs.setString('Class3Select', class3Select);
-      prefs.setString('Class4Select', class4Select);
-      prefs.setString('Class5Select', class5Select);
-      prefs.setString('Class6select', class6Select);
-      prefs.setString('Class7Select', class7Select);
+      prefs.setString('Class1Select', building1select);
+      prefs.setString('Class2Select', building2select);
+      prefs.setString('Class3Select', building3select);
+      prefs.setString('Class4Select', building4select);
+      prefs.setString('Class5Select', building5select);
+      prefs.setString('Class6select', building6select);
+      prefs.setString('Class7Select', building7select);
 
       prefs.setString('class1_Name', class1name);
       prefs.setString('class2_Name', class2name);
@@ -1603,7 +1571,6 @@ class _ClassPage extends State<ClassPage>{
 
   void clearData() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    classdeletetog = true;
     setState(() {
       prefs.clear();
       prefs.setBool('ShowClass1', false);
@@ -1655,8 +1622,9 @@ class _ClassPage extends State<ClassPage>{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       //prefs.clear();
-      if(showclasscode == 1){
+      if(classmanagecode == 1){
         prefs.setBool('ShowClass1', false);
+
         prefs.setBool('shownext2', false);
         prefs.setBool('shownext3', false);
         prefs.setBool('shownext4', false);
@@ -1664,7 +1632,7 @@ class _ClassPage extends State<ClassPage>{
         prefs.setBool('shownext6', false);
         prefs.setBool('shownext7', false);
       }
-      else if (showclasscode == 2){
+      else if (classmanagecode == 2){
         prefs.setBool('ShowClass2', false);
 
         prefs.setBool('shownext2', true);
@@ -1674,7 +1642,7 @@ class _ClassPage extends State<ClassPage>{
         prefs.setBool('shownext6', false);
         prefs.setBool('shownext7', false);
       }
-      else if (showclasscode == 3){
+      else if (classmanagecode == 3){
         prefs.setBool('ShowClass3', false);
 
         prefs.setBool('shownext2', false);
@@ -1684,7 +1652,7 @@ class _ClassPage extends State<ClassPage>{
         prefs.setBool('shownext6', false);
         prefs.setBool('shownext7', false);
       }
-      else if (showclasscode == 4){
+      else if (classmanagecode == 4){
         prefs.setBool('ShowClass4', false);
 
         prefs.setBool('shownext2', false);
@@ -1694,7 +1662,7 @@ class _ClassPage extends State<ClassPage>{
         prefs.setBool('shownext6', false);
         prefs.setBool('shownext7', false);
       }
-      else if (showclasscode == 5){
+      else if (classmanagecode == 5){
         prefs.setBool('ShowClass5', false);
 
         prefs.setBool('shownext2', false);
@@ -1704,7 +1672,7 @@ class _ClassPage extends State<ClassPage>{
         prefs.setBool('shownext6', false);
         prefs.setBool('shownext7', false);
       }
-      else if (showclasscode == 6){
+      else if (classmanagecode == 6){
         prefs.setBool('ShowClass6', false);
 
         prefs.setBool('shownext2', false);
@@ -1714,7 +1682,7 @@ class _ClassPage extends State<ClassPage>{
         prefs.setBool('shownext6', true);
         prefs.setBool('shownext7', false);
       }
-      else if (showclasscode == 7){
+      else if (classmanagecode == 7){
         prefs.setBool('ShowClass7', false);
 
         prefs.setBool('shownext2', false);
@@ -1727,23 +1695,23 @@ class _ClassPage extends State<ClassPage>{
     });
   }
   void goPress() async{
-    if (class_go_pick == 1){
-      classforCords = class1Select;
+    if (classpickGO == 1){
+      classforCords = building1select;
     }
-    else if(class_go_pick == 2){
-      classforCords = class2Select;
+    else if(classpickGO == 2){
+      classforCords = building2select;
     }
-    else if(class_go_pick == 3){
-      classforCords = class3Select;
+    else if(classpickGO == 3){
+      classforCords = building3select;
     }
-    else if(class_go_pick == 4){
-      classforCords = class4Select;
+    else if(classpickGO == 4){
+      classforCords = building4select;
     }
-    else if(class_go_pick == 5){
-      classforCords = class5Select;
+    else if(classpickGO == 5){
+      classforCords = building5select;
     }
-    else if(class_go_pick == 6){
-      classforCords = class6Select;
+    else if(classpickGO == 6){
+      classforCords = building6select;
     }
 
     if (classforCords == 'CSUB/CSU Bakersfield'){
