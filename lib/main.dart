@@ -1,138 +1,101 @@
-
-
-
-
-import 'dart:io';
-import 'dart:ui';
 import 'dart:developer';
-import 'src/help_page.dart';
+
 import 'package:flutter/material.dart';
-
-
 import 'package:flutter/services.dart';
-import 'package:location/location.dart';
-import 'src/locations.dart' as locations;
-import 'package:flutter_config/flutter_config.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:location/location.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
-
-
-
-
-
-
-
+import 'src/locations.dart' as locations;
+import 'src/help_page.dart';
 
 void main() async {
-
-
-
-
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
-
-
-
   runApp(const MyApp());
+  
 }
-
-
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
-
-
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 
-
-
 class _MyAppState extends State<MyApp> {
+  late GoogleMapController mapController;
 
-
-
-
-
-
-
-
-/*
-  //this is a test can be ignored
-  //
-  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
-
-
-
-
-
-
-
-
-
-
-
-
-  void addCustomIcon(){
-    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
-        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
-        .then(
-          (icon) {
-        setState((){
-          markericon = icon;
-        });
-      },
-    );
-  }
-
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  String searchText = '';
-  bool isSearching = false;
-  bool isClearPressed = false;
-
-
-  late GoogleMapController? mapController;
-  String selectedSuggestion = '';
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController _searchController = TextEditingController();
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
+TextEditingController searchController = TextEditingController();
+String searchText = '';
+bool isSearching = false;
+bool isClearPressed = false;
+  Set<Marker> markers = {};
+
   Marker? searchMarkerByName(String name, Set<Marker> marker) {
       final lowercaseName = name.toLowerCase();
     return markers.firstWhere(
     (marker) => marker.infoWindow.title?.toLowerCase() == lowercaseName,
             orElse: () => Marker(markerId: MarkerId('dummy_marker'),
-            position: LatLng(0, 0)
+position: LatLng(0, 0)
             ),
     );
   }
+
+
+
+
+  // Always contains all markers. Used for resetting markers
+  Set<Marker> markersCopy = {};
+
+  // Poly-lines
+  Set<Polyline> _polylines = {};
+  // MapsRoutes route = MapsRoutes();
+
+  LocationData? currentLocation;
+  LatLng? currentLocationLatLng;
+
+  // Tool States
+  bool _isSwitched = false;
+
+  // Filter States
+  bool parkingChecked = false;
+  bool classroomsChecked = false;
+  bool studentResourcesChecked = false;
+  bool foodChecked = false;
+  bool athleticsChecked = false;
+
+Set<Marker> filterMarkersByKeyword(String keyword) {
+  keyword = keyword.toLowerCase();
+  return markersCopy.where((marker) {
+    return marker.infoWindow.title != null &&
+        marker.infoWindow.title!.toLowerCase().contains(keyword);
+  }).toSet();
+}
+
+
+  Marker? selectedMarker;
+
+  Future<void> _onMapCreated(
+      GoogleMapController controller, BuildContext context) async {
+    mapController = controller;
+    markers = await locations.getMarkers(context);
+    _getParkedLocation();
+
+    // After loading the markers, update the state of the map with setState
+    setState(() {
+      markers.addAll(markers);
+      markersCopy.addAll(markers);
+      suggestions = markers.toSet();
+    });
+  }
+  
   void onSearch(String query) {
   Marker? searchedMarker = searchMarkerByName(query, markers);
       if (query.isNotEmpty) {
@@ -159,78 +122,16 @@ class _MyAppState extends State<MyApp> {
    
    
 }
-  Set<Marker> markers = {};
-  // Always contains all markers. Used for resetting markers
-  Set<Marker> markersCopy = {};
-
-
-
-
-  // Poly-lines
-  Set<Polyline> _polylines = {};
-  // MapsRoutes route = MapsRoutes();
-
-
-
-
-  LocationData? currentLocation;
-  LatLng? currentLocationLatLng;
-
-
-
-
-  // Tool States
-  bool _isSwitched = false;
-
-
-
-
-  // Filter States
-  bool parkingChecked = false;
-  bool classroomsChecked = false;
-  bool studentResourcesChecked = false;
-  bool foodChecked = false;
-  bool athleticsChecked = false;
-
-
-
-
-  Future<void> _onMapCreated(
-      GoogleMapController controller, BuildContext context) async {
-    mapController = controller;
-    markers = await locations.getMarkers(context);
-    _getParkedLocation();
-
-
-
-
-    // After loading the markers, update the state of the map with setState
-    setState(() {
-      markers.addAll(markers);
-      markersCopy.addAll(markers);
-    });
-  }
-
-
 
 
   // User Location Related
   void getCurrentLocation() async {
     Location location = Location();
 
-
-
-
     // Checks if location services and permissions are enabled
     checkServicesAndPermissions(location);
 
-
-
-
     currentLocation = await location.getLocation();
-
-
-
 
     // Gets location updates
     location.onLocationChanged.listen(
@@ -241,9 +142,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-
-
-
   void checkServicesAndPermissions(Location location) async {
     var serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -253,9 +151,6 @@ class _MyAppState extends State<MyApp> {
       }
     }
 
-
-
-
     var permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
@@ -264,49 +159,12 @@ class _MyAppState extends State<MyApp> {
       }
     }
   }
-  void _onSuggestionSelected(Marker suggestion) {
-  LatLng markerLatLng = suggestion.position;
-  mapController?.animateCamera(CameraUpdate.newLatLngZoom(markerLatLng, 20.0));
-
-
-  _searchController.text = suggestion.infoWindow.title ?? '';
-
-
-  setState(() {
-    selectedSuggestion = suggestion.infoWindow.title ?? '';
-  });
-
-
-  // Không thay đổi trạng thái "search" khi chọn suggestion
-  _clearSearch();
-}
-
-
-
 
   @override
   void initState() {
     super.initState();
     getCurrentLocation();
-    //addCustomIcon();
-  }void dispose() {
-    _searchController.dispose();
-    super.dispose();
   }
-  void _clearSearch() {
-    setState(() {
-      _searchController.clear();
-      isSearching = true;
-      isClearPressed = true;
-
-
-    });
-  }
-
-
-
-
-
 
   void _filterMarkers() {
     int filterCount = 0;
@@ -332,9 +190,6 @@ class _MyAppState extends State<MyApp> {
       ++filterCount;
     }
 
-
-
-
     if (filterCount > 0) {
       markers = tmp;
     } else {
@@ -355,27 +210,15 @@ class _MyAppState extends State<MyApp> {
         markers.add(userMarker!);
       });
 
-
-
-
       // Draw polyline from current location to userMarker
       drawRoute(latLng);
     }
   }
 
-
-
-
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
     LatLng? end = latLng;
-
-
-
-
-
-
 
 
     // IMPORTANT NOTE: This piece of code works by showing routes based on google map data. However, the routes only seem to
@@ -386,9 +229,6 @@ class _MyAppState extends State<MyApp> {
     // _polylines = route.routes;
     // DistanceCalculator distanceCalculator = DistanceCalculator();
 
-
-
-
     // Temporarily being used until routes are figured out
     Polyline polyline = Polyline(
       polylineId: PolylineId('polyline'),
@@ -397,17 +237,34 @@ class _MyAppState extends State<MyApp> {
       width: 5,
     );
 
-
-
-
    _polylines.add(polyline);
 
-
-
-
   }
+Set<Marker> suggestions = {};
 
 
+  void onTapSuggestion(Marker tappedMarker) {
+  selectedMarker = tappedMarker;
+  if (selectedMarker != null) {
+    mapController.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        selectedMarker!.position,
+        17.0, 
+      ),
+    );
+ setState(() {
+        suggestions = filterMarkersByKeyword(selectedMarker!.infoWindow.title ?? '').toSet();
+    });
+  }
+}
+void updateSuggestions(String keyword) {
+  setState(() {
+if (keyword.isEmpty) {
+        suggestions = markersCopy;
+      } else {
+        suggestions = filterMarkersByKeyword(keyword);
+      }  });
+}
 
 
   Marker? savedParkingMarker;
@@ -422,21 +279,12 @@ class _MyAppState extends State<MyApp> {
     );
     // Add savedParkingMarker to the map
 
-
-
-
     setState(() {
       markers.add(savedParkingMarker!);
     });
 
-
-
-
     _saveParkedLocation();
   }
-
-
-
 
   Future<void> _getParkedLocation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -455,9 +303,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-
-
-
   Future<void> _saveParkedLocation() async {
     if (savedParkingMarker != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -465,9 +310,6 @@ class _MyAppState extends State<MyApp> {
       prefs.setDouble('parked_longitude', savedParkingMarker!.position.longitude);
     }
   }
-
-
-
 
   Future<void> _removeParkedLocation() async {
     if (savedParkingMarker != null) {
@@ -481,12 +323,6 @@ class _MyAppState extends State<MyApp> {
   }
 
 
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -498,11 +334,88 @@ class _MyAppState extends State<MyApp> {
             secondary: const Color(0xff8a1c40),
           ),
           appBarTheme: const AppBarTheme(
-            color: Color(0xff8a1c40),
-          )
-          ),
+            color: Colors.transparent,
+          )),
       home: Scaffold(
-        key: _scaffoldKey,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SearchAnchor(
+              builder: (BuildContext context, SearchController controller) {
+
+
+            return SearchBar(
+              controller: controller,
+              //padding: MaterialStatePropertyAll<EdgeInsets>(
+                 // EdgeInsets.symmetric(horizontal: 16.0)),
+                 padding: MaterialStateProperty.all<EdgeInsets>(
+                 const EdgeInsets.symmetric(horizontal: 16.0),
+                 ),
+              onSubmitted: (value) {
+                    onSearch(value);
+
+              },
+              onTap: () {
+                controller.openView();
+              },
+              onChanged: (value) {
+                setState(() {
+                  searchText = value;
+                  updateSuggestions(searchText);
+
+                });
+                  updateSuggestions(searchText);
+
+                            },
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) {
+                  return Colors.transparent;
+                },
+              ),
+              leading: const Icon(Icons.search),
+              trailing: <Widget>[
+                Tooltip(
+                  message: 'Change brightness mode',
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                      });
+                    },
+                    icon: const Icon(Icons.wb_sunny_outlined),
+                    selectedIcon: const Icon(Icons.brightness_2_outlined),
+                  ),
+                )
+              ],
+            );
+          }, suggestionsBuilder:
+    (BuildContext context, SearchController controller) {
+  List<Widget> suggestionWidgets = suggestions.map((marker) {
+    return ListTile(
+      title: Text(marker.infoWindow.title ?? ''),
+      onTap: () {
+        onTapSuggestion(marker);
+      },
+    );
+  }).toList();
+
+  return suggestionWidgets;
+            // return List<ListTile>.generate(5, (int index) {
+            //   final String item = 'item $index';
+            //   return ListTile(
+            //     title: Text(item),
+            //     onTap: () {
+            //       setState(() {
+            //         controller.closeView(item);
+            //       });
+            //     },
+            //   );
+            // });
+          }),
+        ),
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: Colors.white),
+        ), extendBodyBehindAppBar: true,
         drawer: Builder(
             builder: (context) => Drawer(
                 child: ListView(padding: EdgeInsets.zero, children: [
@@ -514,9 +427,6 @@ class _MyAppState extends State<MyApp> {
                         )),
                     child: Text(''),
                   ),
-
-
-
 
                   // General Buttons
                   ListTile(
@@ -543,9 +453,6 @@ class _MyAppState extends State<MyApp> {
                   ),
                   const Divider(),
 
-
-
-
                 // Tools
                 SwitchListTile(
                   title: const Text('Building Route'),
@@ -554,9 +461,6 @@ class _MyAppState extends State<MyApp> {
                   onChanged: (value) {
                     setState(() {
                       _isSwitched = value;
-
-
-
 
                       if(_isSwitched){
                         // Ensure current location exists before using the feature
@@ -592,9 +496,6 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
                 const Divider(),
-
-
-
 
                   // Filters
                   CheckboxListTile(
@@ -664,202 +565,26 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ]))),
         body: Builder(
-  builder: (context) {
-    return GestureDetector(
-  onTap: () {
-    if (isSearching) {
-      setState(() {
-        searchText = '';
-        isSearching = false;
-      });
-      _clearSearch();
-    }
-  },
-   
-
-
-   
-    child: Stack(
-        alignment: Alignment.centerLeft,
-      children: <Widget>[
-        GoogleMap(
+          builder: (context) => GoogleMap(
           onMapCreated: (controller) => _onMapCreated(controller, context),
           initialCameraPosition: CameraPosition(
             target: _center,
             zoom: 17.0,
           ),
-          zoomGesturesEnabled: true,
-          minMaxZoomPreference: MinMaxZoomPreference(16, 20),
-          cameraTargetBounds: CameraTargetBounds(
-            LatLngBounds(
-              northeast: LatLng(34.68208082459477, -118.1838193583875),
-              southwest: LatLng(34.67485483411587, -118.19230586766488),
-            ),
+          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
+              northeast:LatLng(34.680987, -118.185444) ,
+              southwest:LatLng(34.675965, -118.191282)
+            )
           ),
+
+
           markers: markers,
           myLocationEnabled: true,
           mapType: MapType.normal,
           onTap: manageTap,
           polylines: _polylines,
+          )
         ),
-
-
-
-
-        // Positioned widget to control the position of your content
-        Positioned(
-            top: Platform.isIOS 
-            ? 35.0    //edit on ios
-            : 20.0,   //edit on android
-            left: 20.0,
-            right: 20.0,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.5),
-              margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              height: 50.0,
-               width: MediaQuery.of(context).size.width - 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(55.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    offset: Offset(0, 2),
-                    blurRadius: 4.0,
-                  ),
-                ],
-              ),
-              // Menu botton
-              child: Row(
-                children: [
-                  if(!isSearching)
-                  IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () {
-                     _scaffoldKey.currentState!.openDrawer();
-                    },
-                  ),
-                 
-                  SizedBox(width:0),
-                  Expanded(
-                    // suggestionsBox
-                    child: TypeAheadField(
-                    textFieldConfiguration: TextFieldConfiguration(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search Campus Locations',
-                        alignLabelWithHint: true,
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          searchText = value;
-                        });
-                      },
-                      onSubmitted: (value) {
-                        if (isSearching) {
-                          (value);
-                        }
-                        setState(() {
-                              isSearching = false;
-                            });
-                      },
-                      onTap: () {
-                        setState(() {
-                          isSearching = true;
-                        });
-                      },
-                     
-                    ),
-                    suggestionsBoxDecoration: const SuggestionsBoxDecoration(
-                      constraints: BoxConstraints(
-                      minWidth:355,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(25.0),
-                        topLeft: Radius.circular(25.0),
-                        bottomLeft: Radius.circular(25.0),
-                        bottomRight: Radius.circular(25.0),
-                        )
-                        ),
-                    noItemsFoundBuilder: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text('Not Found Locations',
-                          style: TextStyle(fontSize: 18.0),
-                          ),
-                          );
-                          },
-                    suggestionsCallback:(String query) async {
-                    List<Marker> matchingMarkers = markers.where((marker) {
-                    return marker.infoWindow.title?.toLowerCase().contains(query.toLowerCase()) ?? false;
-                    }).toList();
-                    return matchingMarkers;
-                    },
-                    itemBuilder:  (context, Marker suggestion) {
-                      return ListTile(
-                        title: Text(suggestion.infoWindow.title ?? ''),
-                        );
-                        },
-                        onSuggestionSelected: (Marker suggestion) {
-                        LatLng markerLatLng = suggestion.position;
-                        mapController?.animateCamera(CameraUpdate.newLatLngZoom(markerLatLng, 20.0),
-                        );
-                        _searchController.text = suggestion.infoWindow.title ?? '';
-
-
-
-
-                        setState(() {
-                        selectedSuggestion = suggestion.infoWindow.title ?? '';
-                        isSearching = false;
-
-
-                        });
-                        isSearching = false;
-
-
-
-
-                        },
-                    suggestionsBoxController: SuggestionsBoxController(
-                      // suggestionsBoxVerticalOffset: 10,
-                    ),
-                      ),
-                        ),
-                      // Search button
-
-
-                      IconButton(
-                        icon: Icon(isSearching ? Icons.clear : Icons.search,
-                      ),
-
-
-                    onPressed: () {
-                     if (isSearching) {
-                            _clearSearch();
-                          } else {
-                            final searchText = _searchController.text;
-                            onSearch(searchText);
-                          }
-                    },
-                    autofocus: true,
-                  ),
-                ],
-              ),
-            ),
-            ),
-      ],
- 
-    )
-    );
-  },
- 
-),
-
-
-
-
       ),
     );
   }
