@@ -52,13 +52,10 @@ class _MyAppState extends State<MyApp> {
 
 */
 
+  late GoogleMapController mapController;                                  // This initializes the GoogleMapController
 
-
-
-
-  late GoogleMapController mapController;
-
-  // Added by matthew for building route 
+  // FIXME: This is for testing build route 
+  // Added by matthew 
   Marker? userMarker;
   
   void manageTap(LatLng latLng) {
@@ -78,7 +75,33 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+     // Testing mode: by matthew
+    
+    bool isLocationWithinBounds(LatLng location) {
+      final bounds = LatLngBounds(
+        northeast:LatLng(34.68208082459477, -118.1838193583875),              //map bound northeast  
+        southwest:LatLng(34.67485483411587, -118.19230586766488),            //map bound southwest
+      );
+      // Checks if the method LatLngBounds is within the bound
+      return bounds.contains(location);
+    }
+     SnackBar buildSnackBar(String message) {
+      return SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      );
+     }
 
+    void handleMapTap(LatLng tappedPoint) {
+        // Tests: shows the direction of tapped location
+        // For starters, this will..........
+      if (isLocationWithinBounds(tappedPoint)) {
+        // Draws the location of the route to tapped location from user
+        drawRoute(tappedPoint);                                            // Testing: tapped function
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(buildSnackBar('Desired location is outside of the bounded area.'));
+      }
+  }
   // Current map type
   MapType _currentMapType = MapType.normal;                         
 
@@ -193,6 +216,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   /* This is in a comment because testing building route by matthew
+
+
   Marker? userMarker;
   void manageTap(LatLng latLng){
     if(_isSwitched){
@@ -211,6 +236,8 @@ class _MyAppState extends State<MyApp> {
       drawRoute(latLng);
     }
   }
+
+
   */
 
   // TODO: Create working routes based on google map data via directions API
@@ -483,10 +510,11 @@ class _MyAppState extends State<MyApp> {
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
-          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:LatLng(34.68208082459477, -118.1838193583875) ,
-              southwest:LatLng(34.67485483411587, -118.19230586766488)
-            )
+            cameraTargetBounds:CameraTargetBounds(LatLngBounds(
+              northeast:LatLng(34.68208082459477, -118.1838193583875) ,           //blakes map bound northeast  
+              southwest:LatLng(34.67485483411587, -118.19230586766488)            //blakes map bound southwest
+
+            ),
           ),
 
           //icon: markericon,
@@ -499,12 +527,25 @@ class _MyAppState extends State<MyApp> {
             ),
           },
           */
+
           myLocationEnabled: true,
           mapType: _currentMapType,                             // Set the current map type 
-          onTap: manageTap,
-          polylines: _polylines,
+
+         //  onTap: manageTap,                               *** temp change for building markers by matthew
+
+         // Test code made by matthew for building routing
+          onTap: (LatLng tappedPoint) {
+            handleMapTap(tappedPoint);
+          },
+
+          polylines: _polylines,                                // *** added this here more efficient
+          
+
+         // polylines: _polylines,                           *** temp change for building markers by matthew
+
            ),
         ),
+
           // A FloatingActionButton to toggle map type
           floatingActionButton: Container(
            margin: const EdgeInsets.only(top: 16, left: 16),
@@ -520,7 +561,7 @@ class _MyAppState extends State<MyApp> {
          },
            child: Icon(
           _currentMapType == MapType.normal
-          ? Icons.satellite                               // Different icons based on map type
+          ? Icons.satellite                                  // Different icons based on map type
           : Icons.map,                                 
            ),
             ),
