@@ -1,4 +1,5 @@
 import 'dart:developer';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -238,7 +239,7 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
-
+GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -254,63 +255,58 @@ class _MyAppState extends State<MyApp> {
             color: Colors.transparent,
           )),
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SearchAnchor(
-              builder: (BuildContext context, SearchController controller) {
-            return SearchBar(
-              controller: controller,
-              //padding: MaterialStatePropertyAll<EdgeInsets>(
-                 // EdgeInsets.symmetric(horizontal: 16.0)),
-                 padding: MaterialStateProperty.all<EdgeInsets>(
-                 const EdgeInsets.symmetric(horizontal: 16.0),
-                 ),
-              onTap: () {
-                controller.openView();
-              },
-              onChanged: (_) {
-                controller.openView();
-              },
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (states) {
-                  return Colors.transparent;
-                },
+        key: _scaffoldKey,
+        body: Stack(
+          children: <Widget> [
+            GoogleMap(
+              onMapCreated: (controller) => _onMapCreated(controller, context),
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 17.0,
               ),
-              leading: const Icon(Icons.search),
-              trailing: <Widget>[
-                Tooltip(
-                  message: 'Change brightness mode',
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                      });
-                    },
-                    icon: const Icon(Icons.wb_sunny_outlined),
-                    selectedIcon: const Icon(Icons.brightness_2_outlined),
-                  ),
+              cameraTargetBounds:CameraTargetBounds(
+                LatLngBounds(
+                  northeast:LatLng(34.680987, -118.185444),
+                  southwest:LatLng(34.675965, -118.191282)
                 )
-              ],
-            );
-          }, suggestionsBuilder:
-                  (BuildContext context, SearchController controller) {
-            return List<ListTile>.generate(5, (int index) {
-              final String item = 'item $index';
-              return ListTile(
-                title: Text(item),
-                onTap: () {
-                  setState(() {
-                    controller.closeView(item);
-                  });
-                },
-              );
-            });
-          }),
-        ),
-          centerTitle: true,
-          iconTheme: const IconThemeData(color: Colors.white),
-        ), extendBodyBehindAppBar: true,
+              ),
+              markers: markers,
+              myLocationEnabled: true,
+              mapType: MapType.normal,
+              onTap: manageTap,
+              polylines: _polylines,
+            ),
+            Row(
+              children: [
+                Padding(padding: EdgeInsets.all(20), child: 
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: Row(
+                    children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      onPressed:(){ 
+                        _scaffoldKey.currentState!.openDrawer();
+                      },
+                      child: Icon(Icons.menu)
+                    ),
+                  //ADD THE PLACE TO TYPE HERE THE CONTAINER WILL GET BIGGER BY ITS SLEF-----------------------------------------------------------------------------
+                ],
+                ),
+              ),
+              ),
+            ],
+          ),
+          ],
+    ),
         drawer: Builder(
             builder: (context) => Drawer(
                 child: ListView(padding: EdgeInsets.zero, children: [
@@ -458,28 +454,10 @@ class _MyAppState extends State<MyApp> {
                       _filterMarkers();
                     },
                   ),
-                ]))),
-        body: Builder(
-          builder: (context) => GoogleMap(
-          onMapCreated: (controller) => _onMapCreated(controller, context),
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 17.0,
-          ),
-          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:LatLng(34.680987, -118.185444) ,
-              southwest:LatLng(34.675965, -118.191282)
-            )
-          ),
-
-
-          markers: markers,
-          myLocationEnabled: true,
-          mapType: MapType.normal,
-          onTap: manageTap,
-          polylines: _polylines,
-          )
-        ),
+                ]
+                )
+                )
+                ),
       ),
     );
   }
