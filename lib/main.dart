@@ -252,7 +252,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
             secondary: const Color(0xff8a1c40),
           ),
           appBarTheme: const AppBarTheme(
-            color: Colors.transparent,
+            color: Color(0xff8a1c40),
           )),
       home: Scaffold(
         key: _scaffoldKey,
@@ -299,6 +299,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
                       child: Icon(Icons.menu)
                     ),
                   //ADD THE PLACE TO TYPE HERE THE CONTAINER WILL GET BIGGER BY ITS SLEF-----------------------------------------------------------------------------
+                  // its in a row so it will add the next thing next to it NOT bellow 
                 ],
                 ),
               ),
