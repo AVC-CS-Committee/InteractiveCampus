@@ -1,12 +1,14 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/main.dart';
-import 'package:interactivemap/src/class_1_creator.dart';
-import 'package:interactivemap/src/class_2_creator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:day_picker/day_picker.dart';
+import 'dart:collection';
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+
 
 class ClassPage extends StatefulWidget {
   const ClassPage({super.key});
@@ -59,9 +61,93 @@ class _ClassPage extends State<ClassPage>{
   double latitudeClass1 = 34.67613026710341;
   double longitudeClass1 = -118.19203306356845;
 
-  //list of classes for teh drop down
-  List<String> classList = ['Select a class', 'CSUB/CSU Bakersfield', 'DL/Discovery Lab ', 'AL/Auto Lab', 'UH/Uhazy Hall', 'YH/Yoshida Hall', 'S1-9/SOAR High School', 'PA/Performing Arts Theatre', 'FA1/Art Gallery', 'FA2/Black Box', 'MH/Mesquite Hall', 'LH/Lecture Hall', 'SH/Sage Hall', 'ME/Math and Engineering', 'FA4/Fine Arts', 'FA3/Fine Arts Music and Offices', 'EL/Enterprise Lab', 'HL/Horticulture Lab', 'GH1-4/Greenhouses'];
-  String? selectedItem = 'Select a class';
+  
+String? selectedItem = 'Select a class';
+
+    List<String> classList = [
+      'Select a class', 
+      'CSUB/CSU Bakersfield', 
+      'DL/Discovery Lab ', 
+      'AL/Auto Lab', 
+      'UH/Uhazy Hall', 
+      'YH/Yoshida Hall', 
+      'S1-9/SOAR High School', 
+      'PA/Performing Arts Theatre', 
+      'FA1/Art Gallery', 
+      'FA2/Black Box', 
+      'MH/Mesquite Hall', 
+      'LH/Lecture Hall', 
+      'SH/Sage Hall', 
+      'ME/Math and Engineering', 
+      'FA4/Fine Arts', 
+      'FA3/Fine Arts Music and Offices', 
+      'EL/Enterprise Lab', 
+      'HL/Horticulture Lab', 
+      'GH1-4/Greenhouses'];
+    List<String> classimglist = [
+      '',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_bakersfield.jpg?raw=true',
+      '',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_autolab.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_uhazyhall.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_yoshidahall.jpg?raw=true',
+      '',
+      '',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_artgallery.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_blackbox.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_mh.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_lh.jpg?raw=true',
+      'https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_me.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_finearts.jpg?raw=true',
+      '',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_enterpriselab.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_horticulture.jpg?raw=true',
+      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true',
+    ];
+    List<double> classlatlist = [
+      34.678652329599096, 
+      34.680353586506165,  
+      34.680452828358916,  
+      34.67882218077683,   
+      34.6788359665366,   
+      34.67899187744454,  
+      34.67877310935158,  
+      34.6754613377245,   
+      34.676203764577544, 
+      34.675832701065104, 
+      34.67687342944362,  
+      34.677011511466674, 
+      34.67714651488922,  
+      34.67775573632852,  
+      34.67648676160919,  
+      34.67626532974614,  
+      34.67973186506707,  
+      34.679898891625314, 
+      34.679813863502766
+    ];
+    List<double> classlonlist = [
+      -118.18616290156892, //select a class
+      -118.18506976951421,
+      -118.18656003661856,
+      -118.18719722438767,
+      -118.18640225876932,
+      -118.18548358738202,
+      -118.18800679457378,
+      -118.18723230937766,
+      -118.18697930907051,
+      -118.18737862660834,
+      -118.18512883579885,
+      -118.18741261041862,
+      -118.18709120662562,
+      -118.18589961736947,
+      -118.18738628333938,
+      -118.18770778514867,
+      -118.18654794631942,
+      -118.1870825677824,
+      -118.18775289064219
+    ];
+    
 
   //time for the time selector
   TimeOfDay time = const TimeOfDay(hour: 1, minute: 00);
@@ -156,13 +242,15 @@ class _ClassPage extends State<ClassPage>{
 
   late Map<String, Object> data = {};
 
-
   //all of is is used to load the data from shared prefrences
   void loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+   
 
 
     setState(() {
+      
+
       showclass1 = prefs.getBool('ShowClass1') ?? false;
       showclass2 = prefs.getBool('ShowClass2') ?? false;
       showclass3 = prefs.getBool('ShowClass3') ?? false;
@@ -245,7 +333,7 @@ class _ClassPage extends State<ClassPage>{
         centerTitle: true,
         elevation: 2,
       ),
-      body: Center(
+      body: Center( 
         child: ListView(
           padding: const EdgeInsets.all(30),
           children:<Widget> [
@@ -415,38 +503,17 @@ class _ClassPage extends State<ClassPage>{
                  color: Colors.white,
                ),
              ),
-           ): const SizedBox(),
-            showclass1 ? const SizedBox():
-            ElevatedButton(
-              onPressed: (){
-                shownext2 = true;
-                showclass1 = true;
-                classaddbutton();
-              },
-              style:ButtonStyle(
-                backgroundColor: const MaterialStatePropertyAll(
-                  Color(0xff006b67),
+             
+           ): const SizedBox(),         
+            Visibility(
+                  visible: showclass1,
+                  child: Column(children: [
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                  ],),
                 ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: Colors.transparent),
-                  ),
-                ),
-              ),
-              child: const Text(
-                'Add a class',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
-            ),
             //end class 1 ------------------------------------------------------
-
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
 
             //start class 2 -----------------------------------------------------
           showclass2 ? Container(
@@ -597,43 +664,18 @@ class _ClassPage extends State<ClassPage>{
                   color: Colors.white,
                 ),
               ),
-            ): const SizedBox(),
-            showclass2 ? const SizedBox():
-                Visibility(
-                  visible: shownext2,
-                  child: ElevatedButton(
-                  onPressed: (){
-                    shownext3 = true;
-                    showclass2 = true;
-                    classaddbutton();
-                  },
-                  style:ButtonStyle(
-                    backgroundColor: const MaterialStatePropertyAll(
-                      Color(0xff006b67),
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: const BorderSide(color: Colors.transparent),
-                      ),
-                    ),
-                  ),
-                  child: const Text(
-                    'Add a class',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
+            ): const SizedBox(), 
+            Visibility(
+                  visible: showclass2,
+                  child: Column(children: [
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                  ],),
                 ),
-                ),
-
             //end class 2 ------------------------------------------------------
 
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
-            
+   
           //start class 3 --------------------------------------------------------
           showclass3 ? Container(
               decoration: BoxDecoration(
@@ -784,41 +826,18 @@ class _ClassPage extends State<ClassPage>{
                ),
              ),
            ): const SizedBox(),
-            showclass3 ? const SizedBox():
-                Visibility(
-                  visible: shownext3,
-                  child: ElevatedButton(
-                  onPressed: (){
-                    shownext4 = true;
-                    showclass3 = true;
-                    classaddbutton();
-                  },
-                  style:ButtonStyle(
-                    backgroundColor: const MaterialStatePropertyAll(
-                      Color(0xff006b67),
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: const BorderSide(color: Colors.transparent),
-                      ),
-                    ),
-                  ),
-                  child: const Text(
-                    'Add a class',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      ),
-                    ),
-                  ),
+            Visibility(
+                  visible: showclass3,
+                  child: Column(children: [
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                  ],),
                 ),
+                
 
 
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
-
+            
             //start class 4 --------------------------------------------------------
           showclass4 ? Container(
               decoration: BoxDecoration(
@@ -969,44 +988,25 @@ class _ClassPage extends State<ClassPage>{
                ),
              ),
            ): const SizedBox(),
-            showclass4 ? const SizedBox():
-                Visibility(
-                  visible: shownext4,
-                  child: ElevatedButton(
-                  onPressed: (){
-                    shownext5 = true;
-                    showclass4 = true;
-                    classaddbutton();
-                  },
-                  style:ButtonStyle(
-                    backgroundColor: const MaterialStatePropertyAll(
-                      Color(0xff006b67),
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: const BorderSide(color: Colors.transparent),
-                      ),
-                    ),
-                  ),
-                  child: const Text(
-                    'Add a class',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  ),
+            Visibility(
+                  visible: showclass4,
+                  child: Column(children: [
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                    const Divider(thickness: 5, color: Colors.transparent,),
+                  ],),
                 ),
-
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
-            const Divider(thickness: 5, color: Colors.transparent,),
-
-
           ],
         ),
       ),
+       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: textColor,
+          icon: Icon(Icons.add),
+          label: Text('Add Class'),
+          onPressed: () {
+            classaddbutton();
+          },
+        ),
     );
   }
 
@@ -1416,84 +1416,31 @@ class _ClassPage extends State<ClassPage>{
   void saveData() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String selectedimg = '';
+    Map<String, String> imgmap = Map.fromIterables(classList, classimglist);
+    String? selectedimg = "";
 
-    if (buldingselect == 'CSUB/CSU Bakersfield'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_bakersfield.jpg?raw=true';
-    }
-    else if (buldingselect == 'DL/Discovery Lab'){
-      selectedimg = '';
-    }
-    else if (buldingselect == 'AL/Auto Lab'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_autolab.jpg?raw=true';
-    }
-    else if (buldingselect == 'UH/Uhazy Hall'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_uhazyhall.jpg?raw=true';
-    }
-    else if (buldingselect == 'YH/Yoshida Hall'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_yoshidahall.jpg?raw=true';
-    }
-    else if (buldingselect == 'S1-9/SOAR High School'){
-      selectedimg = '';
-    }
-    else if (buldingselect == 'PA/Performing Arts Theatre'){
-      selectedimg = '';
-    }
-    else if (buldingselect == 'FA1/Art Gallery'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_artgallery.jpg?raw=true';
-    }
-    else if (buldingselect == 'FA2/Black Box'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_blackbox.jpg?raw=true';
-    }
-    else if (buldingselect == 'MH/Mesquite Hall'){
-
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_mh.jpg?raw=true';
-    }
-    else if (buldingselect == 'LH/Lecture Hall'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_lh.jpg?raw=true';
-    }
-    else if (buldingselect == 'SH/Sage Hall'){
-      selectedimg = "https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png?raw=true";
-    }
-    else if (buldingselect == 'ME/Math and Engineering'){
-      selectedimg= 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_me.jpg?raw=true';
-    }
-    else if (buldingselect == 'FA4/Fine Arts'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_finearts.jpg?raw=true';
-    }
-    else if (buldingselect == 'FA3/Fine Arts Music and Offices'){
-      String selectedimg = '';
-    }
-    else if (buldingselect == 'EL/Enterprise Lab'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_enterpriselab.jpg?raw=true';
-    }
-    else if (buldingselect == 'HL/Horticulture Lab'){
-      selectedimg= 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_horticulture.jpg?raw=true';
-    }
-    else if (buldingselect == 'GH1-4/Greenhouses'){
-      selectedimg = 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true';
-    }
-
+    selectedimg = imgmap[buldingselect];
+    
     if(classmanagecode == 1){
-      class1image = selectedimg;
+      class1image = selectedimg!;
     }
     else if (classmanagecode == 2){
-      class2image = selectedimg;
+      class2image = selectedimg!;
     }
     else if (classmanagecode == 3){
-      class3image = selectedimg;
+      class3image = selectedimg!;
     }
     else if (classmanagecode == 4){
-      class4image = selectedimg;
+      class4image = selectedimg!;
     }
     else if (classmanagecode == 5){
-      class5image = selectedimg;
+      class5image = selectedimg!;
     }
     else if (classmanagecode == 6){
-      class6image = selectedimg;
+      class6image = selectedimg!;
     }
     else if (classmanagecode == 7){
-      class7image = selectedimg;
+      class7image = selectedimg!;
     }
 
     if(timesendcode == 1){
@@ -1507,14 +1454,29 @@ class _ClassPage extends State<ClassPage>{
       class2time = "$timepart1 - $timepart2";
     }
     else if (timesendcode == 3){
+      timepart1 = time.format(context);
+      timepart2 = time2.format(context);
+      class3time = "$timepart1 - $timepart2";
     }
     else if (timesendcode == 4){
+      timepart1 = time.format(context);
+      timepart2 = time2.format(context);
+      class4time = "$timepart1 - $timepart2";
     }
     else if (timesendcode == 5){
+      timepart1 = time.format(context);
+      timepart2 = time2.format(context);
+      class5time = "$timepart1 - $timepart2";
     }
     else if (timesendcode == 6){
+      timepart1 = time.format(context);
+      timepart2 = time2.format(context);
+      class6time = "$timepart1 - $timepart2";
     }
     else if (timesendcode == 7){
+      timepart1 = time.format(context);
+      timepart2 = time2.format(context);
+      class7time = "$timepart1 - $timepart2";
     }
 
     setState(() {
@@ -1580,34 +1542,30 @@ class _ClassPage extends State<ClassPage>{
 
   void classaddbutton() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(addclasssendcode == 1){
-      showclass1 = true;
-    }
-    else if (addclasssendcode == 2){
-      showclass2 = true;
-    }
-    else if (addclasssendcode == 3){
-      showclass3 = true;
-    }
-    else if (addclasssendcode == 4){
-      showclass4 = true;
-    }
-    else if (addclasssendcode == 5){
-      showclass5 = true;
-    }
-    else if (addclasssendcode == 6){
-      showclass6 = true;
-    }
-    else if (addclasssendcode == 7){
-      showclass7 = true;
-    }
+
+      if(showclass1 == false){
+        showclass1 = true;
+      }
+      else if(showclass2 == false){
+        showclass2 = true;
+      }
+      else if(showclass3 == false){
+        showclass3 = true;
+      }
+      else if(showclass4 == false){
+        showclass4 = true;
+      }
+      else if(showclass5 == false){
+        showclass5 = true;
+      }
+      else if(showclass6 == false){
+        showclass6 = true;
+      }
+      else if(showclass7 == false){
+        showclass7 = true;
+      }
+      // add so if they reach max ther is an alert
     setState(() {
-      prefs.setBool('shownext2', shownext2);
-      prefs.setBool('shownext3', shownext3);
-      prefs.setBool('shownext4', shownext4);
-      prefs.setBool('shownext5', shownext5);
-      prefs.setBool('shownext6', shownext6);
-      prefs.setBool('shownext7', shownext7);
 
       prefs.setBool('ShowClass1', showclass1);
       prefs.setBool('ShowClass2', showclass2);
@@ -1695,6 +1653,11 @@ class _ClassPage extends State<ClassPage>{
     });
   }
   void goPress() async{
+
+    Map<String, double> latmap = Map.fromIterables(classList, classlatlist);
+    Map<String, double> lonmap = Map.fromIterables(classList, classlonlist);
+
+
     if (classpickGO == 1){
       classforCords = building1select;
     }
@@ -1714,85 +1677,10 @@ class _ClassPage extends State<ClassPage>{
       classforCords = building6select;
     }
 
-    if (classforCords == 'CSUB/CSU Bakersfield'){
-      latitudeClass1 =  34.680353586506165;
-      longitudeClass1 = -118.18506976951421;
-    }
-    else if (classforCords == 'DL/Discovery Lab'){
-      latitudeClass1 =  34.680452828358916;
-      longitudeClass1 = -118.18656003661856;
-    }
-    else if (classforCords == 'AL/Auto Lab'){
-      latitudeClass1 =  34.67882218077683;
-      longitudeClass1 = -118.18719722438767;
-    }
-    else if (classforCords == 'UH/Uhazy Hall'){
-      latitudeClass1 =  34.6788359665366;
-      longitudeClass1 = -118.18640225876932;
-    }
-    else if (classforCords == 'YH/Yoshida Hall'){
-      latitudeClass1 =  34.67899187744454;
-      longitudeClass1 = -118.18548358738202;
-    }
-    else if (classforCords == 'S1-9/SOAR High School'){
-      latitudeClass1 =  34.67877310935158;
-      longitudeClass1 = -118.18800679457378;
-    }
-    else if (classforCords == 'PA/Performing Arts Theatre'){
-      latitudeClass1 =  34.6754613377245;
-      longitudeClass1 = -118.18723230937766;
-    }
-    else if (classforCords == 'FA1/Art Gallery'){
-      latitudeClass1 =  34.676203764577544;
-      longitudeClass1 = -118.18697930907051;
-    }
-    else if (classforCords == 'FA2/Black Box'){
-      latitudeClass1 =  34.675832701065104;
-      longitudeClass1 = -118.18737862660834;
-    }
-    else if (classforCords == 'MH/Mesquite Hall'){
-      latitudeClass1 =  34.67687342944362;
-      longitudeClass1 = -118.18512883579885;
-    }
-    else if (classforCords == 'LH/Lecture Hall'){
-      latitudeClass1 =  34.677011511466674;
-      longitudeClass1 = -118.18741261041862;
-    }
-    else if (classforCords == 'SH/Sage Hall'){
-      latitudeClass1 =  34.67714651488922;
-      longitudeClass1 = -118.18709120662562;
-    }
-    else if (classforCords == 'ME/Math and Engineering'){
-      latitudeClass1 =  34.67775573632852;
-      longitudeClass1 = -118.18589961736947;
-    }
-    else if (classforCords == 'FA4/Fine Arts'){
-      latitudeClass1 =  34.67648676160919;
-      longitudeClass1 = -118.18738628333938;
-    }
-    else if (classforCords == 'FA3/Fine Arts Music and Offices'){
-      latitudeClass1 =  34.67626532974614;
-      longitudeClass1 = -118.18770778514867;
-    }
-    else if (classforCords == 'EL/Enterprise Lab'){
-      latitudeClass1 =  34.67973186506707;
-      longitudeClass1 = -118.18654794631942;
-    }
-    else if (classforCords == 'HL/Horticulture Lab'){
-      latitudeClass1 =  34.679898891625314;
-      longitudeClass1 = -118.1870825677824;
-    }
-    else if (classforCords == 'GH1-4/Greenhouses'){
-      latitudeClass1 =  34.679813863502766;
-      longitudeClass1 = -118.18775289064219;
-    }
-    else{
-      latitudeClass1 =  34.678652329599096;
-      longitudeClass1 = -118.18616290156892;
-    }
+   
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyApp(latitude: latitudeClass1, longitude: longitudeClass1, zoom: 19,)),
+      MaterialPageRoute(builder: (context) => MyApp(latitude: latmap[classforCords], longitude: lonmap[classforCords], zoom: 19,)),
       );
   }
 }
