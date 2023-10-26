@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:day_picker/day_picker.dart';
-import 'dart:collection';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 
 class ClassPage extends StatefulWidget {
@@ -18,6 +18,11 @@ class ClassPage extends StatefulWidget {
 }
 
 class _ClassPage extends State<ClassPage>{
+
+  void firebasesetup() async{
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  }
 
   @override
   void initState() {
@@ -1418,11 +1423,14 @@ String? selectedItem = 'Select a class';
 
     Map<String, String> imgmap = Map.fromIterables(classList, classimglist);
     String? selectedimg = "";
-
+      Firebase.initializeApp();
+    final storage = FirebaseStorage.instance;
+    
     selectedimg = imgmap[buldingselect];
     
     if(classmanagecode == 1){
-      class1image = selectedimg!;
+      final ref = storage.ref().child('/Class_Images/$buldingselect.jpg');
+      class1image = await ref.getDownloadURL();
     }
     else if (classmanagecode == 2){
       class2image = selectedimg!;

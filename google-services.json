@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "942959424058",
+    "project_id": "extreme-bedrock-387706",
+    "storage_bucket": "extreme-bedrock-387706.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942959424058:android:958917a67a6ea32a8ebb03",
+        "android_client_info": {
+          "package_name": "Robin.Do"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALPd535h9ULUzuoKhjfdCK9dMCVywJMWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
