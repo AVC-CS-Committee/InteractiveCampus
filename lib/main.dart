@@ -270,9 +270,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
         body: Stack(
           children: <Widget> [
             GoogleMap(
-              onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
+              onMapCreated: (controller) => _onMapCreated(controller, context),
               initialCameraPosition: CameraPosition(
                 target: _center,
                 zoom: 17.0,
