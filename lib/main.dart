@@ -1,6 +1,6 @@
 import 'dart:developer';
 //import 'dart:html';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,15 @@ class MyApp extends StatefulWidget {
 
 
 class _MyAppState extends State<MyApp> {
+
+  final Completer<GoogleMapController> _controller = Completer();
+  final LatLng _initialPosition = LatLng(45.521563, -122.677433);
+  LatLng _selectedLocation = LatLng(45.521563, -122.677433);
+
+  TextEditingController _searchController = TextEditingController();
+  List<String> _suggestions = ["New York", "Los Angeles", "Chicago", "Houston", "Philadelphia"];
+
+
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
@@ -259,7 +270,9 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
         body: Stack(
           children: <Widget> [
             GoogleMap(
-              onMapCreated: (controller) => _onMapCreated(controller, context),
+              onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
               initialCameraPosition: CameraPosition(
                 target: _center,
                 zoom: 17.0,
@@ -278,7 +291,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
             ),
             Row(
               children: [
-                Padding(padding: EdgeInsets.all(20), child: 
+                Padding(padding: EdgeInsets.all(15), child: 
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -297,9 +310,55 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
                         _scaffoldKey.currentState!.openDrawer();
                       },
                       child: Icon(Icons.menu)
+                    ),            
+                    Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 120, // Adjust the width as needed
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: TypeAheadField(
+                          textFieldConfiguration: TextFieldConfiguration(
+                            controller: _searchController,
+                            autofocus: false,
+                            style: TextStyle(fontSize: 16),
+                            decoration: InputDecoration(
+                              hintText: 'Search for a place...',
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                            ),
+                          ),
+                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                          ),
+                          suggestionsCallback: (pattern) async {
+                            return _suggestions.where((place) => place.toLowerCase().contains(pattern.toLowerCase())).toList();
+                          },
+                          itemBuilder: (context, suggestion) {
+                            return ListTile(
+                              title: Text(suggestion),
+                            );
+                          },
+                          onSuggestionSelected: (suggestion) {
+                            _updateMapLocation(suggestion);
+                          },
+                        ),
+                      ),
                     ),
-                  //ADD THE PLACE TO TYPE HERE THE CONTAINER WILL GET BIGGER BY ITS SLEF-----------------------------------------------------------------------------
-                  // its in a row so it will add the next thing next to it NOT bellow 
+
                 ],
                 ),
               ),
@@ -462,68 +521,23 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
       ),
     );
   }
+    void _updateMapLocation(String location) {
+    // Here, you would obtain the location coordinates using a geocoding service
+    // For demonstration purposes, we're setting it to the initial position
+    setState(() {
+      _selectedLocation = _initialPosition;
+      // If you had the coordinates, you would set them like this:
+      // _selectedLocation = LatLng(newLatitude, newLongitude);
+      // Then move the map to the new position:
+      _moveMapToLocation(_selectedLocation);
+    });
+  }
+
+  Future<void> _moveMapToLocation(LatLng location) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: location,
+      zoom: 14.0,
+    )));
+  }
 }
-
-// class _SearchBarAppState extends State<SearchBarApp> {
-//   bool isDark = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final ThemeData themeData = ThemeData(
-//         useMaterial3: true,
-//         brightness: isDark ? Brightness.dark : Brightness.light);
-
-//     return MaterialApp(
-//       theme: themeData,
-//       home: Scaffold(
-//         appBar: AppBar(title: const Text('Search Bar Sample')),
-//         body: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: SearchAnchor(
-//               builder: (BuildContext context, SearchController controller) {
-//             return SearchBar(
-//               controller: controller,
-//               padding: const MaterialStatePropertyAll<EdgeInsets>(
-//                   EdgeInsets.symmetric(horizontal: 16.0)),
-//               onTap: () {
-//                 controller.openView();
-//               },
-//               onChanged: (_) {
-//                 controller.openView();
-//               },
-//               leading: const Icon(Icons.search),
-//               trailing: <Widget>[
-//                 Tooltip(
-//                   message: 'Change brightness mode',
-//                   child: IconButton(
-//                     isSelected: isDark,
-//                     onPressed: () {
-//                       setState(() {
-//                         isDark = !isDark;
-//                       });
-//                     },
-//                     icon: const Icon(Icons.wb_sunny_outlined),
-//                     selectedIcon: const Icon(Icons.brightness_2_outlined),
-//                   ),
-//                 )
-//               ],
-//             );
-//           }, suggestionsBuilder:
-//                   (BuildContext context, SearchController controller) {
-//             return List<ListTile>.generate(5, (int index) {
-//               final String item = 'item $index';
-//               return ListTile(
-//                 title: Text(item),
-//                 onTap: () {
-//                   setState(() {
-//                     controller.closeView(item);
-//                   });
-//                 },
-//               );
-//             });
-//           }),
-//         ),
-//       ),
-//     );
-//   }
-// }
