@@ -511,8 +511,8 @@ class _MyAppState extends State<MyApp> {
             zoomGesturesEnabled: true, //enable Zoom in, out on map
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
             cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:LatLng(34.68208082459477, -118.1838193583875) ,           //blakes map bound northeast  
-              southwest:LatLng(34.67485483411587, -118.19230586766488)            //blakes map bound southwest
+              northeast:LatLng(34.68208082459477, -118.1838193583875) ,           // blakes map bound northeast  
+              southwest:LatLng(34.67485483411587, -118.19230586766488)            // blakes map bound southwest
 
             ),
           ),
@@ -539,10 +539,6 @@ class _MyAppState extends State<MyApp> {
           },
 
           polylines: _polylines,                                // *** added this here more efficient
-          
-
-         // polylines: _polylines,                           *** temp change for building markers by matthew
-
            ),
         ),
 
