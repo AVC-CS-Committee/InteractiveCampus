@@ -397,6 +397,23 @@ class _MyAppState extends State<MyApp> {
                   secondary: const Icon(Icons.near_me),
                   value: _isSwitched,
                   onChanged: (value) {
+                                                  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Button in Progress'),
+            content: Text('This feature is still in development.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the alert dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
                     setState(() {
                       _isSwitched = value;
 
@@ -547,23 +564,30 @@ class _MyAppState extends State<MyApp> {
 
           // FloatingActionButton to toggle map type
           floatingActionButton: Container(
-           margin: const EdgeInsets.only(top: 16, left: 16),
-           child: FloatingActionButton(
-             mini: true,
-             onPressed: () {
-             setState(() {
-          // Toggle between MapType.normal and MapType.hybrid
-        _currentMapType = _currentMapType == MapType.normal
-            ? MapType.hybrid
-            : MapType.normal;
-           });
-         },
-           child: Icon(
-          _currentMapType == MapType.normal
-          ? Icons.satellite                                  // Different icons based on map type
-          : Icons.map,                                 
-           ),
-            ),
+              margin: const EdgeInsets.only(top: 16, left: 16),
+              child: FloatingActionButton(
+                mini: true,
+                backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                onPressed: () {
+                  setState(() {
+                    // Toggle between MapType.normal and MapType.hybrid
+                    _currentMapType = _currentMapType == MapType.normal
+                        ? MapType.hybrid
+                        : MapType.normal;
+                  });
+                },
+                child: ColorFiltered(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.red, // Change this color to your desired icon color
+                    BlendMode.srcIn,
+                  ),
+                  child: Icon(
+                    _currentMapType == MapType.normal
+                        ? Icons.satellite // Different icons based on map type
+                        : Icons.map,
+                  ),
+                ),
+              ),
             ),
             // Location of the FloatingActionButton
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,  
