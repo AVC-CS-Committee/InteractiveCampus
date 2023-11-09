@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
-import 'package:interactivemap/src/Themes/themes.dart';
 
 
 void main() async {
@@ -32,10 +30,32 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
 
+/*
+  //this is a test can be ignored
+  //
+  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
+
+
+
+  void addCustomIcon(){
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
+        .then(
+          (icon) {
+        setState((){
+          markericon = icon;
+        });
+      },
+    );
+  }
+
+*/
+
   late GoogleMapController mapController;                                  // This initializes the GoogleMapController
 
   // FIXME: This is for testing build route 
   // Added by matthew 
+  /*
   Marker? userMarker;
   
   void manageTap(LatLng latLng) {
@@ -82,9 +102,9 @@ class _MyAppState extends State<MyApp> {
         ScaffoldMessenger.of(context).showSnackBar(buildSnackBar('Desired location is outside of the bounded area.'));
       }
   }
+  */
   // Current map type
   MapType _currentMapType = MapType.normal;                         
-
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
@@ -195,7 +215,32 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
-  
+
+  /* This is in a comment because testing building route by matthew
+
+
+  Marker? userMarker;
+  void manageTap(LatLng latLng){
+    if(_isSwitched){
+      // Create user marker
+      userMarker = Marker(
+        markerId: MarkerId('user_marker'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'User Marker'),
+      );
+      // Add userMarker to the map
+      setState(() {
+        markers.add(userMarker!);
+      });
+
+      // Draw polyline from current location to userMarker
+      drawRoute(latLng);
+    }
+  }
+
+
+  */
+
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
@@ -219,13 +264,14 @@ class _MyAppState extends State<MyApp> {
     );
 
     //added by matthew for building routes
+    /* TEMP BLOCKED
     setState(() {
       _polylines.clear();
       _polylines.add(polyline);
     });
 
    // _polylines.add(polyline);        temp blocked by matthew for building route
-
+  */
   }
 
   Marker? savedParkingMarker;
@@ -287,9 +333,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeClass.lightTheme,
-      darkTheme: ThemeClass.darkTheme,
-      themeMode: ThemeMode.system,
+      theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff8d1c40),
+            primary: const Color(0xff8d1c40),
+            secondary: const Color(0xff8a1c40),
+          ),
+          appBarTheme: const AppBarTheme(
+            color: Color(0xff8a1c40),
+          )),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('AVC Interactive Map',
@@ -465,22 +518,34 @@ class _MyAppState extends State<MyApp> {
 
             ),
           ),
+
+          //icon: markericon,
           markers: markers,
+         /* markers: {
+            Marker(
+              markerId: MarkerId('demo'),
+              position: LatLng(34.67796141360417, -118.1847488798502),
+
+            ),
+          },
+          */
+
           myLocationEnabled: true,
           mapType: _currentMapType,                             // Set the current map type 
 
          //  onTap: manageTap,                               *** temp change for building markers by matthew
 
          // Test code made by matthew for building routing
+         /*
           onTap: (LatLng tappedPoint) {
             handleMapTap(tappedPoint);
           },
-
+          */
           polylines: _polylines,                                // *** added this here more efficient
            ),
         ),
 
-          // A FloatingActionButton to toggle map type
+          // FloatingActionButton to toggle map type
           floatingActionButton: Container(
            margin: const EdgeInsets.only(top: 16, left: 16),
            child: FloatingActionButton(
