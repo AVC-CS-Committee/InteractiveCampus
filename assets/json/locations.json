@@ -414,5 +414,13 @@
     "description": "A parking permit is required to park a vehicle anywhere on campus. A permit can be purchased in combination with the Associated Student Organization card for a total of $28.00 (equals to $1.75 a week for 16 weeks). Parking permits for the summer session are $21.00 (equals to $1.75 a week for 12 weeks).\nIn lieu of a semester permit, students may purchase daily permits from dispensers located in parking lots ($1 - exact change only) and online ($1.28). Daily permits are good only on the day they are purchased. Parking without a permit or with a permit improperly displayed may result in a $33.00 parking citation.",
     "images": ["lotf2"],
     "type": "parking"
+  },
+  {
+    "title": "Bus Stop",
+    "latitude": 34.679640,
+    "longitude": -118.183831,
+    "description": "Luh calm bust stop",
+    "images": ["busStop"],
+    "type": "resource"
   }
 ]
