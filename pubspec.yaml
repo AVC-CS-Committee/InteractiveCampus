@@ -46,6 +46,9 @@ dependencies:
   json_serializable: ^6.6.1
   url_launcher: ^6.0.9
   flutter_image_compress: ^2.0.4
+  tutorial_coach_mark: ^1.2.11
+  custom_marker: ^1.0.0
+  custom_info_window: ^1.0.1
 
 dev_dependencies:
   flutter_test:
