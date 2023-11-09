@@ -149,10 +149,17 @@ packages:
     dependency: transitive
     description:
       name: collection
+<<<<<<< Updated upstream
       sha256: "4a07be6cb69c84d677a6c3096fcf960cc3285a8330b4603e0d463d15d9bd934c"
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+=======
+      sha256: f092b211a4319e98e5ff58223576de6c2803db36221657b46c82574721240687
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.17.2"
+>>>>>>> Stashed changes
   convert:
     dependency: transitive
     description:
@@ -540,10 +547,17 @@ packages:
     dependency: transitive
     description:
       name: matcher
+<<<<<<< Updated upstream
       sha256: "6501fbd55da300384b768785b83e5ce66991266cec21af89ab9ae7f5ce1c4cbb"
       url: "https://pub.dev"
     source: hosted
     version: "0.12.15"
+=======
+      sha256: "1803e76e6653768d64ed8ff2e1e67bea3ad4b923eb5c56a295c3e634bad5960e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.16"
+>>>>>>> Stashed changes
   material_color_utilities:
     dependency: transitive
     description:
@@ -825,10 +839,17 @@ packages:
     dependency: transitive
     description:
       name: test_api
+<<<<<<< Updated upstream
       sha256: eb6ac1540b26de412b3403a163d919ba86f6a973fe6cc50ae3541b80092fdcfb
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+=======
+      sha256: "75760ffd7786fffdfb9597c35c5b27eaeec82be8edfb6d71d32651128ed7aab8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
+>>>>>>> Stashed changes
   timing:
     dependency: transitive
     description:
@@ -966,5 +987,9 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
+<<<<<<< Updated upstream
   dart: ">=3.0.0-0 <4.0.0"
+=======
+  dart: ">=3.1.0-185.0.dev <4.0.0"
+>>>>>>> Stashed changes
   flutter: ">=3.3.0"
