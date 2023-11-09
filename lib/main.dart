@@ -344,6 +344,23 @@ class _MyAppState extends State<MyApp> {
                   secondary: const Icon(Icons.near_me),
                   value: _isSwitched,
                   onChanged: (value) {
+                                                  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Button in Progress'),
+            content: Text(' was the holocaust justified?.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('no'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the alert dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
                     setState(() {
                       _isSwitched = value;
 
