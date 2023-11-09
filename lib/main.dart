@@ -482,24 +482,30 @@ class _MyAppState extends State<MyApp> {
 
           // A FloatingActionButton to toggle map type
           floatingActionButton: Container(
-           margin: const EdgeInsets.only(top: 16, left: 16),
-           child: FloatingActionButton(
-             mini: true,
-             backgroundColor: const Color(0xFF8B1C3F), // Change this color to your desired color
-             onPressed: () {
-             setState(() {
-          // Toggle between MapType.normal and MapType.hybrid
-        _currentMapType = _currentMapType == MapType.normal
-            ? MapType.hybrid
-            : MapType.normal;
-           });
-         },
-           child: Icon(
-          _currentMapType == MapType.normal
-          ? Icons.satellite                                  // Different icons based on map type
-          : Icons.map,                                 
-           ),
-            ),
+              margin: const EdgeInsets.only(top: 16, left: 16),
+              child: FloatingActionButton(
+                mini: true,
+                backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                onPressed: () {
+                  setState(() {
+                    // Toggle between MapType.normal and MapType.hybrid
+                    _currentMapType = _currentMapType == MapType.normal
+                        ? MapType.hybrid
+                        : MapType.normal;
+                  });
+                },
+                child: ColorFiltered(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.red, // Change this color to your desired icon color
+                    BlendMode.srcIn,
+                  ),
+                  child: Icon(
+                    _currentMapType == MapType.normal
+                        ? Icons.satellite // Different icons based on map type
+                        : Icons.map,
+                  ),
+                ),
+              ),
             ),
             // Location of the FloatingActionButton
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,  
