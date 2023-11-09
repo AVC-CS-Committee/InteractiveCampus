@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
+import 'package:interactivemap/src/Themes/themes.dart';
 
 
 void main() async {
@@ -30,27 +31,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-
-/*
-  //this is a test can be ignored
-  //
-  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
-
-
-
-  void addCustomIcon(){
-    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
-        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
-        .then(
-          (icon) {
-        setState((){
-          markericon = icon;
-        });
-      },
-    );
-  }
-
-*/
 
   late GoogleMapController mapController;                                  // This initializes the GoogleMapController
 
@@ -104,6 +84,7 @@ class _MyAppState extends State<MyApp> {
   }
   // Current map type
   MapType _currentMapType = MapType.normal;                         
+
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
@@ -214,32 +195,7 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
-
-  /* This is in a comment because testing building route by matthew
-
-
-  Marker? userMarker;
-  void manageTap(LatLng latLng){
-    if(_isSwitched){
-      // Create user marker
-      userMarker = Marker(
-        markerId: MarkerId('user_marker'),
-        position: latLng,
-        infoWindow: InfoWindow(title: 'User Marker'),
-      );
-      // Add userMarker to the map
-      setState(() {
-        markers.add(userMarker!);
-      });
-
-      // Draw polyline from current location to userMarker
-      drawRoute(latLng);
-    }
-  }
-
-
-  */
-
+  
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
@@ -331,16 +287,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xff8d1c40),
-            primary: const Color(0xff8d1c40),
-            secondary: const Color(0xff8a1c40),
-          ),
-          appBarTheme: const AppBarTheme(
-            color: Color(0xff8a1c40),
-          )),
+      theme: ThemeClass.lightTheme,
+      darkTheme: ThemeClass.darkTheme,
+      themeMode: ThemeMode.system,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('AVC Interactive Map',
@@ -516,18 +465,7 @@ class _MyAppState extends State<MyApp> {
 
             ),
           ),
-
-          //icon: markericon,
           markers: markers,
-         /* markers: {
-            Marker(
-              markerId: MarkerId('demo'),
-              position: LatLng(34.67796141360417, -118.1847488798502),
-
-            ),
-          },
-          */
-
           myLocationEnabled: true,
           mapType: _currentMapType,                             // Set the current map type 
 
