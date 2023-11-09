@@ -215,32 +215,7 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
-
-  /* This is in a comment because testing building route by matthew
-
-
-  Marker? userMarker;
-  void manageTap(LatLng latLng){
-    if(_isSwitched){
-      // Create user marker
-      userMarker = Marker(
-        markerId: MarkerId('user_marker'),
-        position: latLng,
-        infoWindow: InfoWindow(title: 'User Marker'),
-      );
-      // Add userMarker to the map
-      setState(() {
-        markers.add(userMarker!);
-      });
-
-      // Draw polyline from current location to userMarker
-      drawRoute(latLng);
-    }
-  }
-
-
-  */
-
+  
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;

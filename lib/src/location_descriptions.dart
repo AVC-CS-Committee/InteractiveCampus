@@ -52,7 +52,25 @@ class LocationDescriptions extends StatelessWidget {
             width: 350.0,
             child: ElevatedButton(
               child: Text("Directions", style: TextStyle(color: Colors.white)),
-              onPressed: () {},
+              onPressed: () {
+                                                                  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Button in Progress'),
+            content: Text('This feature is still in development.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the alert dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+              },
               style: ElevatedButton.styleFrom(
                 primary: Color(0xFF8B1C3F)
               )
