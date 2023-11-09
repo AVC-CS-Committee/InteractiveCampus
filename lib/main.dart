@@ -31,7 +31,60 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  late GoogleMapController mapController;
+
+  late GoogleMapController mapController;                                  // This initializes the GoogleMapController
+
+  // FIXME: This is for testing build route 
+  // Added by matthew 
+  Marker? userMarker;
+  
+  void manageTap(LatLng latLng) {
+    if (_isSwitched) {
+      // This will create a user marker
+      userMarker = Marker(
+        markerId: MarkerId('user_marker'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'User Marker'),
+      );
+      // Adds a userMarker to the map indicated
+      setState(() {
+        markers.add(userMarker!);
+      });
+      // Draws a polyline from the current location to the userMarker
+      drawRoute(latLng);
+    }
+  }
+
+     // Testing mode: by matthew
+    
+    bool isLocationWithinBounds(LatLng location) {
+      final bounds = LatLngBounds(
+        northeast:LatLng(34.68208082459477, -118.1838193583875),              //map bound northeast  
+        southwest:LatLng(34.67485483411587, -118.19230586766488),            //map bound southwest
+      );
+      // Checks if the method LatLngBounds is within the bound
+      return bounds.contains(location);
+    }
+     SnackBar buildSnackBar(String message) {
+      return SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      );
+     }
+
+    void handleMapTap(LatLng tappedPoint) {
+        // Tests: shows the direction of tapped location
+        // For starters, this will..........
+      if (isLocationWithinBounds(tappedPoint)) {
+        // Draws the location of the route to tapped location from user
+        drawRoute(tappedPoint);                                            // Testing: tapped function
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(buildSnackBar('Desired location is outside of the bounded area.'));
+      }
+  }
+  // Current map type
+  MapType _currentMapType = MapType.normal;                         
+
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
@@ -41,8 +94,8 @@ class _MyAppState extends State<MyApp> {
 
   // Poly-lines
   Set<Polyline> _polylines = {};
-  // MapsRoutes route = MapsRoutes();
 
+  // MapsRoutes route = MapsRoutes();
   LocationData? currentLocation;
   LatLng? currentLocationLatLng;
 
@@ -142,25 +195,7 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
-  Marker? userMarker;
-  void manageTap(LatLng latLng){
-    if(_isSwitched){
-      // Create user marker
-      userMarker = Marker(
-        markerId: MarkerId('user_marker'),
-        position: latLng,
-        infoWindow: InfoWindow(title: 'User Marker'),
-      );
-      // Add userMarker to the map
-      setState(() {
-        markers.add(userMarker!);
-      });
-
-      // Draw polyline from current location to userMarker
-      drawRoute(latLng);
-    }
-  }
-
+  
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;
@@ -183,7 +218,13 @@ class _MyAppState extends State<MyApp> {
       width: 5,
     );
 
-   _polylines.add(polyline);
+    //added by matthew for building routes
+    setState(() {
+      _polylines.clear();
+      _polylines.add(polyline);
+    });
+
+   // _polylines.add(polyline);        temp blocked by matthew for building route
 
   }
 
@@ -418,18 +459,49 @@ class _MyAppState extends State<MyApp> {
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
-          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:LatLng(34.68208082459477, -118.1838193583875) ,
-              southwest:LatLng(34.67485483411587, -118.19230586766488)
-            )
+            cameraTargetBounds:CameraTargetBounds(LatLngBounds(
+              northeast:LatLng(34.68208082459477, -118.1838193583875) ,           // blakes map bound northeast  
+              southwest:LatLng(34.67485483411587, -118.19230586766488)            // blakes map bound southwest
+
+            ),
           ),
           markers: markers,
           myLocationEnabled: true,
-          mapType: MapType.normal,
-          onTap: manageTap,
-          polylines: _polylines,
-          )
+          mapType: _currentMapType,                             // Set the current map type 
+
+         //  onTap: manageTap,                               *** temp change for building markers by matthew
+
+         // Test code made by matthew for building routing
+          onTap: (LatLng tappedPoint) {
+            handleMapTap(tappedPoint);
+          },
+
+          polylines: _polylines,                                // *** added this here more efficient
+           ),
         ),
+
+          // A FloatingActionButton to toggle map type
+          floatingActionButton: Container(
+           margin: const EdgeInsets.only(top: 16, left: 16),
+           child: FloatingActionButton(
+             mini: true,
+             onPressed: () {
+             setState(() {
+          // Toggle between MapType.normal and MapType.hybrid
+        _currentMapType = _currentMapType == MapType.normal
+            ? MapType.hybrid
+            : MapType.normal;
+           });
+         },
+           child: Icon(
+          _currentMapType == MapType.normal
+          ? Icons.satellite                                  // Different icons based on map type
+          : Icons.map,                                 
+           ),
+            ),
+            ),
+            // Location of the FloatingActionButton
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,  
       ),
     );
   }
