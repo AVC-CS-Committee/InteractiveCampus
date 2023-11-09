@@ -15,12 +15,13 @@ import 'src/help_page.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
   runApp(const MyApp());
-  
 }
 
 class MyApp extends StatefulWidget {
@@ -30,16 +31,27 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-
 class _MyAppState extends State<MyApp> {
 
-  final Completer<GoogleMapController> _controller = Completer();
-  final LatLng _initialPosition = LatLng(45.521563, -122.677433);
-  LatLng _selectedLocation = LatLng(45.521563, -122.677433);
 
+  final Completer<GoogleMapController> _controller = Completer();
+
+  final TextEditingController _typeAheadController = TextEditingController();
+  bool _isSearchActive = false;
   TextEditingController _searchController = TextEditingController();
   List<String> _suggestions = ["New York", "Los Angeles", "Chicago", "Houston", "Philadelphia"];
-
+  final LatLng _initialPosition = LatLng(45.521563, -122.677433);
+  LatLng _selectedLocation = LatLng(45.521563, -122.677433);
+   bool _isSearchBarFocused = false;
+   
+  void _toggleSearch() {
+    setState(() {
+      _isSearchActive = !_isSearchActive;
+      if (!_isSearchActive) {
+        _searchController.clear();
+      }
+    });
+  }
 
   late GoogleMapController mapController;
 
@@ -67,15 +79,16 @@ class _MyAppState extends State<MyApp> {
   bool athleticsChecked = false;
 
   Future<void> _onMapCreated(
-      GoogleMapController controller, BuildContext context) async {
-    mapController = controller;
-    markers = await locations.getMarkers(context);
-    _getParkedLocation();
 
-    // After loading the markers, update the state of the map with setState
-    setState(() {
-      markers.addAll(markers);
-      markersCopy.addAll(markers);
+    GoogleMapController controller, BuildContext context) async {
+      mapController = controller;
+      markers = await locations.getMarkers(context);
+      _getParkedLocation();
+
+      // After loading the markers, update the state of the map with setState
+      setState(() {
+        markers.addAll(markers);
+        markersCopy.addAll(markers);
     });
   }
 
@@ -254,6 +267,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
       theme: ThemeData(
           useMaterial3: true,
@@ -287,84 +301,104 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
               onTap: manageTap,
               polylines: _polylines,
             ),
-            Row(
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 15, // Padding top for status bar height plus some space
+            right: 15,
+            left: 15,
+            child: Column(
               children: [
-                Padding(padding: EdgeInsets.all(15), child: 
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Row(
-                    children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        elevation: 0,
-                      ),
-                      onPressed:(){ 
-                        _scaffoldKey.currentState!.openDrawer();
-                      },
-                      child: Icon(Icons.menu)
-                    ),            
-                    Padding(
-                      padding: EdgeInsets.only(right: 12),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 120, // Adjust the width as needed
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                            controller: _searchController,
-                            autofocus: false,
-                            style: TextStyle(fontSize: 16),
-                            decoration: InputDecoration(
-                              hintText: 'Search for a place...',
-                              border: InputBorder.none,
-                              filled: true,
-                              fillColor: Colors.transparent,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color: Colors.transparent),
-                              ),
-                            ),
-                          ),
-                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                          ),
-                          suggestionsCallback: (pattern) async {
-                            return _suggestions.where((place) => place.toLowerCase().contains(pattern.toLowerCase())).toList();
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return ListTile(
-                              title: Text(suggestion),
-                            );
-                          },
-                          onSuggestionSelected: (suggestion) {
-                            _updateMapLocation(suggestion);
-                          },
-                        ),
-                      ),
-                    ),
-
-                ],
-                ),
-              ),
-              ),
-            ],
-          ),
-          ],
+ TypeAheadField(
+  textFieldConfiguration: TextFieldConfiguration(
+    controller: _typeAheadController,
+    onTap: () {
+      setState(() {
+        _isSearchBarFocused = true;
+      });
+    },
+    decoration: InputDecoration(
+      filled: true, // Set filled to true to enable a fill color
+      fillColor: Colors.white, // Set the fill color for the search bar
+      prefixIcon: IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {
+          _scaffoldKey.currentState?.openDrawer();
+        },
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Colors.grey.shade400),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Colors.blue),
+      ),
+      contentPadding: EdgeInsets.symmetric(vertical: 10),
+      hintText: 'Search Google Maps',
     ),
+  ),
+                  suggestionsCallback: (pattern) async {
+                    // Here, you would fetch the search results based on the 'pattern'
+                    // For now, let's use a mock list of suggestions
+                    await Future.delayed(Duration(milliseconds: 500)); // simulate network delay
+                    return List<String>.generate(3, (index) => 'Suggestion $index for "$pattern"');
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      leading: Icon(Icons.location_on),
+                      title: Text(suggestion),
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
+                    _typeAheadController.text = suggestion;
+                    setState(() {
+                      _isSearchBarFocused = false;
+                    });
+                  },
+                  noItemsFoundBuilder: (context) => Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'No Items Found!',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+suggestionsBoxDecoration: SuggestionsBoxDecoration(
+    borderRadius: BorderRadius.only(
+      // Straight corners at the top
+      topLeft: Radius.circular(0),
+      topRight: Radius.circular(0),
+      // Rounded corners at the bottom
+      bottomLeft: Radius.circular(20),
+      bottomRight: Radius.circular(20),
+    ),
+    elevation: 0, // Remove shadow if any
+  ),
+  // The vertical offset should be zero to ensure the suggestions box touches the search bar
+  suggestionsBoxVerticalOffset: 4,
+                ),
+                // If the search bar is focused, add an overlay that will close the search bar when tapped
+                if (_isSearchBarFocused)
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isSearchBarFocused = false;
+                        _typeAheadController.clear();
+                      });
+                    },
+                    child: Container(
+                      width: screenWidth,
+                      height: MediaQuery.of(context).size.height,
+                      color: Colors.transparent,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          // ... Any other overlay widgets
+        ],
+      ),
         drawer: Builder(
             builder: (context) => Drawer(
                 child: ListView(padding: EdgeInsets.zero, children: [
@@ -445,7 +479,6 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
                   },
                 ),
                 const Divider(),
-
                   // Filters
                   CheckboxListTile(
                     title: const Text('Parking Lots'),
