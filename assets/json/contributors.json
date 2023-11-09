@@ -71,5 +71,35 @@
         "picture": "https://i.stack.imgur.com/frlIf.png",
         "url": "https://github.com/",
         "title": "spowell31@avc.edu"
+    },
+    {
+        "name": "Rianne Papa",
+        "picture": "https://avatars.githubusercontent.com/Rian-stack",
+        "url": "https://github.com/Rian-stack",
+        "title": "lpapa@avc.edu"
+    },
+    {
+        "name": "Blake Mosley",
+        "picture": "https://avatars.githubusercontent.com/u/33817212?v=4",
+        "url": "https://github.com/busterblake",
+        "title": "bmosley2@avc.edu"
+    },
+    {
+        "name": "Rafael Papa",
+        "picture": "https://avatars.githubusercontent.com/u/142633852?s=400&v=4",
+        "url": "https://github.com/RafaelP287",
+        "title": "rpapa@students.avc.edu"
+    },
+    {
+        "name": "Matthew Bui",
+        "picture": "https://avatars.githubusercontent.com/u/143304025?v=4",
+        "url": "https://github.com/mattbuiCS",
+        "title": "mbui2@students.avc.edu"
+    },
+    {
+        "name": "Bailey Kwok",
+        "picture": "https://avatars.githubusercontent.com/u/51312859?v=4",
+        "url": "https://github.com/Baileh",
+        "title": "bkwok@gmail.com"
     }
 ]

@@ -47,6 +47,16 @@ class LocationDescriptions extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(description),
             )
+          ),
+          SizedBox(
+            width: 350.0,
+            child: ElevatedButton(
+              child: Text("Directions", style: TextStyle(color: Colors.white)),
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF8B1C3F)
+              )
+              )
           )
         ],
       )
