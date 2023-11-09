@@ -349,10 +349,10 @@ class _MyAppState extends State<MyApp> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Button in Progress'),
-            content: Text(' was the holocaust justified?.'),
+            content: Text('This feature is still in development.'),
             actions: <Widget>[
               TextButton(
-                child: Text('no'),
+                child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the alert dialog
                 },
