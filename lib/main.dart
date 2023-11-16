@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:google_maps_routes/google_maps_routes.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
-import 'package:interactivemap/src/Themes/themes.dart';
 
 
 void main() async {
@@ -32,10 +31,32 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
 
+/*
+  //this is a test can be ignored
+  //
+  BitmapDescriptor markericon = BitmapDescriptor.defaultMarker;
+
+
+
+  void addCustomIcon(){
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+        "MarkerIconimgs/35-353131_map-marker-png-pic-blue-location-pin-png.png.jpeg")
+        .then(
+          (icon) {
+        setState((){
+          markericon = icon;
+        });
+      },
+    );
+  }
+
+*/
+
   late GoogleMapController mapController;                                  // This initializes the GoogleMapController
 
   // FIXME: This is for testing build route 
   // Added by matthew 
+  /*
   Marker? userMarker;
   
   void manageTap(LatLng latLng) {
@@ -82,9 +103,9 @@ class _MyAppState extends State<MyApp> {
         ScaffoldMessenger.of(context).showSnackBar(buildSnackBar('Desired location is outside of the bounded area.'));
       }
   }
+  */
   // Current map type
   MapType _currentMapType = MapType.normal;                         
-
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
@@ -260,13 +281,14 @@ void _filterMarkers() {
     );
 
     //added by matthew for building routes
+    /* TEMP BLOCKED
     setState(() {
       _polylines.clear();
       _polylines.add(polyline);
     });
 
    // _polylines.add(polyline);        temp blocked by matthew for building route
-
+  */
   }
 
   Marker? savedParkingMarker;
@@ -328,9 +350,16 @@ void _filterMarkers() {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeClass.lightTheme,
-      darkTheme: ThemeClass.darkTheme,
-      themeMode: ThemeMode.system,
+      theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff8d1c40),
+            primary: const Color(0xff8d1c40),
+            secondary: const Color(0xff8a1c40),
+          ),
+          appBarTheme: const AppBarTheme(
+            color: Color(0xff8a1c40),
+          )),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('AVC Interactive Map',
@@ -385,6 +414,23 @@ void _filterMarkers() {
                   secondary: const Icon(Icons.near_me),
                   value: _isSwitched,
                   onChanged: (value) {
+                                                  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Button in Progress'),
+            content: Text('This feature is still in development.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the alert dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
                     setState(() {
                       _isSwitched = value;
 
@@ -506,40 +552,59 @@ void _filterMarkers() {
 
             ),
           ),
+
+          //icon: markericon,
           markers: markers,
+         /* markers: {
+            Marker(
+              markerId: MarkerId('demo'),
+              position: LatLng(34.67796141360417, -118.1847488798502),
+
+            ),
+          },
+          */
+
           myLocationEnabled: true,
           mapType: _currentMapType,                             // Set the current map type 
 
          //  onTap: manageTap,                               *** temp change for building markers by matthew
 
          // Test code made by matthew for building routing
+         /*
           onTap: (LatLng tappedPoint) {
             handleMapTap(tappedPoint);
           },
-
+          */
           polylines: _polylines,                                // *** added this here more efficient
            ),
         ),
 
-          // A FloatingActionButton to toggle map type
+          // FloatingActionButton to toggle map type
           floatingActionButton: Container(
-           margin: const EdgeInsets.only(top: 16, left: 16),
-           child: FloatingActionButton(
-             mini: true,
-             onPressed: () {
-             setState(() {
-          // Toggle between MapType.normal and MapType.hybrid
-        _currentMapType = _currentMapType == MapType.normal
-            ? MapType.hybrid
-            : MapType.normal;
-           });
-         },
-           child: Icon(
-          _currentMapType == MapType.normal
-          ? Icons.satellite                                  // Different icons based on map type
-          : Icons.map,                                 
-           ),
-            ),
+              margin: const EdgeInsets.only(top: 16, left: 16),
+              child: FloatingActionButton(
+                mini: true,
+                backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                onPressed: () {
+                  setState(() {
+                    // Toggle between MapType.normal and MapType.hybrid
+                    _currentMapType = _currentMapType == MapType.normal
+                        ? MapType.hybrid
+                        : MapType.normal;
+                  });
+                },
+                child: ColorFiltered(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.red, // Change this color to your desired icon color
+                    BlendMode.srcIn,
+                  ),
+                  child: Icon(
+                    _currentMapType == MapType.normal
+                        ? Icons.satellite // Different icons based on map type
+                        : Icons.map,
+                  ),
+                ),
+              ),
             ),
             // Location of the FloatingActionButton
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,  
