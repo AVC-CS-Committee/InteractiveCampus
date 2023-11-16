@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -129,11 +130,29 @@ class _MyAppState extends State<MyApp> {
   bool foodChecked = false;
   bool athleticsChecked = false;
 
-  Future<void> _onMapCreated(
-      GoogleMapController controller, BuildContext context) async {
-    mapController = controller;
-    markers = await locations.getMarkers(context);
-    _getParkedLocation();
+  Future<void> _onMapCreated(GoogleMapController controller, BuildContext context) async {
+  mapController = controller;
+  await locations.getMarkers(context); // This populates the marker sets
+
+  // Now, combine the marker sets into 'markers'
+  setState(() {
+    markers.clear();
+    if (parkingChecked) markers.addAll(locations.parkingLotMarkers);
+    if (classroomsChecked) markers.addAll(locations.classroomMarkers);
+    // ... include other conditions for food, athletics, resources, etc.
+
+    // If no filter is selected, you might want to add all markers
+    if (!parkingChecked && !classroomsChecked && !foodChecked && !athleticsChecked && !studentResourcesChecked) {
+      markers
+        ..addAll(locations.parkingLotMarkers)
+        ..addAll(locations.classroomMarkers)
+        ..addAll(locations.foodMarkers)
+        ..addAll(locations.athleticMarkers)
+        ..addAll(locations.resourceMarkers);
+    }
+  });
+
+  _getParkedLocation();
 
     // After loading the markers, update the state of the map with setState
     setState(() {
@@ -185,37 +204,60 @@ class _MyAppState extends State<MyApp> {
     //addCustomIcon();
   }
 
-  void _filterMarkers() {
-    int filterCount = 0;
-    Set<Marker> tmp = {};
-    if (parkingChecked) {
-      tmp.addAll(locations.parkingLotMarkers);
-      ++filterCount;
-    }
-    if (athleticsChecked) {
-      tmp.addAll(locations.athleticMarkers);
-      ++filterCount;
-    }
-    if (foodChecked) {
-      tmp.addAll(locations.foodMarkers);
-      ++filterCount;
-    }
-    if (studentResourcesChecked) {
-      tmp.addAll(locations.resourceMarkers);
-      ++filterCount;
-    }
-    if (classroomsChecked) {
-      tmp.addAll(locations.classroomMarkers);
-      ++filterCount;
-    }
+void _filterMarkers() {
+  Set<Marker> newMarkers = {};
 
-    if (filterCount > 0) {
-      markers = tmp;
-    } else {
-      markers = markersCopy;
+  if (parkingChecked) {
+    newMarkers.addAll(locations.parkingLotMarkers);
+  }
+  if (classroomsChecked) {
+    newMarkers.addAll(locations.classroomMarkers);
+  }
+  if (foodChecked) {
+    newMarkers.addAll(locations.foodMarkers);
+  }
+  if (athleticsChecked) {
+    newMarkers.addAll(locations.athleticMarkers);
+  }
+  if (studentResourcesChecked) {
+    newMarkers.addAll(locations.resourceMarkers);
+  }
+
+  // If no filters are selected, show all markers
+  if (!parkingChecked && !classroomsChecked && !foodChecked && !athleticsChecked && !studentResourcesChecked) {
+    newMarkers
+      ..addAll(locations.parkingLotMarkers)
+      ..addAll(locations.classroomMarkers)
+      ..addAll(locations.foodMarkers)
+      ..addAll(locations.athleticMarkers)
+      ..addAll(locations.resourceMarkers);
+  }
+
+  setState(() {
+    markers = newMarkers;
+  });
+}
+
+
+  Marker? userMarker;
+  void manageTap(LatLng latLng){
+    if(_isSwitched){
+      // Create user marker
+      userMarker = Marker(
+        markerId: MarkerId('user_marker'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'User Marker'),
+      );
+      // Add userMarker to the map
+      setState(() {
+        markers.add(userMarker!);
+      });
+
+      // Draw polyline from current location to userMarker
+      drawRoute(latLng);
     }
   }
-  
+
   // TODO: Create working routes based on google map data via directions API
   void drawRoute(LatLng latLng) async {
     LatLng start = currentLocationLatLng!;

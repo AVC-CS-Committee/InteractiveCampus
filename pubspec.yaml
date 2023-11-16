@@ -46,6 +46,7 @@ dependencies:
   json_serializable: ^6.6.1
   url_launcher: ^6.0.9
   flutter_image_compress: ^2.0.4
+  image: ^3.3.0
 
 dev_dependencies:
   flutter_test:
