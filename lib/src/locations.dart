@@ -64,6 +64,10 @@ Future<void> getMarkers(BuildContext context) async {
     Locations location = Locations.fromJson(jsonData);
     String assetPath = _getAssetPath(location.type);
     BitmapDescriptor markerIcon = await createCustomMarkerIcon(context, assetPath, iconSize);
+    
+    List<String> images = [];
+    if (location.images.isEmpty) images.add('');
+    for (String image in location.images) {images.add('https://raw.githubusercontent.com/AVC-CS-Committee/InteractiveCampusMap/master/app/src/main/res/drawable/image_$image.jpg');}
 
     Marker marker = Marker(
       markerId: MarkerId(location.title),
@@ -71,9 +75,17 @@ Future<void> getMarkers(BuildContext context) async {
       icon: markerIcon,
       infoWindow: InfoWindow(
           title: location.title,
-          snippet: location.description,
+          snippet: "Click for more info.",
           onTap: () {
-            // Your existing onTap logic
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LocationDescriptions(
+                        title: location.title,
+                        description: location.description,
+                        images: images,
+                      )),
+            );
           }),
     );
 
