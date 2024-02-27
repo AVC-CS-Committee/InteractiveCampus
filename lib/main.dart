@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -52,11 +52,60 @@ class _MyAppState extends State<MyApp> {
 
 */
 
+  late GoogleMapController mapController;                                  // This initializes the GoogleMapController
 
+  // FIXME: This is for testing build route 
+  // Added by matthew 
+  /*
+  Marker? userMarker;
+  
+  void manageTap(LatLng latLng) {
+    if (_isSwitched) {
+      // This will create a user marker
+      userMarker = Marker(
+        markerId: MarkerId('user_marker'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'User Marker'),
+      );
+      // Adds a userMarker to the map indicated
+      setState(() {
+        markers.add(userMarker!);
+      });
+      // Draws a polyline from the current location to the userMarker
+      drawRoute(latLng);
+    }
+  }
 
+     // Testing mode: by matthew
+    
+    bool isLocationWithinBounds(LatLng location) {
+      final bounds = LatLngBounds(
+        northeast:LatLng(34.68208082459477, -118.1838193583875),              //map bound northeast  
+        southwest:LatLng(34.67485483411587, -118.19230586766488),            //map bound southwest
+      );
+      // Checks if the method LatLngBounds is within the bound
+      return bounds.contains(location);
+    }
+     SnackBar buildSnackBar(String message) {
+      return SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      );
+     }
 
-
-  late GoogleMapController mapController;
+    void handleMapTap(LatLng tappedPoint) {
+        // Tests: shows the direction of tapped location
+        // For starters, this will..........
+      if (isLocationWithinBounds(tappedPoint)) {
+        // Draws the location of the route to tapped location from user
+        drawRoute(tappedPoint);                                            // Testing: tapped function
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(buildSnackBar('Desired location is outside of the bounded area.'));
+      }
+  }
+  */
+  // Current map type
+  MapType _currentMapType = MapType.normal;                         
 
   final LatLng _center = const LatLng(34.678652329599096, -118.18616290156892);
 
@@ -66,8 +115,8 @@ class _MyAppState extends State<MyApp> {
 
   // Poly-lines
   Set<Polyline> _polylines = {};
-  // MapsRoutes route = MapsRoutes();
 
+  // MapsRoutes route = MapsRoutes();
   LocationData? currentLocation;
   LatLng? currentLocationLatLng;
 
@@ -81,11 +130,29 @@ class _MyAppState extends State<MyApp> {
   bool foodChecked = false;
   bool athleticsChecked = false;
 
-  Future<void> _onMapCreated(
-      GoogleMapController controller, BuildContext context) async {
-    mapController = controller;
-    markers = await locations.getMarkers(context);
-    _getParkedLocation();
+  Future<void> _onMapCreated(GoogleMapController controller, BuildContext context) async {
+  mapController = controller;
+  await locations.getMarkers(context); // This populates the marker sets
+
+  // Now, combine the marker sets into 'markers'
+  setState(() {
+    markers.clear();
+    if (parkingChecked) markers.addAll(locations.parkingLotMarkers);
+    if (classroomsChecked) markers.addAll(locations.classroomMarkers);
+    // ... include other conditions for food, athletics, resources, etc.
+
+    // If no filter is selected, you might want to add all markers
+    if (!parkingChecked && !classroomsChecked && !foodChecked && !athleticsChecked && !studentResourcesChecked) {
+      markers
+        ..addAll(locations.parkingLotMarkers)
+        ..addAll(locations.classroomMarkers)
+        ..addAll(locations.foodMarkers)
+        ..addAll(locations.athleticMarkers)
+        ..addAll(locations.resourceMarkers);
+    }
+  });
+
+  _getParkedLocation();
 
     // After loading the markers, update the state of the map with setState
     setState(() {
@@ -137,36 +204,41 @@ class _MyAppState extends State<MyApp> {
     //addCustomIcon();
   }
 
-  void _filterMarkers() {
-    int filterCount = 0;
-    Set<Marker> tmp = {};
-    if (parkingChecked) {
-      tmp.addAll(locations.parkingLotMarkers);
-      ++filterCount;
-    }
-    if (athleticsChecked) {
-      tmp.addAll(locations.athleticMarkers);
-      ++filterCount;
-    }
-    if (foodChecked) {
-      tmp.addAll(locations.foodMarkers);
-      ++filterCount;
-    }
-    if (studentResourcesChecked) {
-      tmp.addAll(locations.resourceMarkers);
-      ++filterCount;
-    }
-    if (classroomsChecked) {
-      tmp.addAll(locations.classroomMarkers);
-      ++filterCount;
-    }
+void _filterMarkers() {
+  Set<Marker> newMarkers = {};
 
-    if (filterCount > 0) {
-      markers = tmp;
-    } else {
-      markers = markersCopy;
-    }
+  if (parkingChecked) {
+    newMarkers.addAll(locations.parkingLotMarkers);
   }
+  if (classroomsChecked) {
+    newMarkers.addAll(locations.classroomMarkers);
+  }
+  if (foodChecked) {
+    newMarkers.addAll(locations.foodMarkers);
+  }
+  if (athleticsChecked) {
+    newMarkers.addAll(locations.athleticMarkers);
+  }
+  if (studentResourcesChecked) {
+    newMarkers.addAll(locations.resourceMarkers);
+  }
+
+  // If no filters are selected, show all markers
+  if (!parkingChecked && !classroomsChecked && !foodChecked && !athleticsChecked && !studentResourcesChecked) {
+    newMarkers
+      ..addAll(locations.parkingLotMarkers)
+      ..addAll(locations.classroomMarkers)
+      ..addAll(locations.foodMarkers)
+      ..addAll(locations.athleticMarkers)
+      ..addAll(locations.resourceMarkers);
+  }
+
+  setState(() {
+    markers = newMarkers;
+  });
+}
+
+
   Marker? userMarker;
   void manageTap(LatLng latLng){
     if(_isSwitched){
@@ -208,8 +280,15 @@ class _MyAppState extends State<MyApp> {
       width: 5,
     );
 
-   _polylines.add(polyline);
+    //added by matthew for building routes
+    /* TEMP BLOCKED
+    setState(() {
+      _polylines.clear();
+      _polylines.add(polyline);
+    });
 
+   // _polylines.add(polyline);        temp blocked by matthew for building route
+  */
   }
 
   Marker? savedParkingMarker;
@@ -335,6 +414,23 @@ class _MyAppState extends State<MyApp> {
                   secondary: const Icon(Icons.near_me),
                   value: _isSwitched,
                   onChanged: (value) {
+                                                  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Button in Progress'),
+            content: Text('This feature is still in development.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the alert dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
                     setState(() {
                       _isSwitched = value;
 
@@ -450,10 +546,11 @@ class _MyAppState extends State<MyApp> {
           ),
             zoomGesturesEnabled: true, //enable Zoom in, out on map
             minMaxZoomPreference: MinMaxZoomPreference(16, 20),
-          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:LatLng(34.68208082459477, -118.1838193583875) ,
-              southwest:LatLng(34.67485483411587, -118.19230586766488)
-            )
+            cameraTargetBounds:CameraTargetBounds(LatLngBounds(
+              northeast:LatLng(34.68208082459477, -118.1838193583875) ,           // blakes map bound northeast  
+              southwest:LatLng(34.67485483411587, -118.19230586766488)            // blakes map bound southwest
+
+            ),
           ),
 
           //icon: markericon,
@@ -467,11 +564,49 @@ class _MyAppState extends State<MyApp> {
           },
           */
           myLocationEnabled: true,
-          mapType: MapType.normal,
-          onTap: manageTap,
-          polylines: _polylines,
-          )
+          mapType: _currentMapType,                             // Set the current map type 
+
+         //  onTap: manageTap,                               *** temp change for building markers by matthew
+
+         // Test code made by matthew for building routing
+         /*
+          onTap: (LatLng tappedPoint) {
+            handleMapTap(tappedPoint);
+          },
+          */
+          polylines: _polylines,                                // *** added this here more efficient
+           ),
         ),
+
+          // FloatingActionButton to toggle map type
+          floatingActionButton: Container(
+              margin: const EdgeInsets.only(top: 16, left: 16),
+              child: FloatingActionButton(
+                mini: true,
+                backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                onPressed: () {
+                  setState(() {
+                    // Toggle between MapType.normal and MapType.hybrid
+                    _currentMapType = _currentMapType == MapType.normal
+                        ? MapType.hybrid
+                        : MapType.normal;
+                  });
+                },
+                child: ColorFiltered(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.red, // Change this color to your desired icon color
+                    BlendMode.srcIn,
+                  ),
+                  child: Icon(
+                    _currentMapType == MapType.normal
+                        ? Icons.satellite // Different icons based on map type
+                        : Icons.map,
+                  ),
+                ),
+              ),
+            ),
+            // Location of the FloatingActionButton
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,  
       ),
     );
   }

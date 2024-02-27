@@ -1,7 +1,8 @@
 [
   {
     "question": "Where are the open labs and what are their hours?",
-    "answer": "<a href=\"https://www.avc.edu/its/labs\">Open Labs and Hours</a>"
+    "answer": "<a href=\"https://www.avc.edu/administration/its/labs\">Open Labs and Collaboration Spaces</a>"
+
   },
   {
     "question": "Where are good places to study?",
@@ -57,7 +58,7 @@
   },
   {
     "question": "Is parking free?",
-    "answer": "<a href=\"https://www.avc.edu/financial-fiscal-services/cashiers-office/online-parking-permit-questions\">Online Parking Permit Questions</a>"
+    "answer": "More information here: <a href=\"https://www.avc.edu/financial-fiscal-services/cashiers-office/online-parking-permit-questions#:~:text=A%20parking%20permit%20is%20required,a%20week%20for%2012%20weeks\">Online Parking Permit Questions</a>"
   },
   {
     "question": "Where are the restrooms?",
