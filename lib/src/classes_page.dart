@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:day_picker/day_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 
 
@@ -18,11 +16,7 @@ class ClassPage extends StatefulWidget {
 }
 
 class _ClassPage extends State<ClassPage>{
-
-  void firebasesetup() async{
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-  }
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance(); //makes the shared prefrences update when changed right away
 
   @override
   void initState() {
@@ -1172,35 +1166,43 @@ String? selectedItem = 'Select a class';
                         ),
                         child: ElevatedButton(
                         onPressed: () async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          int? previousHour = prefs.getInt('selectedHour');
+                          int? previousMinute = prefs.getInt('selectedMinute');
+                          TimeOfDay initialTime = previousHour != null && previousMinute != null
+                              ? TimeOfDay(hour: previousHour, minute: previousMinute)
+                              : TimeOfDay.now(); // or any other default time
+
                           TimeOfDay? newTime = await showTimePicker(
                               context: context,
-                              initialTime: time);
-                          if(newTime == null){
-                            return;
+                              initialTime: initialTime,
+                          );
+
+                          if (newTime == null) {
+                              return;
                           }
+
+                          // Save the selected time
+                          await prefs.setInt('selectedHour', newTime.hour);
+                          await prefs.setInt('selectedMinute', newTime.minute);
+
                           setState(() {
-                            time = newTime;
-                            if(classmanagecode == 1){
-                              timesendcode = 1;
-                            }
-                            else if(classmanagecode == 2){
-                              timesendcode = 2;
-                            }
-                            else if(classmanagecode == 3){
-                              timesendcode = 3;
-                            }
-                            else if(classmanagecode == 4){
-                              timesendcode = 4;
-                            }
-                            else if(classmanagecode == 5){
-                              timesendcode = 5;
-                            }
-                            else if(classmanagecode == 6){
-                              timesendcode = 6;
-                            }
-                            else if(classmanagecode == 7){
-                              timesendcode = 7;
-                            }
+                              time = newTime;
+                              if (classmanagecode == 1) {
+                                  timesendcode = 1;
+                              } else if (classmanagecode == 2) {
+                                  timesendcode = 2;
+                              } else if (classmanagecode == 3) {
+                                  timesendcode = 3;
+                              } else if (classmanagecode == 4) {
+                                  timesendcode = 4;
+                              } else if (classmanagecode == 5) {
+                                  timesendcode = 5;
+                              } else if (classmanagecode == 6) {
+                                  timesendcode = 6;
+                              } else if (classmanagecode == 7) {
+                                  timesendcode = 7;
+                              }
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -1417,71 +1419,56 @@ String? selectedItem = 'Select a class';
   }
   
   
-  
   void saveData() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     Map<String, String> imgmap = Map.fromIterables(classList, classimglist);
     String? selectedimg = "";
-      Firebase.initializeApp();
-    final storage = FirebaseStorage.instance;
-    
     selectedimg = imgmap[buldingselect];
-    
-    if(classmanagecode == 1){
-      final ref = storage.ref().child('/Class_Images/$buldingselect.jpg');
-      class1image = await ref.getDownloadURL();
-    }
-    else if (classmanagecode == 2){
+
+    selectedimg ??= "here_you_go_bblake.png";
+
+    if (classmanagecode == 1) {
+      class1image = selectedimg!;
+    } else if (classmanagecode == 2) {
       class2image = selectedimg!;
-    }
-    else if (classmanagecode == 3){
+    } else if (classmanagecode == 3) {
       class3image = selectedimg!;
-    }
-    else if (classmanagecode == 4){
+    } else if (classmanagecode == 4) {
       class4image = selectedimg!;
-    }
-    else if (classmanagecode == 5){
+    } else if (classmanagecode == 5) {
       class5image = selectedimg!;
-    }
-    else if (classmanagecode == 6){
+    } else if (classmanagecode == 6) {
       class6image = selectedimg!;
-    }
-    else if (classmanagecode == 7){
+    } else if (classmanagecode == 7) {
       class7image = selectedimg!;
     }
 
-    if(timesendcode == 1){
+    if (timesendcode == 1) {
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class1time = "$timepart1 - $timepart2";
-    }
-    else if (timesendcode == 2){
+    } else if (timesendcode == 2) {
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class2time = "$timepart1 - $timepart2";
-    }
-    else if (timesendcode == 3){
+    } else if (timesendcode == 3) {
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class3time = "$timepart1 - $timepart2";
-    }
-    else if (timesendcode == 4){
+    } else if (timesendcode == 4) {
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class4time = "$timepart1 - $timepart2";
-    }
-    else if (timesendcode == 5){
+    } else if (timesendcode == 5) {
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class5time = "$timepart1 - $timepart2";
-    }
-    else if (timesendcode == 6){
+    } else if (timesendcode == 6) {
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class6time = "$timepart1 - $timepart2";
-    }
-    else if (timesendcode == 7){
+    } else if (timesendcode == 7) {
       timepart1 = time.format(context);
       timepart2 = time2.format(context);
       class7time = "$timepart1 - $timepart2";
@@ -1537,6 +1524,7 @@ String? selectedItem = 'Select a class';
       prefs.setString('class6_Room', class6room);
       prefs.setString('class7_Room', class7room);
     });
+    Navigator.pop(context);
   }
 
   void clearData() async{
