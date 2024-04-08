@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,8 +62,118 @@ class _ClassPage extends State<ClassPage>{
   double longitudeClass1 = -118.19203306356845;
 
   
-String? selectedItem = 'Select a class';
+  String? selectedItem = 'Select a class';
 
+
+Map<String, String> imgmap = {
+  'Select a class': '',
+  'CSUB/CSU Bakersfield': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_bakersfield.jpg?raw=true',
+  'DL/Discovery Lab': '',
+  'AL/Auto Lab': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_autolab.jpg?raw=true',
+  'UH/Uhazy Hall': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_uhazyhall.jpg?raw=true',
+  'YH/Yoshida Hall': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_yoshidahall.jpg?raw=true',
+  'S1-9/SOAR High School': '',
+  'PA/Performing Arts Theatre': '',
+  'FA1/Art Gallery': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_artgallery.jpg?raw=true',
+  'FA2/Black Box': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_blackbox.jpg?raw=true',
+  'MH/Mesquite Hall': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_mh.jpg?raw=true',
+  'LH/Lecture Hall': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_lh.jpg?raw=true',
+  'SH/Sage Hall': 'https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png?raw=true',
+  'ME/Math and Engineering': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_me.jpg?raw=true',
+  'FA4/Fine Arts': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_finearts.jpg?raw=true',
+  'FA3/Fine Arts Music and Offices': '',
+  'EL/Enterprise Lab': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_enterpriselab.jpg?raw=true',
+  'HL/Horticulture Lab': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_horticulture.jpg?raw=true',
+  'GH1-4/Greenhouses': 'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true',
+};
+
+Map<String, double> latMap = {
+    'Select a class': 34.678652329599096,
+    'CSUB/CSU Bakersfield': 34.680353586506165,
+    'DL/Discovery Lab': 34.680452828358916,
+    'AL/Auto Lab': 34.67882218077683,
+    'UH/Uhazy Hall': 34.6788359665366,
+    'YH/Yoshida Hall': 34.67899187744454,
+    'S1-9/SOAR High School': 34.67877310935158,
+    'PA/Performing Arts Theatre': 34.6754613377245,
+    'FA1/Art Gallery': 34.676203764577544,
+    'FA2/Black Box': 34.675832701065104,
+    'MH/Mesquite Hall': 34.67687342944362,
+    'LH/Lecture Hall': 34.677011511466674,
+    'SH/Sage Hall': 34.67714651488922,
+    'ME/Math and Engineering': 34.67775573632852,
+    'FA4/Fine Arts': 34.67648676160919,
+    'FA3/Fine Arts Music and Offices': 34.67626532974614,
+    'EL/Enterprise Lab': 34.67973186506707,
+    'HL/Horticulture Lab': 34.679898891625314,
+    'GH1-4/Greenhouses': 34.679813863502766,
+};
+
+Map<String, double> lonMap = {
+    'Select a class': -118.18616290156892,
+    'CSUB/CSU Bakersfield': -118.18506976951421,
+    'DL/Discovery Lab': -118.18656003661856,
+    'AL/Auto Lab': -118.18719722438767,
+    'UH/Uhazy Hall': -118.18640225876932,
+    'YH/Yoshida Hall': -118.18548358738202,
+    'S1-9/SOAR High School': -118.18800679457378,
+    'PA/Performing Arts Theatre': -118.18723230937766,
+    'FA1/Art Gallery': -118.18697930907051,
+    'FA2/Black Box': -118.18737862660834,
+    'MH/Mesquite Hall': -118.18512883579885,
+    'LH/Lecture Hall': -118.18741261041862,
+    'SH/Sage Hall': -118.18709120662562,
+    'ME/Math and Engineering': -118.18589961736947,
+    'FA4/Fine Arts': -118.18738628333938,
+    'FA3/Fine Arts Music and Offices': -118.18770778514867,
+    'EL/Enterprise Lab': -118.18654794631942,
+    'HL/Horticulture Lab': -118.1870825677824,
+    'GH1-4/Greenhouses': -118.18775289064219,
+};
+  
+    // List<double> classlatlist = [
+    //   34.678652329599096, 
+    //   34.680353586506165,  
+    //   34.680452828358916,  
+    //   34.67882218077683,   
+    //   34.6788359665366,   
+    //   34.67899187744454,  
+    //   34.67877310935158,  
+    //   34.6754613377245,   
+    //   34.676203764577544, 
+    //   34.675832701065104, 
+    //   34.67687342944362,  
+    //   34.677011511466674, 
+    //   34.67714651488922,  
+    //   34.67775573632852,  
+    //   34.67648676160919,  
+    //   34.67626532974614,  
+    //   34.67973186506707,  
+    //   34.679898891625314, 
+    //   34.679813863502766
+    // ];
+    // List<double> classlonlist = [
+    //   -118.18616290156892, //select a class
+    //   -118.18506976951421,
+    //   -118.18656003661856,
+    //   -118.18719722438767,
+    //   -118.18640225876932,
+    //   -118.18548358738202,
+    //   -118.18800679457378,
+    //   -118.18723230937766,
+    //   -118.18697930907051,
+    //   -118.18737862660834,
+    //   -118.18512883579885,
+    //   -118.18741261041862,
+    //   -118.18709120662562,
+    //   -118.18589961736947,
+    //   -118.18738628333938,
+    //   -118.18770778514867,
+    //   -118.18654794631942,
+    //   -118.1870825677824,
+    //   -118.18775289064219
+    // ];
+    
     List<String> classList = [
       'Select a class', 
       'CSUB/CSU Bakersfield', 
@@ -82,72 +193,31 @@ String? selectedItem = 'Select a class';
       'FA3/Fine Arts Music and Offices', 
       'EL/Enterprise Lab', 
       'HL/Horticulture Lab', 
-      'GH1-4/Greenhouses'];
-    List<String> classimglist = [
-      '',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_bakersfield.jpg?raw=true',
-      '',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_autolab.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_uhazyhall.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_yoshidahall.jpg?raw=true',
-      '',
-      '',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_artgallery.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_blackbox.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_mh.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_lh.jpg?raw=true',
-      'https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_me.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_finearts.jpg?raw=true',
-      '',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_enterpriselab.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_horticulture.jpg?raw=true',
-      'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true',
-    ];
-    List<double> classlatlist = [
-      34.678652329599096, 
-      34.680353586506165,  
-      34.680452828358916,  
-      34.67882218077683,   
-      34.6788359665366,   
-      34.67899187744454,  
-      34.67877310935158,  
-      34.6754613377245,   
-      34.676203764577544, 
-      34.675832701065104, 
-      34.67687342944362,  
-      34.677011511466674, 
-      34.67714651488922,  
-      34.67775573632852,  
-      34.67648676160919,  
-      34.67626532974614,  
-      34.67973186506707,  
-      34.679898891625314, 
-      34.679813863502766
-    ];
-    List<double> classlonlist = [
-      -118.18616290156892, //select a class
-      -118.18506976951421,
-      -118.18656003661856,
-      -118.18719722438767,
-      -118.18640225876932,
-      -118.18548358738202,
-      -118.18800679457378,
-      -118.18723230937766,
-      -118.18697930907051,
-      -118.18737862660834,
-      -118.18512883579885,
-      -118.18741261041862,
-      -118.18709120662562,
-      -118.18589961736947,
-      -118.18738628333938,
-      -118.18770778514867,
-      -118.18654794631942,
-      -118.1870825677824,
-      -118.18775289064219
-    ];
-    
+      'GH1-4/Greenhouses'
+      ];
 
+    // List<String> classimglist = [
+    //   '',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_bakersfield.jpg?raw=true',
+    //   '',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_autolab.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_uhazyhall.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_yoshidahall.jpg?raw=true',
+    //   '',
+    //   '',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_artgallery.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_blackbox.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_mh.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_lh.jpg?raw=true',
+    //   'https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_me.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_finearts.jpg?raw=true',
+    //   '',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_enterpriselab.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_horticulture.jpg?raw=true',
+    //   'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true',
+    // ];
+    
   //time for the time selector
   TimeOfDay time = const TimeOfDay(hour: 1, minute: 00);
   TimeOfDay time2 = const TimeOfDay(hour: 1, minute: 00);
@@ -827,10 +897,10 @@ String? selectedItem = 'Select a class';
            ): const SizedBox(),
             Visibility(
                   visible: showclass3,
-                  child: Column(children: [
-                    const Divider(thickness: 5, color: Colors.transparent,),
-                    const Divider(thickness: 5, color: Colors.transparent,),
-                    const Divider(thickness: 5, color: Colors.transparent,),
+                  child: const Column(children: [
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
                   ],),
                 ),
                 
@@ -989,19 +1059,497 @@ String? selectedItem = 'Select a class';
            ): const SizedBox(),
             Visibility(
                   visible: showclass4,
-                  child: Column(children: [
-                    const Divider(thickness: 5, color: Colors.transparent,),
-                    const Divider(thickness: 5, color: Colors.transparent,),
-                    const Divider(thickness: 5, color: Colors.transparent,),
+                  child: const Column(children: [
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
                   ],),
                 ),
+
+
+    /// CLASS 5 -------------------------------------------------------------------------------------------------------------------
+            showclass5 ? Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  width: 3,
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color(0xFF8B1C3F)
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      children: [
+                        FadeInImage(image: NetworkImage(class5image),
+                          placeholder: const AssetImage('assets/images/here_you_go_bblake.png'),
+                          imageErrorBuilder: (c, o, s) => Image.asset(
+                              'assets/images/image_avc_logo.png',
+                            height: 100,
+                          ),
+                          alignment: Alignment.topCenter,
+                        ),
+                        Text(building5select,
+                          style: const TextStyle(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 141, 185, 202),
+                        ),
+
+                        Row(
+                          children: [
+                            Text("       Class: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class5name,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Room: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class5room,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Time: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class5time,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Day: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: avcblue
+                              ),
+                            ),
+                            Text(class5day,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListTile(
+                          title: const Text('Manage Class',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                              )
+                          ),
+                          onTap: () {
+                            setState(() {
+                              classmanagecode = 5;
+                            });
+                            _showSlideUpPanelclass1(context);
+                          },
+                        ),
+                      ],
+                    ), //),
+                  )
+                ],
+              ),
+            ) :const SizedBox(),
+           showclass5 ? ElevatedButton(
+             onPressed: (){
+               classpickGO = 5;
+               goPress();
+             },
+             style:ButtonStyle(
+               backgroundColor:  MaterialStatePropertyAll(
+                 avcgreen,
+               ),
+               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                 RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(18.0),
+                   side: const BorderSide(color: Colors.transparent),
+                 ),
+               ),
+             ),
+             child: const Text(
+               'GO',
+               style: TextStyle(
+                 fontSize: 18,
+                 color: Colors.white,
+               ),
+             ),
+           ): const SizedBox(),
+            Visibility(
+                  visible: showclass5,
+                  child: const Column(children: [
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                  ],),
+                ),
+
+            //CLASS 6 -------------------------------------------------------------------------------------------------------------------
+            showclass6 ? Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  width: 3,
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color(0xFF8B1C3F)
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      children: [
+                        FadeInImage(image: NetworkImage(class6image),
+                          placeholder: const AssetImage('assets/images/here_you_go_bblake.png'),
+                          imageErrorBuilder: (c, o, s) => Image.asset(
+                              'assets/images/image_avc_logo.png',
+                            height: 100,
+                          ),
+                          alignment: Alignment.topCenter,
+                        ),
+                        Text(building6select,
+                          style: const TextStyle(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 141, 185, 202),
+                        ),
+                        Row(
+                          children: [
+                            Text("       Class: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class6name, // This should likely be class6name, assuming a similar pattern
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Room: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class6room,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Time: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class6time,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Day: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: avcblue
+                              ),
+                            ),
+                            Text(class6day,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListTile(
+                          title: const Text('Manage Class',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                              )
+                          ),
+                          onTap: () {
+                            setState(() {
+                              classmanagecode = 6;
+                            });
+                            _showSlideUpPanelclass1(context);
+                          },
+                        ),
+                      ],
+                    ), //),
+                  )
+                ],
+              ),
+            ) : const SizedBox(),
+            showclass6 ? ElevatedButton(
+              onPressed: (){
+                classpickGO = 6;
+                goPress();
+              },
+              style: ButtonStyle(
+                backgroundColor:  MaterialStatePropertyAll(
+                  avcgreen,
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: const BorderSide(color: Colors.transparent),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'GO',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ): const SizedBox(),
+            Visibility(
+                  visible: showclass6,
+                  child: const Column(children: [
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                  ],),
+                ),
+
+            //CLASS 7 -------------------------------------------------------------------------------------------------------------------
+            showclass7 ? Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  width: 3,
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color(0xFF8B1C3F)
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      children: [
+                        FadeInImage(image: NetworkImage(class7image),
+                          placeholder: const AssetImage('assets/images/here_you_go_bblake.png'),
+                          imageErrorBuilder: (c, o, s) => Image.asset(
+                              'assets/images/image_avc_logo.png',
+                            height: 100,
+                          ),
+                          alignment: Alignment.topCenter,
+                        ),
+                        Text(building7select,
+                          style: const TextStyle(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 141, 185, 202),
+                        ),
+
+                        Row(
+                          children: [
+                            Text("       Class: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class7name, // Update to class7name accordingly
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Room: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class7room,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Time: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor
+                              ),
+                            ),
+                            Text(class7time,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("       Day: ",
+                              style: TextStyle(
+                                  fontSize: 18.5,
+                                  fontWeight: FontWeight.bold,
+                                  color: avcblue
+                              ),
+                            ),
+                            Text(class7day,
+                              style: const TextStyle(
+                                fontSize: 18.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListTile(
+                          title: const Text('Manage Class',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                              )
+                          ),
+                          onTap: () {
+                            setState(() {
+                              classmanagecode = 7;
+                            });
+                            _showSlideUpPanelclass1(context);
+                          },
+                        ),
+                      ],
+                    ), //),
+                  )
+                ],
+              ),
+            ) : const SizedBox(),
+            showclass7 ? ElevatedButton(
+              onPressed: (){
+                classpickGO = 7;
+                goPress();
+              },
+              style: ButtonStyle(
+                backgroundColor:  MaterialStatePropertyAll(
+                  avcgreen,
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: const BorderSide(color: Colors.transparent),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'GO',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ): const SizedBox(),
+            Visibility(
+                  visible: showclass7,
+                  child: const Column(children: [
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                    Divider(thickness: 5, color: Colors.transparent,),
+                  ],),
+                ),
+
           ],
         ),
       ),
        floatingActionButton: FloatingActionButton.extended(
         backgroundColor: textColor,
-          icon: Icon(Icons.add),
-          label: Text('Add Class'),
+          icon: const Icon(Icons.add),
+          label: const Text('Add Class'),
           onPressed: () {
             classaddbutton();
           },
@@ -1172,16 +1720,10 @@ String? selectedItem = 'Select a class';
                           TimeOfDay initialTime = previousHour != null && previousMinute != null
                               ? TimeOfDay(hour: previousHour, minute: previousMinute)
                               : TimeOfDay.now(); // or any other default time
-
-                          TimeOfDay? newTime = await showTimePicker(
-                              context: context,
-                              initialTime: initialTime,
-                          );
-
+                          TimeOfDay? newTime = await showTimePicker(context: context,initialTime: initialTime,);
                           if (newTime == null) {
                               return;
                           }
-
                           // Save the selected time
                           await prefs.setInt('selectedHour', newTime.hour);
                           await prefs.setInt('selectedMinute', newTime.minute);
@@ -1320,7 +1862,7 @@ String? selectedItem = 'Select a class';
                       ),
                     ),
                     onSelect: (values) {
-                      print(values);
+                      //print(values);
                         if(classmanagecode == 1){
                           class1day = values.toString();
                           class1day = class1day.substring(1, class1day.length - 1);
@@ -1422,12 +1964,10 @@ String? selectedItem = 'Select a class';
   void saveData() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    Map<String, String> imgmap = Map.fromIterables(classList, classimglist);
     String? selectedimg = "";
     selectedimg = imgmap[buldingselect];
 
-    selectedimg ??= "here_you_go_bblake.png";
-
+    
     if (classmanagecode == 1) {
       class1image = selectedimg!;
     } else if (classmanagecode == 2) {
@@ -1650,10 +2190,6 @@ String? selectedItem = 'Select a class';
   }
   void goPress() async{
 
-    Map<String, double> latmap = Map.fromIterables(classList, classlatlist);
-    Map<String, double> lonmap = Map.fromIterables(classList, classlonlist);
-
-
     if (classpickGO == 1){
       classforCords = building1select;
     }
@@ -1676,7 +2212,7 @@ String? selectedItem = 'Select a class';
    
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyApp(latitude: latmap[classforCords], longitude: lonmap[classforCords], zoom: 19,)),
+      MaterialPageRoute(builder: (context) => MyApp(latitude: latMap[classforCords], longitude: lonMap[classforCords], zoom: 19,)),
       );
   }
 }
