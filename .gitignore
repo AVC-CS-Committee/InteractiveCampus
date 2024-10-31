@@ -48,3 +48,5 @@ app.*.map.json
 *.xcconfig
 android/build.gradle
 pubspec.lock
+ios/Runner/Base.lproj/Main.storyboard
+ios/Runner.xcodeproj/project.pbxproj
