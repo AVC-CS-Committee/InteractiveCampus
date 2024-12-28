@@ -202,104 +202,105 @@ class _ClassPageTest extends State<ClassPageTest> {
   }
 
   Widget _buildClassCard(ClassInfo classInfo, int index) {
-    return Card(
-      color: avcred,
-      margin: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.stretch, // Ensure children stretch horizontally
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(12.0), // Rounded top edges
-            ),
-            child: SizedBox(
-              width: double.infinity, // Full width
-              height: 200, // Set desired height
-              child: FadeInImage.assetNetwork(
-                placeholder:
-                    'assets/images/default.png', // Default image while loading
-                image:
-                    imgmap[classInfo.building].toString(), // Network image URL
-                imageErrorBuilder: (context, error, stackTrace) {
-                  // Fallback to default image if the network image fails to load
-                  return Image.asset(
-                    'assets/images/default.png',
-                    fit: BoxFit.cover,
-                  );
-                },
-                fit: BoxFit.cover, // Ensure the image covers the entire box
+    return GestureDetector(
+      onTap: () => _editClass(classInfo, index), // allows tap to edit
+      child: Card(
+        color: avcred,
+        margin: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12.0), // Rounded top edges
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 200, // Fixed image height
+                child: FadeInImage.assetNetwork(
+                  placeholder:
+                      'assets/images/default.png', // default img when loading network img
+                  image: imgmap[classInfo.building].toString(),
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/default.png',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0), // Add padding around the text
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(classInfo.building,
-                    style: const TextStyle(fontSize: 20, color: Colors.black)),
-                const Divider(
-                  thickness: 2,
-                  color: Color.fromARGB(255, 141, 185, 202),
-                ),
-                Row(
-                  children: [
-                    Text("    Class Name: ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: textColor,
-                        )),
-                    Text(classInfo.name,
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.white)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text("    Room: ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: textColor,
-                        )),
-                    Text(classInfo.room,
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.white)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text("    Time: ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: textColor,
-                        )),
-                    Text(classInfo.time,
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.white)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text("    Days: ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: textColor,
-                        )),
-                    Text(classInfo.day,
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.white)),
-                  ],
-                ),
-                IconButton(
-                  onPressed: () => goPress(classInfo.building),
-                  icon: const Icon(Icons.map_rounded,
-                      color: Color.fromARGB(255, 141, 185, 202)),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(classInfo.building,
+                      style:
+                          const TextStyle(fontSize: 20, color: Colors.black)),
+                  const Divider(
+                    thickness: 2,
+                    color: Color.fromARGB(255, 141, 185, 202),
+                  ),
+                  Row(
+                    children: [
+                      Text("    Class Name: ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: textColor,
+                          )),
+                      Text(classInfo.name,
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("    Room: ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: textColor,
+                          )),
+                      Text(classInfo.room,
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("    Time: ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: textColor,
+                          )),
+                      Text(classInfo.time,
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("    Days: ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: textColor,
+                          )),
+                      Text(classInfo.day,
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white)),
+                    ],
+                  ),
+                  IconButton(
+                    onPressed: () => goPress(classInfo.building),
+                    icon: const Icon(Icons.map_rounded,
+                        color: Color.fromARGB(255, 141, 185, 202)),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -317,7 +318,7 @@ class _ClassPageTest extends State<ClassPageTest> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, // Adjust height for keyboard
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(25.0),
         ),
@@ -346,7 +347,7 @@ class _ClassPageTest extends State<ClassPageTest> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20), // Space between handle and content
+                const SizedBox(height: 20), // Space between handle and content
                 Text(
                   index == null ? 'Add Class' : 'Edit Class',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -463,7 +464,7 @@ class _ClassPageTest extends State<ClassPageTest> {
       final List<String> classList =
           classes.map((c) => jsonEncode(c.toJson())).toList();
       await prefs.setStringList('classes', classList);
-      print('Classes saved: $classList'); // Log the saved classes
+      print('Classes saved: $classList');
     } catch (e) {
       print('Error saving classes: $e');
     }
@@ -478,10 +479,10 @@ class _ClassPageTest extends State<ClassPageTest> {
           classes =
               classList.map((c) => ClassInfo.fromJson(jsonDecode(c))).toList();
         });
-        print('Classes loaded: $classes'); // Log the loaded classes
+        //print('Classes loaded: $classes'); // prints the loaded classes for testing
       }
     } catch (e) {
-      print('Error loading classes: $e');
+      print('Error loading classes: $e'); // prints error if classes do not load
     }
   }
 
