@@ -12,12 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'src/locations.dart' as locations;
 import 'src/help_page.dart';
 import 'src/classes_page.dart';
+import 'src/classes_page_test.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
   runApp(const MyApp());
 }
+
 class MyApp extends StatefulWidget {
   //used to take in lon and lat from go press in class screen
   final double? latitude;
@@ -27,6 +29,7 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
+
 class _MyAppState extends State<MyApp> {
   //used to pass long and lat into the map default is overview of avc,
   // only changes when pressing go in the class screen
@@ -79,12 +82,11 @@ class _MyAppState extends State<MyApp> {
     currentLocation = await location.getLocation();
 
     // Gets location updates
-    location.onLocationChanged.listen(
-      (LocationData updatedLocation){
-        currentLocation = updatedLocation;
-        currentLocationLatLng = LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
-      }
-    );
+    location.onLocationChanged.listen((LocationData updatedLocation) {
+      currentLocation = updatedLocation;
+      currentLocationLatLng =
+          LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
+    });
   }
 
   void checkServicesAndPermissions(Location location) async {
@@ -144,9 +146,10 @@ class _MyAppState extends State<MyApp> {
       markers = markersCopy;
     }
   }
+
   Marker? userMarker;
-  void manageTap(LatLng latLng){
-    if(_isSwitched){
+  void manageTap(LatLng latLng) {
+    if (_isSwitched) {
       // Create user marker
       userMarker = Marker(
         markerId: const MarkerId('user_marker'),
@@ -168,11 +171,10 @@ class _MyAppState extends State<MyApp> {
     LatLng start = currentLocationLatLng!;
     LatLng? end = latLng;
 
-
     // IMPORTANT NOTE: This piece of code works by showing routes based on google map data. However, the routes only seem to
     //                 be displayed if the current account holder's API key has both the Directions API and billing enabled on
     //                 their google cloud console account.
-     List<LatLng> polylinePoints = [start, end];
+    List<LatLng> polylinePoints = [start, end];
     // await route.drawRoute(polylinePoints, "classroom_path", Colors.lightBlueAccent, "AIzaSyBIKlTv4QecJ3oboGtCmPTFGQ-tgL1VUZU");
     // _polylines = route.routes;
     // DistanceCalculator distanceCalculator = DistanceCalculator();
@@ -185,14 +187,14 @@ class _MyAppState extends State<MyApp> {
       width: 5,
     );
 
-   _polylines.add(polyline);
-
+    _polylines.add(polyline);
   }
 
   Marker? savedParkingMarker;
   void saveParking() {
-    if(savedParkingMarker == null) {
-      markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('parking_marker'));
+    if (savedParkingMarker == null) {
+      markers.removeWhere((userMarker) =>
+          userMarker.markerId == const MarkerId('parking_marker'));
     }
     savedParkingMarker = Marker(
       markerId: MarkerId('parking_marker'),
@@ -229,7 +231,8 @@ class _MyAppState extends State<MyApp> {
     if (savedParkingMarker != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setDouble('parked_latitude', savedParkingMarker!.position.latitude);
-      prefs.setDouble('parked_longitude', savedParkingMarker!.position.longitude);
+      prefs.setDouble(
+          'parked_longitude', savedParkingMarker!.position.longitude);
     }
   }
 
@@ -264,7 +267,7 @@ class _MyAppState extends State<MyApp> {
         ),
         drawer: Builder(
             builder: (context) => Drawer(
-                child: ListView(padding: EdgeInsets.zero, children: [
+                    child: ListView(padding: EdgeInsets.zero, children: [
                   const DrawerHeader(
                     decoration: BoxDecoration(
                         color: Color(0xFF8B1C3F),
@@ -306,55 +309,65 @@ class _MyAppState extends State<MyApp> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  const ClassPage()),
+                            builder: (context) => const ClassPageTest()),
                       );
                     },
                   ),
                   const Divider(),
 
-                // Tools
-                SwitchListTile(
-                  title: const Text('Building Route'),
-                  secondary: const Icon(Icons.near_me),
-                  value: _isSwitched,
-                  onChanged: (value) {
-                    setState(() {
-                      _isSwitched = value;
+                  // Tools
+                  SwitchListTile(
+                    title: const Text('Building Route'),
+                    secondary: const Icon(Icons.near_me),
+                    value: _isSwitched,
+                    onChanged: (value) {
+                      setState(() {
+                        _isSwitched = value;
 
-                      if(_isSwitched){
-                        // Ensure current location exists before using the feature
-                        //checkServicesAndPermissions(currentLocation as Location);
+                        if (_isSwitched) {
+                          // Ensure current location exists before using the feature
+                          //checkServicesAndPermissions(currentLocation as Location);
+                        }
+                        // Remove marker if feature is turned off
+                        if (!_isSwitched) {
+                          // Removes all instances of user created markers
+                          markers.removeWhere((userMarker) =>
+                              userMarker.markerId ==
+                              const MarkerId('user_marker'));
+                          // Clears poly-lines
+                          _polylines.clear();
+                        }
+                      });
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.local_parking),
+                    title: markers.contains(savedParkingMarker)
+                        ? Text('Delete Parking')
+                        : Text('Save Parking'),
+                    textColor: markers.contains(savedParkingMarker)
+                        ? Colors.redAccent
+                        : null,
+                    iconColor: markers.contains(savedParkingMarker)
+                        ? Colors.redAccent
+                        : null,
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      // True if user intends to delete marker
+                      if (markers.contains(savedParkingMarker)) {
+                        _removeParkedLocation();
+                        markers.removeWhere((savedParkingMarker) =>
+                            savedParkingMarker.markerId ==
+                            const MarkerId('parking_marker'));
                       }
-                      // Remove marker if feature is turned off
-                      if(!_isSwitched) {
-                        // Removes all instances of user created markers
-                        markers.removeWhere((userMarker) => userMarker.markerId == const MarkerId('user_marker'));
-                        // Clears poly-lines
-                        _polylines.clear();
+                      // Entered if user intends to save marker
+                      else {
+                        saveParking();
                       }
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.local_parking),
-                  title: markers.contains(savedParkingMarker) ? Text('Delete Parking') : Text('Save Parking'),
-                  textColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
-                  iconColor: markers.contains(savedParkingMarker) ? Colors.redAccent : null,
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                    // True if user intends to delete marker
-                    if(markers.contains(savedParkingMarker)) {
-                      _removeParkedLocation();
-                      markers.removeWhere((savedParkingMarker) => savedParkingMarker.markerId == const MarkerId('parking_marker'));
-                    }
-                    // Entered if user intends to save marker
-                    else {
-                      saveParking();
-                    }
-                  },
-                ),
-                const Divider(),
+                    },
+                  ),
+                  const Divider(),
                   // Filters
                   CheckboxListTile(
                     title: const Text('Parking Lots'),
@@ -423,26 +436,27 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ]))),
         body: Builder(
-          builder: (context) => GoogleMap(
-          onMapCreated: (controller) => _onMapCreated(controller, context),
-          initialCameraPosition: CameraPosition(
-            target: LatLng(latitude ?? 34.678652329599096 ,longitude ?? -118.18616290156892),
-            zoom: zoom ?? 17,
-          ),
-            zoomGesturesEnabled: true, //enable Zoom in, out on map
-            minMaxZoomPreference: const MinMaxZoomPreference(16, 20),
-          cameraTargetBounds:CameraTargetBounds(LatLngBounds(
-              northeast:const LatLng(34.68208082459477, -118.1838193583875) ,
-              southwest:const LatLng(34.67485483411587, -118.19230586766488)
-            )
-          ),
-          markers: markers,
-          myLocationEnabled: true,
-          mapType: MapType.normal,
-          onTap: manageTap,
-          polylines: _polylines,
-          )
-        ),
+            builder: (context) => GoogleMap(
+                  onMapCreated: (controller) =>
+                      _onMapCreated(controller, context),
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(latitude ?? 34.678652329599096,
+                        longitude ?? -118.18616290156892),
+                    zoom: zoom ?? 17,
+                  ),
+                  zoomGesturesEnabled: true, //enable Zoom in, out on map
+                  minMaxZoomPreference: const MinMaxZoomPreference(16, 20),
+                  cameraTargetBounds: CameraTargetBounds(LatLngBounds(
+                      northeast:
+                          const LatLng(34.68208082459477, -118.1838193583875),
+                      southwest: const LatLng(
+                          34.67485483411587, -118.19230586766488))),
+                  markers: markers,
+                  myLocationEnabled: true,
+                  mapType: MapType.normal,
+                  onTap: manageTap,
+                  polylines: _polylines,
+                )),
       ),
     );
   }
