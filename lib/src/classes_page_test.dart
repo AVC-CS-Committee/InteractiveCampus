@@ -5,7 +5,6 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:interactivemap/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:day_picker/day_picker.dart';
 
 class ClassPageTest extends StatefulWidget {
   const ClassPageTest({super.key});
@@ -62,7 +61,7 @@ class _ClassPageTest extends State<ClassPageTest> {
   void initState() {
     //loads data on startup
     loadClasses();
-    testPreferences();
+    //testPreferences();
     super.initState();
   }
 
@@ -204,38 +203,103 @@ class _ClassPageTest extends State<ClassPageTest> {
 
   Widget _buildClassCard(ClassInfo classInfo, int index) {
     return Card(
+      color: avcred,
       margin: const EdgeInsets.all(8.0),
-      child: ListTile(
-        title: SizedBox(
-          width: 150, // Set desired width
-          height: 150, // Set desired height
-          child: FadeInImage.assetNetwork(
-            placeholder:
-                'assets/images/default.png', // Default image while loading
-            image: imgmap[classInfo.building].toString(), // Network image URL
-            imageErrorBuilder: (context, error, stackTrace) {
-              // Fallback to default image if the network image fails to load
-              return Image.asset(
-                'assets/images/default.png',
-              );
-            },
-            fit: BoxFit.cover,
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch, // Ensure children stretch horizontally
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(12.0), // Rounded top edges
+            ),
+            child: SizedBox(
+              width: double.infinity, // Full width
+              height: 200, // Set desired height
+              child: FadeInImage.assetNetwork(
+                placeholder:
+                    'assets/images/default.png', // Default image while loading
+                image:
+                    imgmap[classInfo.building].toString(), // Network image URL
+                imageErrorBuilder: (context, error, stackTrace) {
+                  // Fallback to default image if the network image fails to load
+                  return Image.asset(
+                    'assets/images/default.png',
+                    fit: BoxFit.cover,
+                  );
+                },
+                fit: BoxFit.cover, // Ensure the image covers the entire box
+              ),
+            ),
           ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Name: ${classInfo.name}"),
-            Text("Building: ${classInfo.building}"),
-            Text("Room: ${classInfo.room}"),
-            Text("Time: ${classInfo.time}"),
-            Text("Day: ${classInfo.day}"),
-            IconButton(
-                onPressed: () => goPress(classInfo.building),
-                icon: const Icon(Icons.map_rounded)),
-          ],
-        ),
-        onTap: () => _editClass(classInfo, index),
+          Padding(
+            padding: const EdgeInsets.all(8.0), // Add padding around the text
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(classInfo.building,
+                    style: const TextStyle(fontSize: 20, color: Colors.black)),
+                const Divider(
+                  thickness: 2,
+                  color: Color.fromARGB(255, 141, 185, 202),
+                ),
+                Row(
+                  children: [
+                    Text("    Class Name: ",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: textColor,
+                        )),
+                    Text(classInfo.name,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("    Room: ",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: textColor,
+                        )),
+                    Text(classInfo.room,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("    Time: ",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: textColor,
+                        )),
+                    Text(classInfo.time,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("    Days: ",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: textColor,
+                        )),
+                    Text(classInfo.day,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white)),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () => goPress(classInfo.building),
+                  icon: const Icon(Icons.map_rounded,
+                      color: Color.fromARGB(255, 141, 185, 202)),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -437,7 +501,6 @@ class _ClassPageTest extends State<ClassPageTest> {
 
   void goPress(String classselected) async {
     classforCords = classselected;
-    //TO DO: set classforCords to = somehting
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -450,8 +513,8 @@ class _ClassPageTest extends State<ClassPageTest> {
   }
 }
 
-Future<void> testPreferences() async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('testKey', 'testValue');
-  print('Saved: ${prefs.getString('testKey')}');
-}
+// Future<void> testPreferences() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   await prefs.setString('testKey', 'testValue');
+//   print('Saved: ${prefs.getString('testKey')}');
+// }

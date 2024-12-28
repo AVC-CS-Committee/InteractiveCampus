@@ -309,12 +309,25 @@ class _MyAppState extends State<MyApp> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
+                            builder: (context) => const ClassPage()),
+                      );
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.class_outlined),
+                    title: const Text('Classes test'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
                             builder: (context) => const ClassPageTest()),
                       );
                     },
                   ),
                   const Divider(),
-
                   // Tools
                   SwitchListTile(
                     title: const Text('Building Route'),
