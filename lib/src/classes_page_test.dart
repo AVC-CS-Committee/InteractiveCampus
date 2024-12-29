@@ -53,6 +53,20 @@ class ClassInfo {
   }
 }
 
+class BuildingInfo {
+  late final String name;
+  late final double latitude;
+  late final double longitude;
+  late final String imageURL;
+
+  BuildingInfo({
+    required this.name,
+    required this.latitude,
+    required this.longitude,
+    required this.imageURL,
+  });
+}
+
 class _ClassPageTest extends State<ClassPageTest> {
   Future<SharedPreferences> _prefs = SharedPreferences
       .getInstance(); //makes the shared prefrences update when changed right away
@@ -67,99 +81,156 @@ class _ClassPageTest extends State<ClassPageTest> {
 
   List<ClassInfo> classes = []; //create class list
 
-  Color textColor =
-      Color.fromARGB(255, 141, 185, 202); // avc blue text for the class cards
+  // avc blue text for the class cards
+  Color textColor = const Color.fromARGB(255, 141, 185, 202);
 
   //colors for testing things
-  final Color avcorange = Color.fromARGB(255, 241, 138, 32); // avc orange
-  final Color avcblue = Color.fromARGB(255, 141, 185, 202); // avc blue
-  final Color avcgreen = Color.fromARGB(255, 0, 107, 103); // avc green
-  final Color avcred = Color(0xFF8B1C3F);
+  final Color avcorange = const Color.fromARGB(255, 241, 138, 32); // avc orange
+  final Color avcblue = const Color.fromARGB(255, 141, 185, 202); // avc blue
+  final Color avcgreen = const Color.fromARGB(255, 0, 107, 103); // avc green
+  final Color avcred = const Color(0xFF8B1C3F);
 
   //default lat and lon for if the class does not have cords
   double latitudeClass1 = 34.67613026710341;
   double longitudeClass1 = -118.19203306356845;
 
-  Map<String, String> imgmap = {
-    'Select a class': '',
-    'CSUB/CSU Bakersfield':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_bakersfield.jpg?raw=true',
-    'DL/Discovery Lab': '',
-    'AL/Auto Lab':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_autolab.jpg?raw=true',
-    'UH/Uhazy Hall':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_uhazyhall.jpg?raw=true',
-    'YH/Yoshida Hall':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_yoshidahall.jpg?raw=true',
-    'S1-9/SOAR High School': '',
-    'PA/Performing Arts Theatre': '',
-    'FA1/Art Gallery':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_artgallery.jpg?raw=true',
-    'FA2/Black Box':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_blackbox.jpg?raw=true',
-    'MH/Mesquite Hall':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_mh.jpg?raw=true',
-    'LH/Lecture Hall':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_lh.jpg?raw=true',
-    'SH/Sage Hall':
-        'https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png?raw=true',
-    'ME/Math and Engineering':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_me.jpg?raw=true',
-    'FA4/Fine Arts':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_finearts.jpg?raw=true',
-    'FA3/Fine Arts Music and Offices': '',
-    'EL/Enterprise Lab':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_enterpriselab.jpg?raw=true',
-    'HL/Horticulture Lab':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_horticulture.jpg?raw=true',
-    'GH1-4/Greenhouses':
-        'https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true',
-  };
+  //list of all the buildings with cords and image urls, when addiumg a new building add it here
+  //made sure to add the building to the classList as well if you add a new building
+  //On how to use the info look in the goPress function or getURL function
+  //TO DO: Add more image URLS for the buildings on github then add link here
+  final List<BuildingInfo> buildinginfoList = [
+    BuildingInfo(
+      name: 'Select a class',
+      latitude: 34.67613026710341,
+      longitude: -118.19203306356845,
+      imageURL: "",
+    ),
+    BuildingInfo(
+      name: 'CSUB/CSU Bakersfield',
+      latitude: 34.680353586506165,
+      longitude: -118.18506976951421,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_bakersfield.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'DL/Discovery Lab',
+      latitude: 34.680452828358916,
+      longitude: -118.18656003661856,
+      imageURL: "",
+    ),
+    BuildingInfo(
+      name: 'AL/Auto Lab',
+      latitude: 34.67882218077683,
+      longitude: -118.18719722438767,
+      imageURL:
+          "https://raw.githubusercontent.com/AVC-CS-Committee/InteractiveCampusMap/refs/heads/master/app/src/main/res/drawable/image_autolab.jpg",
+    ),
+    BuildingInfo(
+      name: 'UH/Uhazy Hall',
+      latitude: 34.6788359665366,
+      longitude: -118.18640225876932,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_uhazyhall.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'YH/Yoshida Hall',
+      latitude: 34.67899187744454,
+      longitude: -118.18548358738202,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_yoshidahall.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'S1-9/SOAR High School',
+      latitude: 34.67877310935158,
+      longitude: -118.18800679457378,
+      imageURL: "",
+    ),
+    BuildingInfo(
+      name: 'PA/Performing Arts Theatre',
+      latitude: 34.6754613377245,
+      longitude: -118.18723230937766,
+      imageURL: "",
+    ),
+    BuildingInfo(
+      name: 'FA1/Art Gallery',
+      latitude: 34.676203764577544,
+      longitude: -118.18697930907051,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_artgallery.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'FA2/Black Box',
+      latitude: 34.675832701065104,
+      longitude: -118.18737862660834,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_blackbox.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'MH/Mesquite Hall',
+      latitude: 34.67687342944362,
+      longitude: -118.18512883579885,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_mh.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'LH/Lecture Hall',
+      latitude: 34.677011511466674,
+      longitude: -118.18741261041862,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_lh.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'SH/Sage Hall',
+      latitude: 34.67714651488922,
+      longitude: -118.18709120662562,
+      imageURL:
+          "https://www.avc.edu/sites/default/files/inline-images/nov2021-1.png?raw=true",
+    ),
+    BuildingInfo(
+      name: 'ME/Math and Engineering',
+      latitude: 34.67775573632852,
+      longitude: -118.18589961736947,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_me.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'FA4/Fine Arts',
+      latitude: 34.67648676160919,
+      longitude: -118.18738628333938,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_finearts.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'FA3/Fine Arts Music and Offices',
+      latitude: 34.67626532974614,
+      longitude: -118.18770778514867,
+      imageURL: "",
+    ),
+    BuildingInfo(
+      name: 'EL/Enterprise Lab',
+      latitude: 34.67973186506707,
+      longitude: -118.18654794631942,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_enterpriselab.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'HL/Horticulture Lab',
+      latitude: 34.679898891625314,
+      longitude: -118.1870825677824,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_horticulture.jpg?raw=true",
+    ),
+    BuildingInfo(
+      name: 'GH1-4/Greenhouses',
+      latitude: 34.679813863502766,
+      longitude: -118.18775289064219,
+      imageURL:
+          "https://github.com/AVC-CS-Committee/InteractiveCampusMap/blob/master/app/src/main/res/drawable/image_greenhouse.jpg?raw=true",
+    ),
+  ];
 
-  Map<String, double> latMap = {
-    'Select a class': 34.678652329599096,
-    'CSUB/CSU Bakersfield': 34.680353586506165,
-    'DL/Discovery Lab': 34.680452828358916,
-    'AL/Auto Lab': 34.67882218077683,
-    'UH/Uhazy Hall': 34.6788359665366,
-    'YH/Yoshida Hall': 34.67899187744454,
-    'S1-9/SOAR High School': 34.67877310935158,
-    'PA/Performing Arts Theatre': 34.6754613377245,
-    'FA1/Art Gallery': 34.676203764577544,
-    'FA2/Black Box': 34.675832701065104,
-    'MH/Mesquite Hall': 34.67687342944362,
-    'LH/Lecture Hall': 34.677011511466674,
-    'SH/Sage Hall': 34.67714651488922,
-    'ME/Math and Engineering': 34.67775573632852,
-    'FA4/Fine Arts': 34.67648676160919,
-    'FA3/Fine Arts Music and Offices': 34.67626532974614,
-    'EL/Enterprise Lab': 34.67973186506707,
-    'HL/Horticulture Lab': 34.679898891625314,
-    'GH1-4/Greenhouses': 34.679813863502766,
-  };
-
-  Map<String, double> lonMap = {
-    'Select a class': -118.18616290156892,
-    'CSUB/CSU Bakersfield': -118.18506976951421,
-    'DL/Discovery Lab': -118.18656003661856,
-    'AL/Auto Lab': -118.18719722438767,
-    'UH/Uhazy Hall': -118.18640225876932,
-    'YH/Yoshida Hall': -118.18548358738202,
-    'S1-9/SOAR High School': -118.18800679457378,
-    'PA/Performing Arts Theatre': -118.18723230937766,
-    'FA1/Art Gallery': -118.18697930907051,
-    'FA2/Black Box': -118.18737862660834,
-    'MH/Mesquite Hall': -118.18512883579885,
-    'LH/Lecture Hall': -118.18741261041862,
-    'SH/Sage Hall': -118.18709120662562,
-    'ME/Math and Engineering': -118.18589961736947,
-    'FA4/Fine Arts': -118.18738628333938,
-    'FA3/Fine Arts Music and Offices': -118.18770778514867,
-    'EL/Enterprise Lab': -118.18654794631942,
-    'HL/Horticulture Lab': -118.1870825677824,
-    'GH1-4/Greenhouses': -118.18775289064219,
-  };
-
+  //TO DO: Remove the need for ClasList and just use the buildinginfoList------
+  //This is still used for the dropdown menu so add new buildings here
   List<String> classList = [
     'Select a class',
     'CSUB/CSU Bakersfield',
@@ -182,7 +253,6 @@ class _ClassPageTest extends State<ClassPageTest> {
     'GH1-4/Greenhouses'
   ];
 
-  late String classforCords = ""; //used to match class name to cords
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,7 +290,7 @@ class _ClassPageTest extends State<ClassPageTest> {
                 child: FadeInImage.assetNetwork(
                   placeholder:
                       'assets/images/default.png', // default img when loading network img
-                  image: imgmap[classInfo.building].toString(),
+                  image: getURL(classInfo.building),
                   imageErrorBuilder: (context, error, stackTrace) {
                     return Image.asset(
                       'assets/images/default.png',
@@ -350,34 +420,35 @@ class _ClassPageTest extends State<ClassPageTest> {
                 const SizedBox(height: 20), // Space between handle and content
                 Text(
                   index == null ? 'Add Class' : 'Edit Class',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 // Text fields and dropdown
                 TextField(
                   controller: nameController,
-                  decoration: InputDecoration(labelText: 'Class Name'),
+                  decoration: const InputDecoration(labelText: 'Class Name'),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextField(
                   controller: roomController,
-                  decoration: InputDecoration(labelText: 'Room'),
+                  decoration: const InputDecoration(labelText: 'Room'),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextField(
                   controller: timeController,
-                  decoration: InputDecoration(labelText: 'Time'),
+                  decoration: const InputDecoration(labelText: 'Time'),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextField(
                   controller: dayController,
-                  decoration: InputDecoration(labelText: 'Day'),
+                  decoration: const InputDecoration(labelText: 'Day'),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 DropdownButtonFormField<String>(
                   value:
                       classInfo.building.isNotEmpty ? classInfo.building : null,
-                  decoration: InputDecoration(labelText: 'Building'),
+                  decoration: const InputDecoration(labelText: 'Building'),
                   items: classList.map((building) {
                     return DropdownMenuItem(
                       value: building,
@@ -389,9 +460,10 @@ class _ClassPageTest extends State<ClassPageTest> {
                       classInfo.building = newValue!;
                     });
                   },
-                  hint: Text('Select a building'),
+                  hint: const Text('Select a building'),
+                  menuMaxHeight: 250, // Limit dropdown height
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 // Action buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -405,8 +477,8 @@ class _ClassPageTest extends State<ClassPageTest> {
                           saveClasses();
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.delete, color: Colors.red),
-                        label: Text(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        label: const Text(
                           'Delete',
                           style: TextStyle(color: Colors.red),
                         ),
@@ -416,7 +488,7 @@ class _ClassPageTest extends State<ClassPageTest> {
                           side: BorderSide(color: Colors.red),
                         ),
                       ),
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -434,11 +506,11 @@ class _ClassPageTest extends State<ClassPageTest> {
                         });
                         saveClasses();
                       },
-                      child: Text('Save'),
+                      child: const Text('Save'),
                     ),
                   ],
                 ),
-                SizedBox(height: 20), // Add bottom padding
+                const SizedBox(height: 20), // Add bottom padding
               ],
             ),
           ),
@@ -451,20 +523,13 @@ class _ClassPageTest extends State<ClassPageTest> {
     _showClassDialog(classInfo, index: index);
   }
 
-  void _removeClass(int index) {
-    setState(() {
-      classes.removeAt(index);
-    });
-    saveClasses();
-  }
-
   Future<void> saveClasses() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final List<String> classList =
           classes.map((c) => jsonEncode(c.toJson())).toList();
       await prefs.setStringList('classes', classList);
-      print('Classes saved: $classList');
+      //print('Classes saved: $classList');
     } catch (e) {
       print('Error saving classes: $e');
     }
@@ -501,19 +566,49 @@ class _ClassPageTest extends State<ClassPageTest> {
   }
 
   void goPress(String classselected) async {
-    classforCords = classselected;
+    //gets the bulding info for the selected class returns default cords if not found
+    //this can be reused for other buttons that need to go to a location or image URL
+    //just use selectedclass.latitude or selectedclass.longitude or selectedclass.imageURL
+    final selectedclass = buildinginfoList.firstWhere(
+      (BuildingInfo) => BuildingInfo.name == classselected,
+      orElse: () => BuildingInfo(
+        name: 'Select a class',
+        latitude: 34.67613026710341,
+        longitude: -118.19203306356845,
+        imageURL: "",
+      ),
+    );
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => MyApp(
-                latitude: latMap[classforCords],
-                longitude: lonMap[classforCords],
+                latitude: selectedclass.latitude,
+                longitude: selectedclass.longitude,
                 zoom: 19,
               )),
     );
   }
+
+  //used to get img url for the selected class
+  String getURL(String classselected) {
+    //gets the bulding info for the selected class returns default cords if not found
+    //this can be reused for other buttons that need to go to a location or image URL
+    //just use selectedclass.latitude or selectedclass.longitude or selectedclass.imageURL
+    final selectedclass = buildinginfoList.firstWhere(
+      (BuildingInfo) => BuildingInfo.name == classselected,
+      orElse: () => BuildingInfo(
+        name: 'Select a class',
+        latitude: 34.67613026710341,
+        longitude: -118.19203306356845,
+        imageURL: "",
+      ),
+    );
+    //print("url: " + selectedclass.imageURL);
+    return selectedclass.imageURL;
+  }
 }
 
+//used to test shared preferences
 // Future<void> testPreferences() async {
 //   final prefs = await SharedPreferences.getInstance();
 //   await prefs.setString('testKey', 'testValue');
